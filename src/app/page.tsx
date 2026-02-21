@@ -1,7 +1,5 @@
 "use client";
 import { BlockMath } from "react-katex";
-import Server from "./server";
-import { useState } from "react";
 export default function Home() {
   return (
     <div className="min-h-screen p-10 bg-slate-100">
@@ -13,7 +11,7 @@ export default function Home() {
           Welcome! This app allows you to explore several models used in network
           and system capacity planning, such as EMLM and Erlang formulas. Each
           model has its own dedicated page where you can input system parameters
-          and calculate results.
+          and calculate Call Blocking Propabilities (CBP).
         </p>
 
         <h2 className="text-2xl font-semibold">Models:</h2>
