@@ -14,22 +14,22 @@ export default function Home() {
           and calculate Call Blocking Propabilities (CBP).
         </p>
 
-        <h2 className="text-2xl font-semibold">Models:</h2>
-        <ul className="list-disc list-inside space-y-1">
+        <h2 className="text-2xl font-semibold">Analytical Models:</h2>
+        <ul>
           <li>
-            <a href="/erlang" className="text-blue-600 hover:underline">
-              Erlang Model
+            <a
+              href="/erlang"
+              className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 font-medium rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+            >
+              Erlang-B Analytical Model
             </a>
           </li>
           {/* <li><a href="/simulations" className="text-blue-600 hover:underline">Simulations</a></li> */}
         </ul>
-  
 
         <h2 className="text-2xl font-semibold">Theory & Formulas</h2>
-        <p>Here you can describe the formulas and include LaTeX rendering:</p>
-        <div className="space-y-3">
-          
-        </div>
+        <p></p>
+        <div className="space-y-3"></div>
       </div>
     </div>
   );
