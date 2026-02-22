@@ -15,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Analytical Models - Capacity Planning",
-  description: "Analytical Models for Capacity Planning in IaaS Cloud Infrastructure",
+  description:
+    "Analytical Models for Capacity Planning in IaaS Cloud Infrastructure",
 };
 
 export default function RootLayout({
