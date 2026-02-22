@@ -36,6 +36,18 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-4xl mx-auto text-center text-gray-600 text-sm">
           © {new Date().getFullYear()} Teletraffic Models. All rights reserved.
         </div>
+        <div className="max-w-4xl mx-auto text-center text-gray-600 text-sm">
+          Created by{" "}
+          <a
+            href="https://www.linkedin.com/in/mariakourtesi/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            Maria Kourtesi
+          </a>
+          .
+        </div>
       </footer>
     </div>
   );
