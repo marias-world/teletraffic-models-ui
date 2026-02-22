@@ -28,13 +28,24 @@ export default function ModelTemplate({
   const [showSteps, setShowSteps] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [error, setError] = useState("");
+
   const handleChange = (name: string, value: string) => {
     setValues((prev) => ({ ...prev, [name]: value }));
+    setError("");
   };
 
   const runModel = () => {
     setLoading(true);
     setShowSteps(false);
+
+    for (const input of inputs) {
+      if (!values[input.name] || values[input.name].trim() === "") {
+        setError(`Please fill in the "${input.label}" field.`);
+        setLoading(false);
+        return;
+      }
+    }
 
     const numericInputs: Record<string, number> = {};
     Object.keys(values).forEach((key) => {
@@ -64,6 +75,7 @@ export default function ModelTemplate({
               <input
                 type="number"
                 min={0}
+                required
                 value={values[input.name] || ""}
                 onChange={(e) => handleChange(input.name, e.target.value)}
                 className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-sky-500"
@@ -71,6 +83,10 @@ export default function ModelTemplate({
             </div>
           ))}
         </div>
+
+        {error && (
+          <div className="text-red-600 font-medium text-sm">{error}</div>
+        )}
 
         <button
           onClick={runModel}
