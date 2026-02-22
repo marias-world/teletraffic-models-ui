@@ -81,13 +81,22 @@ export default function ModelTemplate({
         </button>
 
         {result !== null && (
-          <div className="bg-slate-50 p-4 rounded-lg border">
-            <h3 className="font-semibold mb-2">Result</h3>
-            <p>{(result * 100).toFixed(4)}%</p>
+          <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+            <h3 className="font-semibold text-slate-700 mb-2">
+              Call Blocking Probability
+            </h3>
+            <pre className="text-sm text-slate-800 overflow-auto">
+              {JSON.stringify(result, null, 2)}
+            </pre>
+            <p className="text-slate-600">
+              {typeof result === "number" && result === 0
+                ? "No calls will be blocked."
+                : `Approximately ${typeof result === "number" ? (result * 100).toFixed(2) : 0}% of calls will be blocked due to limited system capacity.`}
+            </p>
           </div>
         )}
 
-        {result !== null && (
+        {result !== null && steps.length > 0 && (
           <>
             <button
               onClick={() => setShowSteps((prev) => !prev)}
@@ -97,7 +106,7 @@ export default function ModelTemplate({
             </button>
 
             {showSteps && (
-              <div className="mt-4">
+              <div className="mt-4 space-y-2">
                 {steps.map((step, i) => (
                   <BlockMath key={i} math={step} />
                 ))}
