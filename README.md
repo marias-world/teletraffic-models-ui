@@ -15,3 +15,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 In progress...
 More models are being added
 
+## Live Deployment
+
+This project has been deployed using Vercel:
+https://teletraffic-models-ui.vercel.app
