@@ -44,7 +44,7 @@ export default function ModelTemplate({
     const { result, steps } = onRun(numericInputs);
 
     setResult(result);
-    setSteps(steps);
+    setSteps(steps || []);
     setLoading(false);
   };
 
