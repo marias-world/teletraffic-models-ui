@@ -34,7 +34,7 @@ export default function Page() {
 
   return (
     <Layout>
-      <div className="min-h-screen p-10 bg-slate-100">
+      <div className="min-h-screen p-4 bg-slate-100">
         <ModelTemplate
           title="Erlang-B Model"
           description={<ErlangExplanation />}

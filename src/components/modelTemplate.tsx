@@ -106,9 +106,11 @@ export default function ModelTemplate({
             </button>
 
             {showSteps && (
-              <div className="mt-4 space-y-2">
+              <div className="mt-4 space-y-2 overflow-x-auto">
                 {steps.map((step, i) => (
-                  <BlockMath key={i} math={step} />
+                  <div key={i} className="min-w-full">
+                    <BlockMath math={step} />
+                  </div>
                 ))}
               </div>
             )}
