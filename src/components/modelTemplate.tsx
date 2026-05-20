@@ -60,8 +60,7 @@ export default function ModelTemplate({
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-xl p-8 space-y-6">
+    <div className="bg-white w-full max-w-2xl rounded-2xl shadow-xl p-8 space-y-6">
         <h1 className="text-2xl font-bold text-slate-800">{title}</h1>
 
         {description}
@@ -133,6 +132,5 @@ export default function ModelTemplate({
           </>
         )}
       </div>
-    </div>
   );
 }
