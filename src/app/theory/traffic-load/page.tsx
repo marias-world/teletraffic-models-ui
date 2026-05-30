@@ -31,7 +31,6 @@ function toX(min: number) {
 }
 
 const totalDuration = CALLS.reduce((s, c) => s + c.duration, 0); // 69 min
-const trafficLoad   = totalDuration / PERIOD;                      // 2.3 erl
 
 // ─── page ─────────────────────────────────────────────────────────────────────
 export default function TrafficLoadPage() {
