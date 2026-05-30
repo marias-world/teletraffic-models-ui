@@ -1,4 +1,5 @@
 import Layout from "@/components/layout";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -18,19 +19,27 @@ export default function Home() {
           <h2 className="text-2xl font-semibold">Analytical Models:</h2>
           <ul>
             <li>
-              <a
+              <Link
                 href="/erlang"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 font-medium rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Erlang-B Analytical Model
-              </a>
+              </Link>
             </li>
             {/* <li><a href="/simulations" className="text-blue-600 hover:underline">Simulations</a></li> */}
           </ul>
 
           <h2 className="text-2xl font-semibold">Theory & Formulas</h2>
-          <p></p>
-          <div className="space-y-3"></div>
+          <ul className="space-y-2">
+            <li>
+              <Link
+                href="/theory/poisson-traffic"
+                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+              >
+                Poisson Traffic
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </Layout>
