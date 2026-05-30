@@ -35,7 +35,7 @@ export default function PoissonAnimation() {
     running:  false,
   });
 
-  const timer = useRef<ReturnType<typeof setInterval>>();
+  const timer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   // Keep lambda in sync with the ref
   useEffect(() => { sim.current.lambda = lambda; }, [lambda]);
