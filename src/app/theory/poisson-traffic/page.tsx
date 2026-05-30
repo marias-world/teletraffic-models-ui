@@ -1,6 +1,7 @@
 import Layout from "@/components/layout";
 import { BlockMath, InlineMath } from "react-katex";
 import Link from "next/link";
+import PoissonAnimation from "@/components/PoissonAnimation";
 
 export default function PoissonTrafficPage() {
   return (
@@ -120,6 +121,17 @@ export default function PoissonTrafficPage() {
                 the gaps between them must be exponential, and vice versa.
               </p>
             </div>
+          </section>
+
+          {/* Animation */}
+          <section className="space-y-4">
+            <h2 className="text-xl font-semibold text-slate-700">See It in Action</h2>
+            <p className="text-slate-600">
+              Each dot is a call arriving. The dashed brackets show the gap to the previous
+              call — short gaps are common, long gaps are rare. Use the slider to change the
+              arrival rate λ and watch both views update live.
+            </p>
+            <PoissonAnimation />
           </section>
 
           {/* Key properties */}
