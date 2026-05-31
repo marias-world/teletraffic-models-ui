@@ -225,7 +225,7 @@ export default function Layout({ children }: LayoutProps) {
         {/* Bottom bar */}
         <div className="border-t border-slate-800">
           <div className="max-w-4xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs">
-            <span className="text-slate-600">
+            <span className="text-slate-300">
               © {new Date().getFullYear()} Maria Kourtesi. Licensed under{" "}
               <a
                 href="https://creativecommons.org/licenses/by-nc/4.0/"
@@ -236,7 +236,9 @@ export default function Layout({ children }: LayoutProps) {
                 CC BY-NC 4.0
               </a>
             </span>
-            <span className="text-slate-600">Built with Next.js &amp; Tailwind CSS</span>
+            <span className="text-slate-600">
+              Built with Next.js &amp; Tailwind CSS
+            </span>
           </div>
         </div>
       </footer>
