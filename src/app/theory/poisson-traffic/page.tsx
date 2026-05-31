@@ -47,11 +47,11 @@ export default function PoissonTrafficPage() {
             <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-2">
               <h3 className="font-semibold text-slate-700">Where:</h3>
               <ul className="space-y-2 text-slate-600">
-                <li><InlineMath math="\lambda" /> — average call arrival rate (calls per unit time)</li>
-                <li><InlineMath math="t" /> — length of the observation interval</li>
-                <li><InlineMath math="n" /> — number of arrivals (<InlineMath math="n = 0, 1, 2, \ldots" />)</li>
-                <li><InlineMath math="e" /> — Euler's number (<InlineMath math="\approx 2.718" />)</li>
-                <li><InlineMath math="n!" /> — factorial of <InlineMath math="n" /></li>
+                <li><InlineMath math="\lambda" />: average call arrival rate (calls per unit time)</li>
+                <li><InlineMath math="t" />: length of the observation interval</li>
+                <li><InlineMath math="n" />: number of arrivals (<InlineMath math="n = 0, 1, 2, \ldots" />)</li>
+                <li><InlineMath math="e" />: Euler's number (<InlineMath math="\approx 2.718" />)</li>
+                <li><InlineMath math="n!" />: factorial of <InlineMath math="n" /></li>
               </ul>
             </div>
             <p className="text-slate-500 text-sm">
@@ -67,12 +67,12 @@ export default function PoissonTrafficPage() {
             <p className="text-slate-600 leading-relaxed">
               Saying that <em>arrivals are Poisson distributed</em> and saying that{" "}
               <em>interarrival times are exponentially distributed</em> are two ways of
-              describing the same process. They are equivalent — one implies the other.
+              describing the same process. They are equivalent: one implies the other.
             </p>
 
             <div className="space-y-4">
               <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
-                <h3 className="font-semibold text-slate-700">Poisson view — counting arrivals</h3>
+                <h3 className="font-semibold text-slate-700">Poisson view: counting arrivals</h3>
                 <p className="text-slate-600">
                   You pick a fixed time window and ask:{" "}
                   <em>"how many calls arrived in that window?"</em>
@@ -80,14 +80,14 @@ export default function PoissonTrafficPage() {
                 <p className="text-slate-600">
                   <strong>Example:</strong> a call centre receives on average{" "}
                   <InlineMath math="\lambda = 2" /> calls per minute. In any given
-                  minute, the number of calls is random — sometimes 0, sometimes 1,
+                  minute, the number of calls is random: sometimes 0, sometimes 1,
                   sometimes 4. The Poisson formula gives the probability of each count:
                 </p>
                 <BlockMath math="P_0 = e^{-2} \approx 13.5\% \quad P_1 = 2e^{-2} \approx 27\% \quad P_2 = \tfrac{4}{2}e^{-2} \approx 27\%" />
               </div>
 
               <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
-                <h3 className="font-semibold text-slate-700">Exponential view — time between arrivals</h3>
+                <h3 className="font-semibold text-slate-700">Exponential view: time between arrivals</h3>
                 <p className="text-slate-600">
                   Instead of counting, you watch the clock and ask:{" "}
                   <em>"how long until the next call arrives?"</em>
@@ -96,13 +96,13 @@ export default function PoissonTrafficPage() {
                   <strong>Example:</strong> with <InlineMath math="\lambda = 2" /> calls
                   per minute, the average wait for the next call is{" "}
                   <InlineMath math="1/\lambda = 0.5" /> minutes (30 seconds).
-                  But the wait is random — sometimes 5 seconds, sometimes 90 seconds.
+                  But the wait is random: sometimes 5 seconds, sometimes 90 seconds.
                   Short gaps are more likely than long ones:
                 </p>
                 <BlockMath math="f(t) = 2\,e^{-2t}" />
                 <p className="text-slate-600 text-sm">
                   The probability the next call takes <strong>more than 1 minute</strong>{" "}
-                  is <InlineMath math="e^{-2} \approx 13.5\%" /> — the same value as{" "}
+                  is <InlineMath math="e^{-2} \approx 13.5\%" />, the same value as{" "}
                   <InlineMath math="P_0" /> above. That is not a coincidence.
                 </p>
               </div>
@@ -117,7 +117,7 @@ export default function PoissonTrafficPage() {
               </p>
               <BlockMath math="P_0(t) = e^{-\lambda t} = P(T > t)" />
               <p className="text-slate-700">
-                This is why the two descriptions are equivalent — if arrivals are Poisson,
+                This is why the two descriptions are equivalent: if arrivals are Poisson,
                 the gaps between them must be exponential, and vice versa.
               </p>
             </div>
@@ -128,7 +128,7 @@ export default function PoissonTrafficPage() {
             <h2 className="text-xl font-semibold text-slate-700">See It in Action</h2>
             <p className="text-slate-600">
               Each dot is a call arriving. The dashed brackets show the gap to the previous
-              call — short gaps are common, long gaps are rare. Use the slider to change the
+              call. Short gaps are common, long gaps are rare. Use the slider to change the
               arrival rate λ and watch both views update live.
             </p>
             <PoissonAnimation />
@@ -152,7 +152,7 @@ export default function PoissonTrafficPage() {
               </li>
               <li>
                 <strong>PASTA (Poisson Arrivals See Time Averages):</strong> arriving calls observe
-                the system in its steady-state distribution — a key result used in queueing theory.
+                the system in its steady-state distribution, a key result used in queueing theory.
               </li>
             </ul>
           </section>

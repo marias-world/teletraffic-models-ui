@@ -56,7 +56,7 @@ export default function TrafficLoadPage() {
             <h2 className="text-xl font-semibold text-slate-700">What is it?</h2>
             <p className="text-slate-600 leading-relaxed">
               Imagine you run a small call centre with 4 phone lines. Over 30 minutes,
-              10 calls come in — each lasting a different amount of time. Some lines are
+              10 calls come in, each lasting a different amount of time. Some lines are
               busy for most of those 30 minutes; others are free for long stretches.
             </p>
             <p className="text-slate-600 leading-relaxed">
@@ -71,7 +71,7 @@ export default function TrafficLoadPage() {
           {/* Visual diagram */}
           <section className="space-y-4">
             <h2 className="text-xl font-semibold text-slate-700">
-              Example — 4 lines, 10 calls, 30 minutes
+              Example: 4 lines, 10 calls, 30 minutes
             </h2>
             <p className="text-slate-600">
               Each coloured bar is one call. The width of the bar is its duration in minutes.
@@ -158,11 +158,11 @@ export default function TrafficLoadPage() {
 
             <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 space-y-4">
               <div className="space-y-1">
-                <p className="text-sm font-semibold text-slate-600">Step 1 — add up all call durations</p>
+                <p className="text-sm font-semibold text-slate-600">Step 1: add up all call durations</p>
                 <BlockMath math="10 + 2 + 16 + 5 + 1 + 5 + 3 + 5 + 10 + 5 = 62 \text{ min}" />
               </div>
               <div className="space-y-1">
-                <p className="text-sm font-semibold text-slate-600">Step 2 — divide by the observation period</p>
+                <p className="text-sm font-semibold text-slate-600">Step 2: divide by the observation period</p>
                 <BlockMath math="\text{Traffic load} = \frac{62 \text{ min}}{30 \text{ min}} \approx 2.07 \text{ Erl}" />
               </div>
               <div className="bg-sky-50 border border-sky-200 rounded-lg p-4">
@@ -184,8 +184,8 @@ export default function TrafficLoadPage() {
 
             <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 space-y-3">
               <ul className="space-y-2 text-slate-600">
-                <li><InlineMath math="C" /> — total number of calls in the period</li>
-                <li><InlineMath math="h" /> — mean call duration</li>
+                <li><InlineMath math="C" />: total number of calls in the period</li>
+                <li><InlineMath math="h" />: mean call duration</li>
               </ul>
               <BlockMath math="\alpha = \frac{C \cdot h}{T}" />
               <p className="text-slate-600 text-sm">
@@ -210,7 +210,7 @@ export default function TrafficLoadPage() {
             <p className="text-slate-600 leading-relaxed">
               Traffic load is measured in <strong>Erlangs (Erl)</strong>, named after the
               Danish engineer A. K. Erlang. Because it is a ratio of two times, it is
-              dimensionless — 1 Erlang simply means one circuit continuously occupied for
+              dimensionless. 1 Erlang simply means one circuit continuously occupied for
               the entire observation period.
             </p>
             <div className="grid grid-cols-3 gap-3 text-center text-sm">
