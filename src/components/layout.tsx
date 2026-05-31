@@ -2,9 +2,10 @@ import React from "react";
 import Link from "next/link";
 
 const navLinks = [
-  { href: "/erlang",                label: "Erlang-B" },
-  { href: "/theory/traffic-load",   label: "Traffic Load" },
-  { href: "/theory/poisson-traffic",label: "Poisson Traffic" },
+  { href: "/erlang",                          label: "Erlang-B" },
+  { href: "/theory/traffic-load",             label: "Traffic Load" },
+  { href: "/theory/poisson-traffic",          label: "Poisson Traffic" },
+  { href: "/theory/teletraffic-loss-models",  label: "Classification of Loss Models" },
 ];
 
 type LayoutProps = {
