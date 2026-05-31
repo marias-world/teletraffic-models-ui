@@ -56,9 +56,8 @@ export default function TeletrafficLossModelsPage() {
               Not all telephone or data calls behave the same way. A video
               stream, a voice call and a file download each place different
               demands on a network. <strong>Teletraffic loss models</strong>{" "}
-              classify these differences so we can predict — and design for —
-              how often a new call will find no resources available and be
-              blocked.
+              classify these differences so we can predict how often a new call
+              will find no resources available and be blocked, and design for it.
             </p>
             <p className="text-slate-600 leading-relaxed">
               There are <strong>three key dimensions</strong> along which any
@@ -103,7 +102,7 @@ export default function TeletrafficLossModelsPage() {
                 </div>
                 <p className="text-sm text-slate-600">
                   Each call arrives independently. The gaps between arrivals are
-                  random — this is the familiar Poisson arrival model.
+                  random, following the familiar Poisson arrival model.
                 </p>
                 {/* pulse diagram */}
                 <svg viewBox="0 0 160 36" className="w-full mt-1">
@@ -230,7 +229,7 @@ export default function TeletrafficLossModelsPage() {
                   num: "i",
                   title: "Random calls",
                   sub: "Infinite number of traffic sources",
-                  body: "Calls arrive from an unlimited pool of potential users. Each call is independent. Arrival rate is constant — the classic Poisson process.",
+                  body: "Calls arrive from an unlimited pool of potential users. Each call is independent. The arrival rate is constant, following the classic Poisson process.",
                   color: "bg-sky-50 border-sky-200",
                 },
                 {
@@ -254,7 +253,7 @@ export default function TeletrafficLossModelsPage() {
                 >
                   <p className="text-sm font-semibold text-slate-700">
                     ({num}) {title}{" "}
-                    <span className="font-normal text-slate-500">— {sub}</span>
+                    <span className="font-normal text-slate-500">({sub})</span>
                   </p>
                   <p className="text-sm text-slate-600">{body}</p>
                 </div>
@@ -266,8 +265,7 @@ export default function TeletrafficLossModelsPage() {
           <section className="space-y-4">
             <SectionHeading>(b) Bandwidth Requirements</SectionHeading>
             <p className="text-slate-600">
-              Once a call is admitted, how much bandwidth does it occupy — and
-              can that amount change?
+              Once a call is admitted, how much bandwidth does it occupy? Can that amount change?
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -276,7 +274,7 @@ export default function TeletrafficLossModelsPage() {
                 <p className="text-sm text-slate-600">
                   The moment a call starts it is allocated a fixed, unchanging
                   amount of bandwidth for its entire duration. A traditional
-                  voice call is the textbook example — 64 kbps from start to
+                  voice call is the textbook example: 64 kbps from start to
                   finish.
                 </p>
                 {/* fixed bandwidth diagram */}
@@ -570,7 +568,7 @@ export default function TeletrafficLossModelsPage() {
           {/* ON-OFF deep dive */}
           <section className="space-y-4">
             <SectionHeading>
-              ON-OFF Traffic in Practice — Video Streaming
+              ON-OFF Traffic in Practice: Video Streaming
             </SectionHeading>
             <p className="text-slate-600">
               Adaptive Bitrate video streaming is the classic real-world example
@@ -600,8 +598,8 @@ export default function TeletrafficLossModelsPage() {
                 </p>
                 <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
                   <li>
-                    The segment is being played back — no more data is needed
-                    yet, until the next segment.
+                    The segment is being played back. No more data is needed
+                    until the next segment starts.
                   </li>
                   <li>
                     During this time the connection goes idle; no bandwidth is
@@ -618,7 +616,7 @@ export default function TeletrafficLossModelsPage() {
           {/* ISP example */}
           <section className="space-y-4">
             <SectionHeading>
-              Real-World Example — ISP with Mixed Traffic
+              Real-World Example: ISP with Mixed Traffic
             </SectionHeading>
             <p className="text-slate-600">
               Consider an internet service provider managing two very different
@@ -653,8 +651,8 @@ export default function TeletrafficLossModelsPage() {
                     available.
                   </li>
                   <li>
-                    When the network is busy, downloads slow down — no call is
-                    blocked, it just gets fewer resources.
+                    When the network is busy, downloads slow down. No call is
+                    blocked; it just gets fewer resources.
                   </li>
                 </ul>
               </div>
@@ -665,7 +663,7 @@ export default function TeletrafficLossModelsPage() {
                   The provider allocates bandwidth to each stream or download
                   based on its requirements. Once a video session is allocated
                   its 5 Mbps slice, that allocation does not change for the
-                  duration of the session — even as file downloads shrink and
+                  duration of the session, even as file downloads shrink and
                   grow around it.
                 </p>
               </div>

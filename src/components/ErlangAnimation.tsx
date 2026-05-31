@@ -325,11 +325,11 @@ export default function ErlangAnimation() {
       <div className="bg-white rounded-xl border border-slate-200 p-4 space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-sm font-semibold text-slate-600">
-            Server — {busySlots} / {capacity} channels busy
+            Server: {busySlots} / {capacity} channels busy
           </span>
           {busySlots === capacity && running && (
             <span className="text-xs font-semibold text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full animate-pulse">
-              FULL — next call will be blocked
+              FULL: next call will be blocked
             </span>
           )}
         </div>
@@ -364,7 +364,7 @@ export default function ErlangAnimation() {
         </div>
         <div className="bg-white rounded-xl border border-slate-200 p-4 text-center">
           <div className="text-3xl font-bold text-slate-700">
-            {firstBlockCall !== null ? firstBlockCall : "—"}
+            {firstBlockCall !== null ? firstBlockCall : "..."}
           </div>
           <div className="text-xs font-medium text-slate-500 mt-1">
             calls until first block

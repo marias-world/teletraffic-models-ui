@@ -259,7 +259,7 @@ export default function PoissonAnimation() {
         </div>
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
           <div className="text-xl font-bold text-sky-500">
-            {avgGap != null ? `${avgGap.toFixed(2)}s` : "—"}
+            {avgGap != null ? `${avgGap.toFixed(2)}s` : "..."}
           </div>
           <div className="text-xs text-slate-500 mt-1">observed avg gap</div>
         </div>
