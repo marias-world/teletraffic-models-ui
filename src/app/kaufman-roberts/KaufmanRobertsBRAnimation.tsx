@@ -2,10 +2,12 @@
 
 import { useReducer, useEffect } from "react";
 import { callBlockingProbability } from "@/lib/models/kaufman-roberts/call-blocking-probability";
+import { robertsFormulaBRPolicy } from "@/lib/models/kaufman-roberts/roberts-formula-br-policy";
+import { linkUtilizationFromProbabilities } from "@/lib/models/kaufman-roberts/link-utilization";
 
 // ─── constants ───────────────────────────────────────────────────────────────
 const CAPACITY = 5;
-const TICK_MS = 3000;
+const TICK_MS = 2000;
 
 // GoS-equalised example: bₖ + tₖ = 3 for all classes
 // → each class needs exactly 3 free b.u. to be accepted → B₁ = B₂ = B₃
@@ -53,16 +55,18 @@ const CLASSES = [
 
 type Cls = (typeof CLASSES)[number];
 
-// ─── analytical CBP via roberts formula BR policy (computed once) ─────────────
-const THEORETICAL_CBP = callBlockingProbability(
-  CAPACITY,
-  CLASSES.map((c) => ({
-    serviceClass: c.id,
-    bu: c.cpus,
-    incomingLoad_a: c.incomingLoad_a,
-    tk: c.tk,
-  })),
-);
+// ─── analytical values via roberts formula BR policy (computed once) ──────────
+const _serviceClasses = CLASSES.map((c) => ({
+  serviceClass: c.id,
+  bu: c.cpus,
+  incomingLoad_a: c.incomingLoad_a,
+  tk: c.tk,
+}));
+
+const THEORETICAL_CBP = callBlockingProbability(CAPACITY, _serviceClasses);
+
+const _probs = robertsFormulaBRPolicy(CAPACITY, _serviceClasses);
+const THEORETICAL_UTIL = linkUtilizationFromProbabilities(CAPACITY, _probs);
 
 const gosEqualised = (() => {
   const vals = CLASSES.map((c) => THEORETICAL_CBP[`B_class_${c.id}`] ?? 0);
@@ -83,7 +87,7 @@ type State = {
   incoming: Cls | null;
   lastEvent: "accepted" | "blocked" | null;
   log: LogEntry[];
-  stats: { offered: number; carried: number; blocked: number };
+  stats: { offered: number; carried: number; blocked: number; buAccum: number; ticks: number };
 };
 
 let _cid = 1;
@@ -94,7 +98,7 @@ const INIT: State = {
   incoming: null,
   lastEvent: null,
   log: [],
-  stats: { offered: 0, carried: 0, blocked: 0 },
+  stats: { offered: 0, carried: 0, blocked: 0, buAccum: 0, ticks: 0 },
 };
 
 // ─── reducer ─────────────────────────────────────────────────────────────────
@@ -161,6 +165,10 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
     stats.blocked++;
   }
 
+  // Track mean occupancy for observed utilization
+  stats.buAccum += finalSlots.filter((s) => s !== null).length;
+  stats.ticks++;
+
   return {
     slots: finalSlots,
     incoming: cls,
@@ -198,6 +206,8 @@ export default function KaufmanRobertsBRAnimation({
   const freeCount = slots.filter((s) => s === null).length;
   const occupiedCount = CAPACITY - freeCount;
   const utilization = ((occupiedCount / CAPACITY) * 100).toFixed(0);
+  const observedU = stats.ticks > 0 ? (stats.buAccum / stats.ticks).toFixed(3) : null;
+  const observedEff = stats.ticks > 0 ? ((stats.buAccum / stats.ticks / CAPACITY) * 100).toFixed(1) : null;
 
   // Compute which slot indices are in the "reservation zone" for the incoming class.
   // The last tₖ free slots are marked reserved — the class cannot use them.
@@ -489,6 +499,116 @@ export default function KaufmanRobertsBRAnimation({
           The observed GoS in the animation will converge to these values over
           time.
         </p>
+      </div>
+
+      {/* ── Resource utilization ─────────────────────────────────────────── */}
+      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          Resource utilization
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          {/* Analytical */}
+          <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
+            <p className="text-xs font-semibold text-slate-500">Analytical (model)</p>
+            <div className="flex items-end justify-between">
+              <div>
+                <p className="text-[11px] text-slate-400">Link utilization U</p>
+                <p className="text-lg font-bold text-slate-700">
+                  {THEORETICAL_UTIL.U.toFixed(3)}{" "}
+                  <span className="text-xs font-normal text-slate-400">b.u.</span>
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-[11px] text-slate-400">Trunk efficiency</p>
+                <p className="text-lg font-bold text-sky-600">
+                  {THEORETICAL_UTIL.efficiency.toFixed(1)}%
+                </p>
+              </div>
+            </div>
+            <div className="h-1.5 rounded-full bg-slate-200 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-sky-400"
+                style={{ width: `${THEORETICAL_UTIL.efficiency}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Observed */}
+          <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
+            <p className="text-xs font-semibold text-slate-500">
+              Observed (simulation · {stats.ticks} ticks)
+            </p>
+            <div className="flex items-end justify-between">
+              <div>
+                <p className="text-[11px] text-slate-400">Mean occupancy</p>
+                <p className="text-lg font-bold text-slate-700">
+                  {observedU ?? "—"}{" "}
+                  <span className="text-xs font-normal text-slate-400">b.u.</span>
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-[11px] text-slate-400">Efficiency</p>
+                <p className="text-lg font-bold text-emerald-600">
+                  {observedEff != null ? `${observedEff}%` : "—"}
+                </p>
+              </div>
+            </div>
+            <div className="h-1.5 rounded-full bg-slate-200 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-emerald-400 transition-all duration-500"
+                style={{
+                  width: observedEff != null ? `${observedEff}%` : "0%",
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <p className="text-xs text-slate-400 leading-relaxed">
+          U = &Sigma; j &middot; q(j) for j = 1&hellip;C. BR reservation lowers
+          utilization compared to CS, the price paid for GoS equalisation.
+          The observed mean occupancy converges to the analytical U over time.
+        </p>
+
+        {/* Interpretation */}
+        {(() => {
+          const eff = THEORETICAL_UTIL.efficiency;
+          if (eff < 50) {
+            return (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 text-xs text-amber-800 leading-relaxed">
+                <span className="font-semibold">Underutilised system.</span>{" "}
+                U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+                operates at approximately {eff.toFixed(0)}% of its available
+                capacity C = {CAPACITY} b.u. Given that U is considerably lower
+                than C, a portion of the available capacity remains unused. The
+                BR reservation parameters are trading utilisation for fairness;
+                this creates an opportunity to accommodate more traffic when
+                needed, without straining the system.
+              </div>
+            );
+          }
+          if (eff < 80) {
+            return (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2.5 text-xs text-emerald-800 leading-relaxed">
+                <span className="font-semibold">Moderately utilised system.</span>{" "}
+                U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+                operates at approximately {eff.toFixed(0)}% of its available
+                capacity C = {CAPACITY} b.u. The BR reservation parameters
+                provide GoS fairness while keeping the system well-loaded with
+                a reasonable margin for additional traffic.
+              </div>
+            );
+          }
+          return (
+            <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 text-xs text-red-800 leading-relaxed">
+              <span className="font-semibold">Heavily utilised system.</span>{" "}
+              U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+              operates at approximately {eff.toFixed(0)}% of its available
+              capacity C = {CAPACITY} b.u. Despite BR reservation, the system
+              is near saturation; consider increasing capacity or reducing
+              offered load.
+            </div>
+          );
+        })()}
       </div>
 
       {/* ── Event log ────────────────────────────────────────────────────── */}

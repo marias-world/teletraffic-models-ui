@@ -2,10 +2,12 @@
 
 import { useReducer, useEffect } from "react";
 import { callBlockingProbability } from "@/lib/models/kaufman-roberts/call-blocking-probability";
+import { kaufmanRoberts } from "@/lib/models/kaufman-roberts/kaufman-roberts-formula";
+import { linkUtilizationFromProbabilities } from "@/lib/models/kaufman-roberts/link-utilization";
 
 // ─── constants ───────────────────────────────────────────────────────────────
 const CAPACITY = 5;
-const TICK_MS = 3000;
+const TICK_MS = 2000;
 
 const CLASSES = [
   {
@@ -48,15 +50,17 @@ const CLASSES = [
 
 type Cls = (typeof CLASSES)[number];
 
-// ─── analytical CBP for this fixed example (computed once) ───────────────────
-const THEORETICAL_CBP = callBlockingProbability(
-  CAPACITY,
-  CLASSES.map((c) => ({
-    serviceClass: c.id,
-    bu: c.cpus,
-    incomingLoad_a: c.incomingLoad_a,
-  })),
-);
+// ─── analytical values for this fixed example (computed once) ────────────────
+const _serviceClasses = CLASSES.map((c) => ({
+  serviceClass: c.id,
+  bu: c.cpus,
+  incomingLoad_a: c.incomingLoad_a,
+}));
+
+const THEORETICAL_CBP = callBlockingProbability(CAPACITY, _serviceClasses);
+
+const _probs = kaufmanRoberts(CAPACITY, _serviceClasses);
+const THEORETICAL_UTIL = linkUtilizationFromProbabilities(CAPACITY, _probs);
 
 // ─── state types ─────────────────────────────────────────────────────────────
 type Slot = { callId: number; classId: number; ticksLeft: number } | null;
@@ -72,7 +76,7 @@ type State = {
   incoming: Cls | null;
   lastEvent: "accepted" | "blocked" | null;
   log: LogEntry[];
-  stats: { offered: number; carried: number; blocked: number };
+  stats: { offered: number; carried: number; blocked: number; buAccum: number; ticks: number };
 };
 
 // ─── module-level counters (reset on component unmount is fine) ───────────────
@@ -84,7 +88,7 @@ const INIT: State = {
   incoming: null,
   lastEvent: null,
   log: [],
-  stats: { offered: 0, carried: 0, blocked: 0 },
+  stats: { offered: 0, carried: 0, blocked: 0, buAccum: 0, ticks: 0 },
 };
 
 // ─── reducer ─────────────────────────────────────────────────────────────────
@@ -148,6 +152,10 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
     stats.blocked++;
   }
 
+  // 3. Track mean occupancy for observed utilization
+  stats.buAccum += finalSlots.filter((s) => s !== null).length;
+  stats.ticks++;
+
   return {
     slots: finalSlots,
     incoming: cls,
@@ -186,6 +194,8 @@ export default function KaufmanRobertsAnimation({
   const freeCount = slots.filter((s) => s === null).length;
   const occupiedCount = CAPACITY - freeCount;
   const utilization = ((occupiedCount / CAPACITY) * 100).toFixed(0);
+  const observedU = stats.ticks > 0 ? (stats.buAccum / stats.ticks).toFixed(3) : null;
+  const observedEff = stats.ticks > 0 ? ((stats.buAccum / stats.ticks / CAPACITY) * 100).toFixed(1) : null;
 
   return (
     <div className="space-y-5">
@@ -420,6 +430,113 @@ export default function KaufmanRobertsAnimation({
           gives for this system. The observed GoS in the animation above will
           converge to these values over time.
         </p>
+      </div>
+
+      {/* ── Resource utilization ─────────────────────────────────────────── */}
+      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          Resource utilization
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          {/* Analytical */}
+          <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
+            <p className="text-xs font-semibold text-slate-500">Analytical (model)</p>
+            <div className="flex items-end justify-between">
+              <div>
+                <p className="text-[11px] text-slate-400">Link utilization U</p>
+                <p className="text-lg font-bold text-slate-700">
+                  {THEORETICAL_UTIL.U.toFixed(3)}{" "}
+                  <span className="text-xs font-normal text-slate-400">b.u.</span>
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-[11px] text-slate-400">Trunk efficiency</p>
+                <p className="text-lg font-bold text-sky-600">
+                  {THEORETICAL_UTIL.efficiency.toFixed(1)}%
+                </p>
+              </div>
+            </div>
+            <div className="h-1.5 rounded-full bg-slate-200 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-sky-400"
+                style={{ width: `${THEORETICAL_UTIL.efficiency}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Observed */}
+          <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
+            <p className="text-xs font-semibold text-slate-500">
+              Observed (simulation · {stats.ticks} ticks)
+            </p>
+            <div className="flex items-end justify-between">
+              <div>
+                <p className="text-[11px] text-slate-400">Mean occupancy</p>
+                <p className="text-lg font-bold text-slate-700">
+                  {observedU ?? "—"}{" "}
+                  <span className="text-xs font-normal text-slate-400">b.u.</span>
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-[11px] text-slate-400">Efficiency</p>
+                <p className="text-lg font-bold text-emerald-600">
+                  {observedEff != null ? `${observedEff}%` : "—"}
+                </p>
+              </div>
+            </div>
+            <div className="h-1.5 rounded-full bg-slate-200 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-emerald-400 transition-all duration-500"
+                style={{
+                  width: observedEff != null ? `${observedEff}%` : "0%",
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <p className="text-xs text-slate-400 leading-relaxed">
+          U = &Sigma; j &middot; q(j) for j = 1&hellip;C. The observed mean
+          occupancy converges to the analytical U as the simulation runs longer.
+        </p>
+
+        {/* Interpretation */}
+        {(() => {
+          const eff = THEORETICAL_UTIL.efficiency;
+          if (eff < 50) {
+            return (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 text-xs text-amber-800 leading-relaxed">
+                <span className="font-semibold">Underutilised system.</span>{" "}
+                U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+                operates at approximately {eff.toFixed(0)}% of its available
+                capacity C = {CAPACITY} b.u. Given that U is considerably lower
+                than C, a portion of the available capacity remains unused. This
+                creates an opportunity to optimise resource allocation and
+                potentially accommodate more traffic when needed, without
+                straining the system.
+              </div>
+            );
+          }
+          if (eff < 80) {
+            return (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2.5 text-xs text-emerald-800 leading-relaxed">
+                <span className="font-semibold">Moderately utilised system.</span>{" "}
+                U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+                operates at approximately {eff.toFixed(0)}% of its available
+                capacity C = {CAPACITY} b.u. The system is well-loaded with a
+                reasonable margin remaining for additional traffic bursts.
+              </div>
+            );
+          }
+          return (
+            <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 text-xs text-red-800 leading-relaxed">
+              <span className="font-semibold">Heavily utilised system.</span>{" "}
+              U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+              operates at approximately {eff.toFixed(0)}% of its available
+              capacity C = {CAPACITY} b.u. The system is near saturation;
+              additional traffic is likely to experience significant blocking.
+            </div>
+          );
+        })()}
       </div>
 
       {/* ── Event log ────────────────────────────────────────────────────── */}
