@@ -10,6 +10,14 @@ const theoryLinks = [
     href: "/theory/classification-of-loss-models",
     label: "Classification of Loss Models",
   },
+  {
+    href: "/theory/bandwidth-sharing-policies",
+    label: "Bandwidth Sharing Policies",
+  },
+  {
+    href: "/theory/grade-of-service",
+    label: "Grade of Service",
+  },
 ];
 
 type LayoutProps = {
@@ -90,6 +98,7 @@ export default function Layout({ children }: LayoutProps) {
 
       <main className="flex-1">{children}</main>
 
+      {/* Footer */}
       <footer className="bg-slate-900 text-slate-400 mt-10">
         <div className="max-w-4xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8">
           {/* Column 1 — About */}
@@ -219,6 +228,23 @@ export default function Layout({ children }: LayoutProps) {
                 </p>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Disclaimer band */}
+        <div className="border-t border-slate-800">
+          <div className="max-w-4xl mx-auto px-6 py-4 text-center text-xs text-slate-500 leading-relaxed">
+            The content on this site is based on personal handwritten study notes and may contain errors or omissions.
+            If you spot a mistake, please{" "}
+            <a
+              href="https://github.com/marias-world/teletraffic-models-ui/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sky-500 hover:text-sky-400 underline underline-offset-2 transition-colors duration-150"
+            >
+              raise an issue on GitHub
+            </a>
+            .
           </div>
         </div>
 
