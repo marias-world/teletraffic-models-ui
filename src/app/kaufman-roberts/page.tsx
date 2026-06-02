@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Layout from "@/components/layout";
 import Link from "next/link";
+import { BlockMath, InlineMath } from "react-katex";
+import "katex/dist/katex.min.css";
 import KaufmanRobertsAnimation from "./KaufmanRobertsAnimation";
 import KaufmanRobertsBRAnimation from "./KaufmanRobertsBRAnimation";
 import { callBlockingProbability } from "@/lib/models/kaufman-roberts/call-blocking-probability";
@@ -151,7 +153,132 @@ export default function KaufmanRobertsPage() {
               </h1>
               <p className="text-slate-500 text-sm mt-1">
                 Multirate loss model for systems where multiple service classes
-                share a single link with finite capacity.
+                share a single link (or resource) with finite capacity.
+              </p>
+            </div>
+
+            {/* ── History ──────────────────────────────────────────────────── */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4 text-sm text-slate-600 leading-relaxed">
+              <p>
+                Kaufman and Roberts introduced the recursion formula for
+                calculating the occupancy distribution{" "}
+                <InlineMath math="q(j)" />. Remarkably, both researchers,
+                Kaufman at Bell Laboratories in the United States and Roberts at
+                France Telekom, developed the same formula in 1981 while working
+                on similar problems, unaware of each other&apos;s efforts. Known
+                as the{" "}
+                <span className="font-semibold text-slate-700">
+                  Kaufman-Roberts formula
+                </span>
+                , this recursion provides both accuracy and computational
+                efficiency, offering a straightforward implementation.
+              </p>
+
+              {/* Formula */}
+              <div className="bg-white border border-slate-200 rounded-lg px-4 py-4 space-y-3">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  Recursion formula
+                </p>
+                <BlockMath math="q(j) = \frac{1}{j} \sum_{i=1}^{I} \alpha_i \cdot b_i \cdot q(j - b_i) \qquad \text{for } j = 1, 2, \ldots, C" />
+                <p className="text-xs text-slate-400">
+                  with boundary condition <InlineMath math="q(0) = 1" /> and{" "}
+                  <InlineMath math="q(j) = 0" /> for <InlineMath math="j < 0" />
+                  . After computing all values, normalise so that{" "}
+                  <InlineMath math="\sum_{j=0}^{C} q(j) = 1" />.
+                </p>
+
+                {/* Parameter table */}
+                <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs text-slate-600 pt-1">
+                  {[
+                    [
+                      "q(j)",
+                      "Normalised state probability that j b.u. are occupied",
+                    ],
+                    ["C", "Total system capacity in bandwidth units (b.u.)"],
+                    ["I", "Number of service classes"],
+                    [
+                      "αᵢ",
+                      "Offered traffic (arrival rate / service rate) for class i",
+                    ],
+                    ["bᵢ", "Bandwidth demand per call of class i (b.u.)"],
+                  ].map(([sym, desc]) => (
+                    <div
+                      key={sym}
+                      className="flex gap-2 items-start col-span-1 sm:col-span-1"
+                    >
+                      <span className="font-mono font-semibold text-sky-700 w-10 flex-shrink-0">
+                        {sym}
+                      </span>
+                      <span className="text-slate-500">{desc}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recursion insight */}
+              <div className="space-y-3">
+                <p>
+                  The key aspect of the recursive calculation is linking the
+                  values of <InlineMath math="q(j)" /> to the previous values
+                  of <InlineMath math="q(j - b_i)" />.
+                </p>
+                <p>
+                  If <InlineMath math="j = 0" />, where no basic units are
+                  occupied, then <InlineMath math="q(0) = 1" />. This is only
+                  valid when the system is in an idle state and serves as the
+                  starting point of the recursion.
+                </p>
+                <p>
+                  <InlineMath math="q(1)" /> represents the unnormalised
+                  probability of transitioning from an empty system to a state
+                  where exactly one b.u. is occupied due to the arrival of a
+                  new call. It reflects how likely the system is to reach a
+                  state where one unit is in use, given the arrival rates and
+                  service dynamics.
+                </p>
+              </div>
+
+              {/* Worked example */}
+              <div className="bg-white border border-sky-100 rounded-lg px-4 py-4 space-y-3">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  Worked example: computing q(1)
+                </p>
+                <p className="text-xs text-slate-500">
+                  Consider a system with capacity{" "}
+                  <InlineMath math="C = 5" /> b.u. and{" "}
+                  <InlineMath math="I = 2" /> service classes where{" "}
+                  <InlineMath math="b_1 = 1" /> b.u.,{" "}
+                  <InlineMath math="\alpha_1 = 1" /> erl,{" "}
+                  <InlineMath math="b_2 = 2" /> b.u.,{" "}
+                  <InlineMath math="\alpha_2 = 1" /> erl.
+                </p>
+                <p className="text-xs text-slate-500">
+                  Expanding the recursion for <InlineMath math="j = 1" />:
+                </p>
+                <BlockMath math="q(1) = \frac{1}{1}\bigl[\alpha_1 \cdot b_1 \cdot q(1 - b_1) + \alpha_2 \cdot b_2 \cdot q(1 - b_2)\bigr]" />
+                <p className="text-xs text-slate-500">
+                  Substituting the given values:
+                </p>
+                <BlockMath math="q(1) = 1\bigl[1 \cdot 1 \cdot q(0) + 1 \cdot 2 \cdot q(-1)\bigr]" />
+                <p className="text-xs text-slate-500">
+                  Since <InlineMath math="q(0) = 1" /> and{" "}
+                  <InlineMath math="q(-1) = 0" /> (boundary condition):
+                </p>
+                <BlockMath math="q(1) = 1 \cdot 1 \cdot 1 + 1 \cdot 2 \cdot 0 = 1" />
+                <p className="text-xs text-slate-400">
+                  This unnormalised value will be divided by the sum of all{" "}
+                  <InlineMath math="q(j)" /> for{" "}
+                  <InlineMath math="j = 0, \ldots, C" /> to obtain the true
+                  steady-state probability.
+                </p>
+              </div>
+
+              <p className="text-xs text-slate-400">
+                The formula computes the exact steady-state distribution under a
+                Poisson arrival process and exponentially distributed holding
+                times, assuming a Complete Sharing (CS) policy. For Bandwidth
+                Reservation (BR), the Roberts extension modifies which states
+                are accessible to each class.
               </p>
             </div>
 
