@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Layout from "@/components/layout";
 import Link from "next/link";
+import KaufmanRobertsAnimation from "./KaufmanRobertsAnimation";
+import KaufmanRobertsBRAnimation from "./KaufmanRobertsBRAnimation";
 import { callBlockingProbability } from "@/lib/models/kaufman-roberts/call-blocking-probability";
 import { kaufmanRoberts } from "@/lib/models/kaufman-roberts/kaufman-roberts-formula";
 import { robertsFormulaBRPolicy } from "@/lib/models/kaufman-roberts/roberts-formula-br-policy";
@@ -24,6 +26,13 @@ const DEFAULT_ROWS: ServiceClassRow[] = [
 ];
 
 export default function KaufmanRobertsPage() {
+  const [animRunning, setAnimRunning] = useState(false);
+  const [animPolicy, setAnimPolicy] = useState<Policy>("CS");
+
+  const switchAnimPolicy = (p: Policy) => {
+    setAnimRunning(false);
+    setAnimPolicy(p);
+  };
   const [policy, setPolicy] = useState<Policy>("CS");
   const [capacity, setCapacity] = useState("");
   const [rows, setRows] = useState<ServiceClassRow[]>(DEFAULT_ROWS);
@@ -367,6 +376,53 @@ export default function KaufmanRobertsPage() {
                   </div>
                 )}
               </div>
+            )}
+          </div>
+
+          {/* ── Animation card ──────────────────────────────────────────── */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 space-y-5">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div>
+                <h2 className="text-lg font-bold text-slate-800">
+                  Processor Animation
+                </h2>
+                <p className="text-slate-500 text-sm mt-0.5">
+                  C = 5 b.u. · 3 service classes
+                </p>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Policy toggle */}
+                {(["CS", "BR"] as Policy[]).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => switchAnimPolicy(p)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors duration-150 ${
+                      animPolicy === p
+                        ? "bg-sky-500 text-white border-sky-500"
+                        : "bg-white text-slate-500 border-slate-300 hover:border-sky-400 hover:text-sky-600"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
+                {/* Start / Stop */}
+                <button
+                  onClick={() => setAnimRunning((r) => !r)}
+                  className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors duration-150 ${
+                    animRunning
+                      ? "bg-red-100 text-red-600 hover:bg-red-200"
+                      : "bg-emerald-500 text-white hover:bg-emerald-600"
+                  }`}
+                >
+                  {animRunning ? "Stop" : "Start"}
+                </button>
+              </div>
+            </div>
+
+            {animPolicy === "CS" ? (
+              <KaufmanRobertsAnimation running={animRunning} />
+            ) : (
+              <KaufmanRobertsBRAnimation running={animRunning} />
             )}
           </div>
         </div>
