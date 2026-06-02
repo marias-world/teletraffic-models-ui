@@ -49,6 +49,22 @@ export default function Home() {
             </li>
             <li>
               <Link
+                href="/theory/bandwidth-sharing-policies"
+                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+              >
+                Bandwidth Sharing Policies
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/theory/grade-of-service"
+                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+              >
+                Grade of Service (GoS)
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/theory/classification-of-loss-models"
                 className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
