@@ -451,9 +451,9 @@ export default function KaufmanRobertsPage() {
             </div>
 
             {animPolicy === "CS" ? (
-              <KaufmanRobertsAnimation running={animRunning} />
+              <KaufmanRobertsAnimation status={animStatus} />
             ) : (
-              <KaufmanRobertsBRAnimation running={animRunning} />
+              <KaufmanRobertsBRAnimation status={animStatus} />
             )}
           </div>
         </div>
