@@ -191,7 +191,7 @@ export default function ErlangAnimation() {
         </label>
 
         <label className="flex items-center gap-2 text-sm text-slate-600">
-          <span className="font-mono font-medium w-20">α = {alpha} Erl</span>
+          <span className="font-mono font-medium w-20">α = {alpha} erl</span>
           <input
             type="range"
             min={0.5}
