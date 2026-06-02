@@ -17,7 +17,7 @@ export default function Home() {
           </p>
 
           <h2 className="text-2xl font-semibold">Analytical Models:</h2>
-          <ul>
+          <ul className="space-y-2">
             <li>
               <Link
                 href="/erlang"
@@ -26,7 +26,14 @@ export default function Home() {
                 Erlang-B Analytical Model
               </Link>
             </li>
-            {/* <li><a href="/simulations" className="text-blue-600 hover:underline">Simulations</a></li> */}
+            <li>
+              <Link
+                href="/kaufman-roberts"
+                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+              >
+                Kaufman-Roberts Model
+              </Link>
+            </li>
           </ul>
 
           <h2 className="text-2xl font-semibold">Theory & Formulas</h2>

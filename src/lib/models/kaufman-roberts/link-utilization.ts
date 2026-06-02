@@ -30,6 +30,27 @@ export const trunkEficiency_n = (
   return `${((utilization_G / capacity) * 100).toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL)}%`;
 };
 
+/**
+ * Computes link utilization U and trunk efficiency from a pre-computed
+ * normalised probability map (works for both CS and BR policies).
+ *
+ * U = Σ j · q(j)  for j = 1…C
+ */
+export const linkUtilizationFromProbabilities = (
+  capacity: number,
+  probabilities: Record<string, number>,
+): { U: number; efficiency: number } => {
+  const U = Array.from({ length: capacity }, (_, j) => {
+    const q_j = probabilities[`q(${j + 1})`] ?? 0;
+    return (j + 1) * q_j;
+  }).reduce((sum, v) => sum + v, 0);
+
+  return {
+    U,
+    efficiency: (U / capacity) * 100,
+  };
+};
+
 export const meanNumberOfCallsInSystemInState_J = (
   capacity: number,
   serviceClasses: ServiceClass[],
