@@ -26,11 +26,12 @@ const DEFAULT_ROWS: ServiceClassRow[] = [
 ];
 
 export default function KaufmanRobertsPage() {
-  const [animRunning, setAnimRunning] = useState(false);
+  type AnimStatus = "stopped" | "running" | "paused";
+  const [animStatus, setAnimStatus] = useState<AnimStatus>("stopped");
   const [animPolicy, setAnimPolicy] = useState<Policy>("CS");
 
   const switchAnimPolicy = (p: Policy) => {
-    setAnimRunning(false);
+    setAnimStatus("stopped");
     setAnimPolicy(p);
   };
   const [policy, setPolicy] = useState<Policy>("CS");
@@ -405,17 +406,47 @@ export default function KaufmanRobertsPage() {
                     {p}
                   </button>
                 ))}
-                {/* Start / Stop */}
-                <button
-                  onClick={() => setAnimRunning((r) => !r)}
-                  className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors duration-150 ${
-                    animRunning
-                      ? "bg-red-100 text-red-600 hover:bg-red-200"
-                      : "bg-emerald-500 text-white hover:bg-emerald-600"
-                  }`}
-                >
-                  {animRunning ? "Stop" : "Start"}
-                </button>
+                {/* Start / Pause / Stop */}
+                {animStatus === "stopped" && (
+                  <button
+                    onClick={() => setAnimStatus("running")}
+                    className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-emerald-500 text-white hover:bg-emerald-600 transition-colors duration-150"
+                  >
+                    Start
+                  </button>
+                )}
+                {animStatus === "running" && (
+                  <>
+                    <button
+                      onClick={() => setAnimStatus("paused")}
+                      className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors duration-150"
+                    >
+                      Pause
+                    </button>
+                    <button
+                      onClick={() => setAnimStatus("stopped")}
+                      className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-red-100 text-red-600 hover:bg-red-200 transition-colors duration-150"
+                    >
+                      Stop
+                    </button>
+                  </>
+                )}
+                {animStatus === "paused" && (
+                  <>
+                    <button
+                      onClick={() => setAnimStatus("running")}
+                      className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-emerald-500 text-white hover:bg-emerald-600 transition-colors duration-150"
+                    >
+                      Resume
+                    </button>
+                    <button
+                      onClick={() => setAnimStatus("stopped")}
+                      className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-red-100 text-red-600 hover:bg-red-200 transition-colors duration-150"
+                    >
+                      Stop
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 

@@ -163,22 +163,24 @@ function classById(id: number): (typeof CLASSES)[number] | undefined {
 }
 
 // ─── component ───────────────────────────────────────────────────────────────
+type AnimStatus = "stopped" | "running" | "paused";
+
 export default function KaufmanRobertsAnimation({
-  running,
+  status,
 }: {
-  running: boolean;
+  status: AnimStatus;
 }) {
   const [state, dispatch] = useReducer(tickReducer, INIT);
 
   useEffect(() => {
-    if (!running) return;
+    if (status !== "running") return;
     const timer = setInterval(() => dispatch("TICK"), TICK_MS);
     return () => clearInterval(timer);
-  }, [running]);
+  }, [status]);
 
   useEffect(() => {
-    if (!running) dispatch("RESET");
-  }, [running]);
+    if (status === "stopped") dispatch("RESET");
+  }, [status]);
 
   const { slots, incoming, lastEvent, log, stats } = state;
   const freeCount = slots.filter((s) => s === null).length;
