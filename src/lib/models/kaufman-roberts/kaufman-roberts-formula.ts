@@ -25,7 +25,7 @@ const stateProbability_q = (
       sum += incomingLoad_a * bu * compute(k - bu);
     }
 
-    // Memoize and return result (round only at output boundary, not here)
+    // Memoize and return result
     const result = (1 / k) * sum;
     memo[k] = result;
     return result;
