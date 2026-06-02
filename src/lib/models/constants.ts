@@ -1,0 +1,1 @@
+export const NUMBER_OF_DIGITS_AFTER_DECIMAL = 7;
