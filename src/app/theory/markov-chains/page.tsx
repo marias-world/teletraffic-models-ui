@@ -145,13 +145,13 @@ export default function MarkovChainsPage() {
                 weights, and after normalisation:
               </p>
               <div className="bg-white border border-slate-200 rounded-lg px-4 py-3 space-y-1">
-                <BlockMath math="P(j) = \frac{\rho^{\,j}}{j!}\,P(0) \qquad \rho = \frac{\lambda}{\mu}" />
+                <BlockMath math="P(j) = \frac{\alpha^{\,j}}{j!}\,P(0) \qquad \alpha = \frac{\lambda}{\mu}" />
                 <p className="text-xs text-slate-500">
                   This is the Erlang-B formula for a single service class.
                   The local balance equation{" "}
                   <InlineMath math="\lambda P(j) = (j+1)\mu\,P(j+1)" />{" "}
                   rearranges to{" "}
-                  <InlineMath math="P(j+1) = \tfrac{\rho}{j+1}\,P(j)" />,
+                  <InlineMath math="P(j+1) = \tfrac{\alpha}{j+1}\,P(j)" />,
                   which iterated from <InlineMath math="P(0)" /> gives the
                   result above.
                 </p>

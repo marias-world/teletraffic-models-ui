@@ -261,7 +261,7 @@ export default function BirthDeathAnimation({
             <p className="text-xs text-slate-400 leading-relaxed">
               {atCap
                 ? `At capacity j = C = ${CAPACITY} arrivals are blocked. P(${hi}) = ${ratio} · P(${lo}) shows how the top state relates to the one below.`
-                : `Each step from state ${lo} to ${hi} scales the probability by λ / (${hi}·μ) = ${LAMBDA} / ${depRate} = ${ratio}. When this ratio is less than 1 the chain is pulled back down — states become less likely as j grows.`}
+                : `Each step from state ${lo} to ${hi} scales the probability by λ / (${hi}·μ) = ${LAMBDA} / ${depRate} = ${ratio}. When this ratio is less than 1 the chain is pulled back down, states become less likely as j grows.`}
             </p>
           </div>
         );
@@ -321,9 +321,10 @@ export default function BirthDeathAnimation({
         </div>
 
         <p className="text-xs text-slate-400 leading-relaxed">
-          P(j) = (ρ<sup>j</sup>/j!) · P(0) where ρ = λ/μ = {LAMBDA}/{MU} erl
-          (offered traffic intensity). The observed (green) bars converge to
-          the theoretical (blue) values as the simulation runs longer.
+          P(j) = (α<sup>j</sup>/j!) / Σ<sub>i=0</sub><sup>C</sup>(α<sup>i</sup>/i!)
+          {" "}where α = λ/μ = {LAMBDA / MU} erl (offered traffic intensity).
+          The denominator normalises so all probabilities sum to 1.
+          The observed (green) bars converge to the theoretical (blue) values as the simulation runs longer.
         </p>
       </div>
 
