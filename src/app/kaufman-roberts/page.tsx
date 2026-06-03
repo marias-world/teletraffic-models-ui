@@ -211,7 +211,7 @@ export default function KaufmanRobertsPage() {
                   {[
                     [
                       "q(j)",
-                      "Normalised state probability that j b.u. are occupied",
+                      "Unmormalised state probability that j b.u. are occupied",
                     ],
                     ["C", "Total system capacity in bandwidth units (b.u.)"],
                     ["I", "Number of service classes"],

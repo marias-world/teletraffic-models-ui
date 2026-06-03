@@ -473,14 +473,14 @@ export default function KaufmanRobertsAnimation({
               <div>
                 <p className="text-[11px] text-slate-400">Mean occupancy</p>
                 <p className="text-lg font-bold text-slate-700">
-                  {observedU ?? "—"}{" "}
+                  {observedU ?? "-"}{" "}
                   <span className="text-xs font-normal text-slate-400">b.u.</span>
                 </p>
               </div>
               <div className="text-right">
                 <p className="text-[11px] text-slate-400">Efficiency</p>
                 <p className="text-lg font-bold text-emerald-600">
-                  {observedEff != null ? `${observedEff}%` : "—"}
+                  {observedEff != null ? `${observedEff}%` : "-"}
                 </p>
               </div>
             </div>
