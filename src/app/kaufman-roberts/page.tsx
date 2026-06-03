@@ -159,6 +159,25 @@ export default function KaufmanRobertsPage() {
 
             {/* ── History ──────────────────────────────────────────────────── */}
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4 text-sm text-slate-600 leading-relaxed">
+              {/* What is occupancy distribution */}
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  What is the occupancy distribution?
+                </p>
+                <p>
+                  The occupancy distribution <InlineMath math="q(j)" /> gives
+                  the probability that exactly <InlineMath math="j" /> bandwidth
+                  units are occupied at any given moment. In simple terms, it
+                  answers:{" "}
+                  <em>
+                    &ldquo;how likely is the system to be in each possible state
+                    of fullness?&rdquo;
+                  </em>
+                </p>
+              </div>
+
+              <hr className="border-slate-200" />
+
               <p>
                 Kaufman and Roberts introduced the recursion formula for
                 calculating the occupancy distribution{" "}
@@ -219,8 +238,8 @@ export default function KaufmanRobertsPage() {
               <div className="space-y-3">
                 <p>
                   The key aspect of the recursive calculation is linking the
-                  values of <InlineMath math="q(j)" /> to the previous values
-                  of <InlineMath math="q(j - b_i)" />.
+                  values of <InlineMath math="q(j)" /> to the previous values of{" "}
+                  <InlineMath math="q(j - b_i)" />.
                 </p>
                 <p>
                   If <InlineMath math="j = 0" />, where no basic units are
@@ -231,10 +250,10 @@ export default function KaufmanRobertsPage() {
                 <p>
                   <InlineMath math="q(1)" /> represents the unnormalised
                   probability of transitioning from an empty system to a state
-                  where exactly one b.u. is occupied due to the arrival of a
-                  new call. It reflects how likely the system is to reach a
-                  state where one unit is in use, given the arrival rates and
-                  service dynamics.
+                  where exactly one b.u. is occupied due to the arrival of a new
+                  call. It reflects how likely the system is to reach a state
+                  where one unit is in use, given the arrival rates and service
+                  dynamics.
                 </p>
               </div>
 
@@ -244,9 +263,8 @@ export default function KaufmanRobertsPage() {
                   Worked example: computing q(1)
                 </p>
                 <p className="text-xs text-slate-500">
-                  Consider a system with capacity{" "}
-                  <InlineMath math="C = 5" /> b.u. and{" "}
-                  <InlineMath math="I = 2" /> service classes where{" "}
+                  Consider a system with capacity <InlineMath math="C = 5" />{" "}
+                  b.u. and <InlineMath math="I = 2" /> service classes where{" "}
                   <InlineMath math="b_1 = 1" /> b.u.,{" "}
                   <InlineMath math="\alpha_1 = 1" /> erl,{" "}
                   <InlineMath math="b_2 = 2" /> b.u.,{" "}
