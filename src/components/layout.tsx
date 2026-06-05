@@ -9,6 +9,10 @@ const modelLinks = [
 ];
 
 const theoryLinks = [
+  {
+    href: "/theory/probability-and-statistics",
+    label: "Probability & Statistics",
+  },
   { href: "/theory/traffic-load", label: "Traffic Load" },
   { href: "/theory/poisson-traffic", label: "Poisson Traffic" },
   {
