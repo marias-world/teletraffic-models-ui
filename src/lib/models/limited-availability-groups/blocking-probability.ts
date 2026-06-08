@@ -45,25 +45,3 @@ export const blockingProbabilityLAR = (
   });
   return result;
 };
-
-const distinctResourceCount = 2;
-const capacity = 150;
-const serviceClasses = [
-  {
-    serviceClass: 1,
-    bu: 4,
-    incomingLoad_a: 8,
-  },
-  {
-    serviceClass: 2,
-    bu: 8,
-    incomingLoad_a: 9,
-  },
-  {
-    serviceClass: 3,
-    bu: 16,
-    incomingLoad_a: 10,
-  },
-];
-
-// console.log(blockingProbabilityLAR(distinctResourceCount, capacity, serviceClasses));
