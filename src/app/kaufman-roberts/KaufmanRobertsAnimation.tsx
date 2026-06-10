@@ -39,7 +39,7 @@ const CLASSES = [
     label: "Class 3",
     cpus: 3,
     incomingLoad_a: 1,
-    desc: "ML inference",
+    desc: "File download",
     bg: "bg-violet-400",
     light: "bg-violet-100",
     border: "border-violet-400",
@@ -76,7 +76,13 @@ type State = {
   incoming: Cls | null;
   lastEvent: "accepted" | "blocked" | null;
   log: LogEntry[];
-  stats: { offered: number; carried: number; blocked: number; buAccum: number; ticks: number };
+  stats: {
+    offered: number;
+    carried: number;
+    blocked: number;
+    buAccum: number;
+    ticks: number;
+  };
 };
 
 // ─── module-level counters (reset on component unmount is fine) ───────────────
@@ -194,8 +200,12 @@ export default function KaufmanRobertsAnimation({
   const freeCount = slots.filter((s) => s === null).length;
   const occupiedCount = CAPACITY - freeCount;
   const utilization = ((occupiedCount / CAPACITY) * 100).toFixed(0);
-  const observedU = stats.ticks > 0 ? (stats.buAccum / stats.ticks).toFixed(3) : null;
-  const observedEff = stats.ticks > 0 ? ((stats.buAccum / stats.ticks / CAPACITY) * 100).toFixed(1) : null;
+  const observedU =
+    stats.ticks > 0 ? (stats.buAccum / stats.ticks).toFixed(3) : null;
+  const observedEff =
+    stats.ticks > 0
+      ? ((stats.buAccum / stats.ticks / CAPACITY) * 100).toFixed(1)
+      : null;
 
   return (
     <div className="space-y-5">
@@ -440,13 +450,17 @@ export default function KaufmanRobertsAnimation({
         <div className="grid grid-cols-2 gap-3">
           {/* Analytical */}
           <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
-            <p className="text-xs font-semibold text-slate-500">Analytical (model)</p>
+            <p className="text-xs font-semibold text-slate-500">
+              Analytical (model)
+            </p>
             <div className="flex items-end justify-between">
               <div>
                 <p className="text-[11px] text-slate-400">Link utilization U</p>
                 <p className="text-lg font-bold text-slate-700">
                   {THEORETICAL_UTIL.U.toFixed(3)}{" "}
-                  <span className="text-xs font-normal text-slate-400">b.u.</span>
+                  <span className="text-xs font-normal text-slate-400">
+                    b.u.
+                  </span>
                 </p>
               </div>
               <div className="text-right">
@@ -474,7 +488,9 @@ export default function KaufmanRobertsAnimation({
                 <p className="text-[11px] text-slate-400">Mean occupancy</p>
                 <p className="text-lg font-bold text-slate-700">
                   {observedU ?? "-"}{" "}
-                  <span className="text-xs font-normal text-slate-400">b.u.</span>
+                  <span className="text-xs font-normal text-slate-400">
+                    b.u.
+                  </span>
                 </p>
               </div>
               <div className="text-right">
@@ -505,8 +521,8 @@ export default function KaufmanRobertsAnimation({
           if (eff < 50) {
             return (
               <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 text-xs text-amber-800 leading-relaxed">
-                <span className="font-semibold">Underutilised system.</span>{" "}
-                U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+                <span className="font-semibold">Underutilised system.</span> U ={" "}
+                {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
                 operates at approximately {eff.toFixed(0)}% of its available
                 capacity C = {CAPACITY} b.u. Given that U is considerably lower
                 than C, a portion of the available capacity remains unused. This
@@ -519,7 +535,9 @@ export default function KaufmanRobertsAnimation({
           if (eff < 80) {
             return (
               <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2.5 text-xs text-emerald-800 leading-relaxed">
-                <span className="font-semibold">Moderately utilised system.</span>{" "}
+                <span className="font-semibold">
+                  Moderately utilised system.
+                </span>{" "}
                 U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
                 operates at approximately {eff.toFixed(0)}% of its available
                 capacity C = {CAPACITY} b.u. The system is well-loaded with a
@@ -529,8 +547,8 @@ export default function KaufmanRobertsAnimation({
           }
           return (
             <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 text-xs text-red-800 leading-relaxed">
-              <span className="font-semibold">Heavily utilised system.</span>{" "}
-              U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+              <span className="font-semibold">Heavily utilised system.</span> U
+              = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
               operates at approximately {eff.toFixed(0)}% of its available
               capacity C = {CAPACITY} b.u. The system is near saturation;
               additional traffic is likely to experience significant blocking.
