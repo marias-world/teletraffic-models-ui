@@ -198,7 +198,9 @@ export default function KaufmanRobertsPage() {
                 <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   Recursion formula
                 </p>
-                <BlockMath math="q(j) = \frac{1}{j} \sum_{i=1}^{I} \alpha_i \cdot b_i \cdot q(j - b_i) \qquad \text{for } j = 1, 2, \ldots, C" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="q(j) = \frac{1}{j} \sum_{i=1}^{I} \alpha_i \cdot b_i \cdot q(j - b_i) \qquad \text{for } j = 1, 2, \ldots, C" />
+                </div>
                 <p className="text-xs text-slate-400">
                   with boundary condition <InlineMath math="q(0) = 1" /> and{" "}
                   <InlineMath math="q(j) = 0" /> for <InlineMath math="j < 0" />
@@ -207,11 +209,11 @@ export default function KaufmanRobertsPage() {
                 </p>
 
                 {/* Parameter table */}
-                <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs text-slate-600 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-xs text-slate-600 pt-1">
                   {[
                     [
                       "q(j)",
-                      "Unmormalised state probability that j b.u. are occupied",
+                      "Unnormalised state probability that j b.u. are occupied",
                     ],
                     ["C", "Total system capacity in bandwidth units (b.u.)"],
                     ["I", "Number of service classes"],
@@ -223,7 +225,7 @@ export default function KaufmanRobertsPage() {
                   ].map(([sym, desc]) => (
                     <div
                       key={sym}
-                      className="flex gap-2 items-start col-span-1 sm:col-span-1"
+                      className="flex gap-2 items-start"
                     >
                       <span className="font-mono font-semibold text-sky-700 w-10 flex-shrink-0">
                         {sym}
@@ -273,16 +275,22 @@ export default function KaufmanRobertsPage() {
                 <p className="text-xs text-slate-500">
                   Expanding the recursion for <InlineMath math="j = 1" />:
                 </p>
-                <BlockMath math="q(1) = \frac{1}{1}\bigl[\alpha_1 \cdot b_1 \cdot q(1 - b_1) + \alpha_2 \cdot b_2 \cdot q(1 - b_2)\bigr]" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="q(1) = \frac{1}{1}\bigl[\alpha_1 \cdot b_1 \cdot q(1 - b_1) + \alpha_2 \cdot b_2 \cdot q(1 - b_2)\bigr]" />
+                </div>
                 <p className="text-xs text-slate-500">
                   Substituting the given values:
                 </p>
-                <BlockMath math="q(1) = 1\bigl[1 \cdot 1 \cdot q(0) + 1 \cdot 2 \cdot q(-1)\bigr]" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="q(1) = 1\bigl[1 \cdot 1 \cdot q(0) + 1 \cdot 2 \cdot q(-1)\bigr]" />
+                </div>
                 <p className="text-xs text-slate-500">
                   Since <InlineMath math="q(0) = 1" /> and{" "}
                   <InlineMath math="q(-1) = 0" /> (boundary condition):
                 </p>
-                <BlockMath math="q(1) = 1 \cdot 1 \cdot 1 + 1 \cdot 2 \cdot 0 = 1" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="q(1) = 1 \cdot 1 \cdot 1 + 1 \cdot 2 \cdot 0 = 1" />
+                </div>
                 <p className="text-xs text-slate-400">
                   This unnormalised value will be divided by the sum of all{" "}
                   <InlineMath math="q(j)" /> for{" "}
@@ -527,7 +535,7 @@ export default function KaufmanRobertsPage() {
 
           {/* ── Animation card ──────────────────────────────────────────── */}
           <div className="bg-white rounded-2xl shadow-xl p-8 space-y-5">
-            <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:justify-between sm:text-left flex-wrap gap-3">
               <div>
                 <h2 className="text-lg font-bold text-slate-800">
                   Processor Animation
@@ -536,7 +544,7 @@ export default function KaufmanRobertsPage() {
                   C = 5 b.u. · 3 service classes
                 </p>
               </div>
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center justify-center gap-2 flex-wrap">
                 {/* Policy toggle */}
                 {(["CS", "BR"] as Policy[]).map((p) => (
                   <button

@@ -156,7 +156,7 @@ export default function BirthDeathAnimation({
               <div key={s} className="flex items-center">
                 {/* State circle */}
                 <div
-                  className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                  className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full border-2 flex items-center justify-center font-bold text-xs sm:text-sm transition-all duration-300 flex-shrink-0 ${
                     s === j
                       ? "bg-slate-700 border-slate-800 text-white scale-110 shadow-md"
                       : s === j - 1 && lastEvent === "arrival"
@@ -171,9 +171,9 @@ export default function BirthDeathAnimation({
 
                 {/* Arrow segment between s and s+1 */}
                 {s < CAPACITY && (
-                  <div className="flex flex-col items-center w-12 px-1">
+                  <div className="flex flex-col items-center w-8 sm:w-10 px-0.5">
                     <span
-                      className={`text-[9px] font-mono leading-tight transition-colors duration-200 ${
+                      className={`text-[8px] sm:text-[9px] font-mono leading-tight transition-colors duration-200 ${
                         lastEvent === "arrival" && j === s + 1
                           ? "text-emerald-600 font-bold"
                           : "text-slate-300"
@@ -182,7 +182,7 @@ export default function BirthDeathAnimation({
                       λ →
                     </span>
                     <span
-                      className={`text-[9px] font-mono leading-tight transition-colors duration-200 ${
+                      className={`text-[8px] sm:text-[9px] font-mono leading-tight transition-colors duration-200 ${
                         lastEvent === "departure" && j === s
                           ? "text-amber-500 font-bold"
                           : "text-slate-300"

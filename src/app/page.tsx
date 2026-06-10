@@ -17,11 +17,11 @@ export default function Home() {
           </p>
 
           <h2 className="text-2xl font-semibold">Analytical Models:</h2>
-          <ul className="space-y-2">
+          <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
             <li>
               <Link
                 href="/erlang"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Erlang-B Analytical Model
               </Link>
@@ -29,7 +29,7 @@ export default function Home() {
             <li>
               <Link
                 href="/kaufman-roberts"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Kaufman-Roberts Model
               </Link>
@@ -37,11 +37,11 @@ export default function Home() {
           </ul>
 
           <h2 className="text-2xl font-semibold">Theory & Formulas</h2>
-          <ul className="space-y-2">
+          <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
             <li>
               <Link
                 href="/theory/probability-and-statistics"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Probability &amp; Statistics
               </Link>
@@ -49,7 +49,7 @@ export default function Home() {
             <li>
               <Link
                 href="/theory/poisson-traffic"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Poisson Traffic
               </Link>
@@ -57,7 +57,7 @@ export default function Home() {
             <li>
               <Link
                 href="/theory/traffic-load"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Traffic Load
               </Link>
@@ -65,7 +65,7 @@ export default function Home() {
             <li>
               <Link
                 href="/theory/markov-chains"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Markov Chains &amp; Birth-Death Process
               </Link>
@@ -73,7 +73,7 @@ export default function Home() {
             <li>
               <Link
                 href="/theory/bandwidth-sharing-policies"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Bandwidth Sharing Policies
               </Link>
@@ -81,7 +81,7 @@ export default function Home() {
             <li>
               <Link
                 href="/theory/grade-of-service"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Grade of Service (GoS)
               </Link>
@@ -89,7 +89,7 @@ export default function Home() {
             <li>
               <Link
                 href="/theory/classification-of-loss-models"
-                className="inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Classification of Teletraffic Loss Models
               </Link>

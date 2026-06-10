@@ -200,7 +200,7 @@ export default function KaufmanRobertsAnimation({
   return (
     <div className="space-y-5">
       {/* ── Service class legend ─────────────────────────────────────────── */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap justify-center gap-2">
         {CLASSES.map((cls) => (
           <div
             key={cls.id}
@@ -215,9 +215,9 @@ export default function KaufmanRobertsAnimation({
       </div>
 
       {/* ── Incoming + Processor grid ────────────────────────────────────── */}
-      <div className="flex items-stretch gap-4">
+      <div className="flex flex-col sm:flex-row items-stretch gap-4">
         {/* Incoming request panel */}
-        <div className="w-36 flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center gap-2 text-center min-h-[120px]">
+        <div className="w-full sm:w-36 sm:flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center gap-2 text-center min-h-[100px] sm:min-h-[120px]">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
             Incoming
           </p>
@@ -245,7 +245,7 @@ export default function KaufmanRobertsAnimation({
         </div>
 
         {/* Arrow */}
-        <div className="flex items-center text-slate-300 text-xl font-light select-none">
+        <div className="flex items-center justify-center text-slate-300 text-xl font-light select-none rotate-90 sm:rotate-0">
           →
         </div>
 
@@ -305,12 +305,12 @@ export default function KaufmanRobertsAnimation({
         </div>
 
         {/* Arrow */}
-        <div className="flex items-center text-slate-300 text-xl font-light select-none">
+        <div className="flex items-center justify-center text-slate-300 text-xl font-light select-none rotate-90 sm:rotate-0">
           →
         </div>
 
         {/* Status */}
-        <div className="w-28 flex-shrink-0 rounded-xl border flex flex-col items-center justify-center gap-1 min-h-[120px] transition-all duration-300">
+        <div className="w-full sm:w-28 sm:flex-shrink-0 rounded-xl border flex flex-col items-center justify-center gap-1 min-h-[80px] sm:min-h-[120px] transition-all duration-300">
           {lastEvent === "accepted" && (
             <div className="w-full h-full rounded-xl bg-emerald-50 border-emerald-300 border flex flex-col items-center justify-center gap-1">
               <span className="text-2xl">✓</span>
@@ -392,7 +392,7 @@ export default function KaufmanRobertsAnimation({
 
       {/* ── Theoretical blocking probabilities ──────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
             Kaufman-Roberts model · analytical B<sub>k</sub>
           </p>
@@ -400,7 +400,7 @@ export default function KaufmanRobertsAnimation({
             C = {CAPACITY} b.u. · CS policy
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {CLASSES.map((cls) => {
             const key = `B_class_${cls.id}`;
             const B = THEORETICAL_CBP[key] ?? 0;

@@ -110,7 +110,9 @@ export default function MarkovChainsPage() {
                 <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
                   Global balance at state j
                 </p>
-                <BlockMath math="(\lambda + j\mu)\,P(j) = \lambda\,P(j-1) + (j+1)\mu\,P(j+1)" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="(\lambda + j\mu)\,P(j) = \lambda\,P(j-1) + (j+1)\mu\,P(j+1)" />
+                </div>
                 <p className="text-xs text-slate-500">
                   Left side: total rate out of state j. Right side: rate in from
                   j-1 (arrival) plus rate in from j+1 (departure). Boundary
@@ -133,7 +135,9 @@ export default function MarkovChainsPage() {
                 <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
                   Local balance (birth-death)
                 </p>
-                <BlockMath math="\lambda \cdot P(j) = (j+1)\mu \cdot P(j+1)" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="\lambda \cdot P(j) = (j+1)\mu \cdot P(j+1)" />
+                </div>
                 <p className="text-xs text-slate-500">
                   Rate of crossings from j to j+1 = rate of crossings from j+1
                   to j.
@@ -145,7 +149,9 @@ export default function MarkovChainsPage() {
                 weights, and after normalisation:
               </p>
               <div className="bg-white border border-slate-200 rounded-lg px-4 py-3 space-y-1">
-                <BlockMath math="P(j) = \frac{\alpha^{\,j}}{j!}\,P(0) \qquad \alpha = \frac{\lambda}{\mu}" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="P(j) = \frac{\alpha^{\,j}}{j!}\,P(0) \qquad \alpha = \frac{\lambda}{\mu}" />
+                </div>
                 <p className="text-xs text-slate-500">
                   This is the Erlang-B formula for a single service class.
                   The local balance equation{" "}
@@ -288,7 +294,9 @@ export default function MarkovChainsPage() {
                 state space is:
               </p>
               <div className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-center">
-                <BlockMath math="\bigl\{(n_1,\,n_2) : n_1 b_1 + n_2 b_2 \leq C\bigr\}" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="\bigl\{(n_1,\,n_2) : n_1 b_1 + n_2 b_2 \leq C\bigr\}" />
+                </div>
               </div>
 
               {/* Parameters */}
@@ -488,9 +496,13 @@ export default function MarkovChainsPage() {
                   departure, and from (2,&thinsp;1) via a class-2 departure.
                   Setting rate in = rate out:
                 </p>
-                <BlockMath math="\lambda_1 P(1,0) + 3\mu_1 P(3,0) + \mu_2 P(2,1) = (\lambda_1 + \lambda_2 + 2\mu_1)\,P(2,0)" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="\lambda_1 P(1,0) + 3\mu_1 P(3,0) + \mu_2 P(2,1) = (\lambda_1 + \lambda_2 + 2\mu_1)\,P(2,0)" />
+                </div>
                 <p className="text-xs text-slate-500">With unit rates:</p>
-                <BlockMath math="P(1,0) + 3\,P(3,0) + P(2,1) = 4\,P(2,0)" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="P(1,0) + 3\,P(3,0) + P(2,1) = 4\,P(2,0)" />
+                </div>
                 <p className="text-xs text-slate-400">
                   Writing such an equation for every reachable state and
                   solving the system gives the exact steady-state

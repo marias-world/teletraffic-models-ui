@@ -69,7 +69,9 @@ export default function TrafficLoadPage() {
               It is the ratio of the total time lines were occupied to the
               length of the observation window.
             </p>
-            <BlockMath math="\text{Traffic load} = \frac{\text{sum of call durations}}{\text{observation time}}" />
+            <div className="overflow-x-auto">
+              <BlockMath math="\text{Traffic load} = \frac{\text{sum of call durations}}{\text{observation time}}" />
+            </div>
           </section>
 
           {/* Visual diagram */}
@@ -203,13 +205,17 @@ export default function TrafficLoadPage() {
                 <p className="text-sm font-semibold text-slate-600">
                   Step 1: add up all call durations
                 </p>
-                <BlockMath math="10 + 2 + 16 + 5 + 1 + 5 + 3 + 5 + 10 + 5 = 62 \text{ min}" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="10 + 2 + 16 + 5 + 1 + 5 + 3 + 5 + 10 + 5 = 62 \text{ min}" />
+                </div>
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-slate-600">
                   Step 2: divide by the observation period
                 </p>
-                <BlockMath math="\text{Traffic load} = \frac{62 \text{ min}}{30 \text{ min}} \approx 2.07 \text{ erl}" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="\text{Traffic load} = \frac{62 \text{ min}}{30 \text{ min}} \approx 2.07 \text{ erl}" />
+                </div>
               </div>
               <div className="bg-sky-50 border border-sky-200 rounded-lg p-4">
                 <p className="text-slate-700">
@@ -240,7 +246,9 @@ export default function TrafficLoadPage() {
                   <InlineMath math="h" />: mean call duration
                 </li>
               </ul>
-              <BlockMath math="\alpha = \frac{C \cdot h}{T}" />
+              <div className="overflow-x-auto">
+                <BlockMath math="\alpha = \frac{C \cdot h}{T}" />
+              </div>
               <p className="text-slate-600 text-sm">
                 where <InlineMath math="T" /> is the observation period. Since{" "}
                 <InlineMath math="C \cdot h" /> is just the total occupied time,
@@ -252,7 +260,9 @@ export default function TrafficLoadPage() {
               <p className="text-slate-700 font-medium">
                 Applied to the example:
               </p>
-              <BlockMath math="\alpha = \frac{10 \times 6.2}{30} = \frac{62}{30} \approx 2.07 \text{ erl}" />
+              <div className="overflow-x-auto">
+                <BlockMath math="\alpha = \frac{10 \times 6.2}{30} = \frac{62}{30} \approx 2.07 \text{ erl}" />
+              </div>
               <p className="text-slate-600 text-sm">
                 (<InlineMath math="h = 62 / 10 = 6.2" /> min average call
                 duration)

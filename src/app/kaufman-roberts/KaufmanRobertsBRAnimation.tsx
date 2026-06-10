@@ -222,7 +222,7 @@ export default function KaufmanRobertsBRAnimation({
   return (
     <div className="space-y-5">
       {/* ── Service class legend ─────────────────────────────────────────── */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap justify-center gap-2">
         {CLASSES.map((cls) => (
           <div
             key={cls.id}
@@ -237,9 +237,9 @@ export default function KaufmanRobertsBRAnimation({
       </div>
 
       {/* ── Incoming + Processor grid ────────────────────────────────────── */}
-      <div className="flex items-stretch gap-4">
+      <div className="flex flex-col sm:flex-row items-stretch gap-4">
         {/* Incoming request panel */}
-        <div className="w-36 flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center gap-2 text-center min-h-[130px]">
+        <div className="w-full sm:w-36 sm:flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center gap-2 text-center min-h-[110px] sm:min-h-[130px]">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
             Incoming
           </p>
@@ -274,13 +274,13 @@ export default function KaufmanRobertsBRAnimation({
         </div>
 
         {/* Arrow */}
-        <div className="flex items-center text-slate-300 text-xl font-light select-none">
+        <div className="flex items-center justify-center text-slate-300 text-xl font-light select-none rotate-90 sm:rotate-0">
           →
         </div>
 
         {/* Processor */}
         <div className="flex-1 rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
             <p className="text-xs font-semibold text-slate-500">
               Processor · C = {CAPACITY} b.u.
             </p>
@@ -346,7 +346,7 @@ export default function KaufmanRobertsBRAnimation({
             )}
           </div>
 
-          <div className="flex justify-between text-[11px] text-slate-400">
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 text-[11px] text-slate-400">
             <span>{utilization}% utilization</span>
             {incoming && incoming.tk > 0 && (
               <span className="text-amber-500">
@@ -358,12 +358,12 @@ export default function KaufmanRobertsBRAnimation({
         </div>
 
         {/* Arrow */}
-        <div className="flex items-center text-slate-300 text-xl font-light select-none">
+        <div className="flex items-center justify-center text-slate-300 text-xl font-light select-none rotate-90 sm:rotate-0">
           →
         </div>
 
         {/* Status */}
-        <div className="w-28 flex-shrink-0 rounded-xl border flex flex-col items-center justify-center gap-1 min-h-[130px] transition-all duration-300">
+        <div className="w-full sm:w-28 sm:flex-shrink-0 rounded-xl border flex flex-col items-center justify-center gap-1 min-h-[90px] sm:min-h-[130px] transition-all duration-300">
           {lastEvent === "accepted" && (
             <div className="w-full h-full rounded-xl bg-emerald-50 border-emerald-300 border flex flex-col items-center justify-center gap-1 p-2">
               <span className="text-2xl">✓</span>
@@ -459,7 +459,7 @@ export default function KaufmanRobertsBRAnimation({
 
       {/* ── Theoretical blocking probabilities ──────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
             Roberts formula · analytical B<sub>k</sub>
           </p>
@@ -467,7 +467,7 @@ export default function KaufmanRobertsBRAnimation({
             C = {CAPACITY} b.u. · BR policy
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {CLASSES.map((cls) => {
             const key = `B_class_${cls.id}`;
             const B = THEORETICAL_CBP[key] ?? 0;

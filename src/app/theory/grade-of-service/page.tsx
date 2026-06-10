@@ -60,11 +60,15 @@ export default function GradeOfServicePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
                 <p className="text-sm font-semibold text-slate-600">In terms of calls</p>
-                <BlockMath math="\text{GoS} = \frac{\text{total calls lost}}{\text{total calls offered}}" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="\text{GoS} = \frac{\text{total calls lost}}{\text{total calls offered}}" />
+                </div>
               </div>
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
                 <p className="text-sm font-semibold text-slate-600">In terms of traffic</p>
-                <BlockMath math="\text{GoS} = \frac{\text{traffic lost}}{\text{traffic offered}}" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="\text{GoS} = \frac{\text{traffic lost}}{\text{traffic offered}}" />
+                </div>
               </div>
             </div>
 
@@ -130,7 +134,9 @@ export default function GradeOfServicePage() {
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-5">
               <div className="space-y-2">
                 <p className="text-sm font-semibold text-slate-600">Lost (blocked) traffic</p>
-                <BlockMath math="\text{Lost traffic} = a \cdot B" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="\text{Lost traffic} = a \cdot B" />
+                </div>
                 <p className="text-sm text-slate-600">
                   The amount of traffic that cannot be serviced because no resources are
                   available. It is directly proportional to both the offered traffic and the
@@ -140,7 +146,9 @@ export default function GradeOfServicePage() {
 
               <div className="space-y-2 border-t border-slate-200 pt-4">
                 <p className="text-sm font-semibold text-slate-600">Carried traffic</p>
-                <BlockMath math="\text{Carried traffic} = a - a \cdot B = a(1 - B)" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="\text{Carried traffic} = a - a \cdot B = a(1 - B)" />
+                </div>
                 <p className="text-sm text-slate-600">
                   The traffic that is successfully served by the system: the offered traffic
                   minus what is lost.
@@ -163,8 +171,12 @@ export default function GradeOfServicePage() {
                 blocked).
               </p>
               <div className="space-y-2">
-                <BlockMath math="\text{Lost traffic} = 10 \times 0.1 = 1 \text{ erl}" />
-                <BlockMath math="\text{Carried traffic} = 10 \times (1 - 0.1) = 10 \times 0.9 = 9 \text{ erl}" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="\text{Lost traffic} = 10 \times 0.1 = 1 \text{ erl}" />
+                </div>
+                <div className="overflow-x-auto">
+                  <BlockMath math="\text{Carried traffic} = 10 \times (1 - 0.1) = 10 \times 0.9 = 9 \text{ erl}" />
+                </div>
               </div>
               <div className="bg-white border border-blue-100 rounded-lg p-3 text-sm text-slate-700">
                 Of the 10 erlangs offered to the system, <strong>9 erlangs</strong> are
