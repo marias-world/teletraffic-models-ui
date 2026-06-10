@@ -35,7 +35,9 @@ export default function ErlangExplanation() {
           of channels <InlineMath math="C" />:
         </p>
 
-        <BlockMath math="B = E_C(\alpha) = \frac{\dfrac{\alpha^C}{C!}}{\displaystyle\sum_{i=0}^{C} \dfrac{\alpha^i}{i!}}" />
+        <div className="overflow-x-auto">
+          <BlockMath math="B = E_C(\alpha) = \frac{\dfrac{\alpha^C}{C!}}{\displaystyle\sum_{i=0}^{C} \dfrac{\alpha^i}{i!}}" />
+        </div>
 
         <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
           <h4 className="font-semibold text-slate-700">Where:</h4>
@@ -123,7 +125,9 @@ export default function ErlangExplanation() {
           by building on the previously computed value, one channel at a time:
         </p>
 
-        <BlockMath math="B = E_C(\alpha) = \frac{\alpha \cdot E_{C-1}(\alpha)}{C + \alpha \cdot E_{C-1}(\alpha)}" />
+        <div className="overflow-x-auto">
+          <BlockMath math="B = E_C(\alpha) = \frac{\alpha \cdot E_{C-1}(\alpha)}{C + \alpha \cdot E_{C-1}(\alpha)}" />
+        </div>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-slate-700">
           Unlike the closed form, the recursive formula has no factorial
@@ -208,20 +212,32 @@ export default function ErlangExplanation() {
             <p className="text-sm font-semibold text-slate-600">
               Step 1: calculate each state
             </p>
-            <BlockMath math="i=0:\quad \frac{2^0}{0!} = \frac{1}{1} = 1" />
-            <BlockMath math="i=1:\quad \frac{2^1}{1!} = \frac{2}{1} = 2" />
-            <BlockMath math="i=2:\quad \frac{2^2}{2!} = \frac{4}{2} = 2" />
-            <BlockMath math="i=3:\quad \frac{2^3}{3!} = \frac{8}{6} \approx 1.333" />
+            <div className="overflow-x-auto">
+              <BlockMath math="i=0:\quad \frac{2^0}{0!} = \frac{1}{1} = 1" />
+            </div>
+            <div className="overflow-x-auto">
+              <BlockMath math="i=1:\quad \frac{2^1}{1!} = \frac{2}{1} = 2" />
+            </div>
+            <div className="overflow-x-auto">
+              <BlockMath math="i=2:\quad \frac{2^2}{2!} = \frac{4}{2} = 2" />
+            </div>
+            <div className="overflow-x-auto">
+              <BlockMath math="i=3:\quad \frac{2^3}{3!} = \frac{8}{6} \approx 1.333" />
+            </div>
 
             <p className="text-sm font-semibold text-slate-600 pt-2">
               Step 2: sum all states
             </p>
-            <BlockMath math="\sum_{i=0}^{3} \frac{2^i}{i!} = 1 + 2 + 2 + 1.333 \approx 6.333" />
+            <div className="overflow-x-auto">
+              <BlockMath math="\sum_{i=0}^{3} \frac{2^i}{i!} = 1 + 2 + 2 + 1.333 \approx 6.333" />
+            </div>
 
             <p className="text-sm font-semibold text-slate-600 pt-2">
               Step 3: divide
             </p>
-            <BlockMath math="B = E_3(2) = \frac{1.333}{6.333} \approx 0.2105" />
+            <div className="overflow-x-auto">
+              <BlockMath math="B = E_3(2) = \frac{1.333}{6.333} \approx 0.2105" />
+            </div>
 
             <div className="bg-sky-50 border border-sky-200 rounded-lg p-3 text-sm text-slate-700">
               The call blocking probability is approximately{" "}
@@ -257,7 +273,9 @@ export default function ErlangExplanation() {
               <p className="text-sm font-semibold text-slate-600">
                 Step 1: <InlineMath math="C = 1" /> (one channel)
               </p>
-              <BlockMath math="E_1(2) = \frac{2 \cdot E_0(2)}{1 + 2 \cdot E_0(2)} = \frac{2 \times 1}{1 + 2} = \frac{2}{3} \approx 0.6667" />
+              <div className="overflow-x-auto">
+                <BlockMath math="E_1(2) = \frac{2 \cdot E_0(2)}{1 + 2 \cdot E_0(2)} = \frac{2 \times 1}{1 + 2} = \frac{2}{3} \approx 0.6667" />
+              </div>
               <p className="text-xs text-slate-500">
                 This gives the baseline blocking probability when there is just
                 one channel.
@@ -268,7 +286,9 @@ export default function ErlangExplanation() {
               <p className="text-sm font-semibold text-slate-600">
                 Step 2: <InlineMath math="C = 2" /> (two channels)
               </p>
-              <BlockMath math="E_2(2) = \frac{2 \cdot E_1(2)}{2 + 2 \cdot E_1(2)} = \frac{2 \times 0.6667}{2 + 2 \times 0.6667} = \frac{1.3334}{3.3334} \approx 0.4" />
+              <div className="overflow-x-auto">
+                <BlockMath math="E_2(2) = \frac{2 \cdot E_1(2)}{2 + 2 \cdot E_1(2)} = \frac{2 \times 0.6667}{2 + 2 \times 0.6667} = \frac{1.3334}{3.3334} \approx 0.4" />
+              </div>
               <p className="text-xs text-slate-500">
                 <InlineMath math="E_2" /> is the blocking probability for a
                 2-channel system, computed by plugging <InlineMath math="E_1" />{" "}
@@ -281,7 +301,9 @@ export default function ErlangExplanation() {
               <p className="text-sm font-semibold text-slate-600">
                 Step 3: <InlineMath math="C = 3" /> (three channels)
               </p>
-              <BlockMath math="E_3(2) = \frac{2 \cdot E_2(2)}{3 + 2 \cdot E_2(2)} = \frac{2 \times 0.4}{3 + 2 \times 0.4} = \frac{0.8}{3.8} \approx 0.2105" />
+              <div className="overflow-x-auto">
+                <BlockMath math="E_3(2) = \frac{2 \cdot E_2(2)}{3 + 2 \cdot E_2(2)} = \frac{2 \times 0.4}{3 + 2 \times 0.4} = \frac{0.8}{3.8} \approx 0.2105" />
+              </div>
             </div>
 
             <div className="bg-sky-50 border border-sky-200 rounded-lg p-3 text-sm text-slate-700">

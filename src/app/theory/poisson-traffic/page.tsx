@@ -42,7 +42,9 @@ export default function PoissonTrafficPage() {
               The probability that exactly <InlineMath math="n" /> calls arrive during a time
               interval of length <InlineMath math="t" /> is:
             </p>
-            <BlockMath math="P_n(t) = \frac{(\lambda t)^n}{n!}\,e^{-\lambda t} \qquad \text{for } n = 0, 1, 2, \ldots" />
+            <div className="overflow-x-auto">
+              <BlockMath math="P_n(t) = \frac{(\lambda t)^n}{n!}\,e^{-\lambda t} \qquad \text{for } n = 0, 1, 2, \ldots" />
+            </div>
 
             <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-2">
               <h3 className="font-semibold text-slate-700">Where:</h3>
@@ -83,7 +85,9 @@ export default function PoissonTrafficPage() {
                   minute, the number of calls is random: sometimes 0, sometimes 1,
                   sometimes 4. The Poisson formula gives the probability of each count:
                 </p>
-                <BlockMath math="P_0 = e^{-2} \approx 13.5\% \quad P_1 = 2e^{-2} \approx 27\% \quad P_2 = \tfrac{4}{2}e^{-2} \approx 27\%" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="P_0 = e^{-2} \approx 13.5\% \quad P_1 = 2e^{-2} \approx 27\% \quad P_2 = \tfrac{4}{2}e^{-2} \approx 27\%" />
+                </div>
               </div>
 
               <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
@@ -99,7 +103,9 @@ export default function PoissonTrafficPage() {
                   But the wait is random: sometimes 5 seconds, sometimes 90 seconds.
                   Short gaps are more likely than long ones:
                 </p>
-                <BlockMath math="f(t) = 2\,e^{-2t}" />
+                <div className="overflow-x-auto">
+                  <BlockMath math="f(t) = 2\,e^{-2t}" />
+                </div>
                 <p className="text-slate-600 text-sm">
                   The probability the next call takes <strong>more than 1 minute</strong>{" "}
                   is <InlineMath math="e^{-2} \approx 13.5\%" />, the same value as{" "}
@@ -115,7 +121,9 @@ export default function PoissonTrafficPage() {
                 one minute" are the same event, just described differently. So their
                 probabilities must be equal:
               </p>
-              <BlockMath math="P_0(t) = e^{-\lambda t} = P(T > t)" />
+              <div className="overflow-x-auto">
+                <BlockMath math="P_0(t) = e^{-\lambda t} = P(T > t)" />
+              </div>
               <p className="text-slate-700">
                 This is why the two descriptions are equivalent: if arrivals are Poisson,
                 the gaps between them must be exponential, and vice versa.
@@ -166,7 +174,9 @@ export default function PoissonTrafficPage() {
                 (<InlineMath math="\lambda = 3" />). What is the probability that exactly 5 calls
                 arrive in the next minute (<InlineMath math="t = 1" />)?
               </p>
-              <BlockMath math="P_5(1) = \frac{(3 \cdot 1)^5}{5!}\,e^{-3 \cdot 1} = \frac{243}{120} \cdot e^{-3} \approx 2.025 \cdot 0.04979 \approx 0.1008" />
+              <div className="overflow-x-auto">
+                <BlockMath math="P_5(1) = \frac{(3 \cdot 1)^5}{5!}\,e^{-3 \cdot 1} = \frac{243}{120} \cdot e^{-3} \approx 2.025 \cdot 0.04979 \approx 0.1008" />
+              </div>
               <p className="text-slate-700">
                 There is approximately a <strong>10.1%</strong> chance of exactly 5 calls arriving
                 in that minute.
@@ -182,7 +192,9 @@ export default function PoissonTrafficPage() {
               and exponentially distributed call holding times with mean{" "}
               <InlineMath math="1/\mu" />. The offered traffic intensity is then:
             </p>
-            <BlockMath math="\alpha = \frac{\lambda}{\mu}" />
+            <div className="overflow-x-auto">
+              <BlockMath math="\alpha = \frac{\lambda}{\mu}" />
+            </div>
             <p className="text-slate-600 leading-relaxed">
               This dimensionless quantity <InlineMath math="\alpha" />, measured in <strong>Erlangs</strong>,
               is the single parameter you supply to the Erlang-B model alongside the system capacity{" "}

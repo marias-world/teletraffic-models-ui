@@ -63,7 +63,7 @@ export default function TeletrafficLossModelsPage() {
               There are <strong>three key dimensions</strong> along which any
               call (or connection) can be characterised:
             </p>
-            <div className="grid grid-cols-3 gap-3 text-center text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-sm">
               {[
                 { letter: "a", label: "Call arrival process" },
                 { letter: "b", label: "Bandwidth requirements" },
@@ -106,27 +106,20 @@ export default function TeletrafficLossModelsPage() {
                 </p>
                 {/* pulse diagram */}
                 <svg viewBox="0 0 160 36" className="w-full mt-1">
-                  {/* bars: y=11 height=18 → bottom at y=29, just past axis at y=28 */}
+                  {/* axis: filled rect, drawn first so bars sit on top of it */}
+                  <rect x={4} y={28} width={148} height={2} fill="#cbd5e1" />
+                  {/* bars: y=11 height=19 → bottom at y=30, flush with the axis rect */}
                   {[14, 34, 58, 82, 106, 130].map((x) => (
                     <rect
                       key={x}
                       x={x}
                       y={11}
                       width={6}
-                      height={18}
+                      height={19}
                       fill="#38bdf8"
                       rx={1}
                     />
                   ))}
-                  {/* axis on top */}
-                  <line
-                    x1={4}
-                    y1={28}
-                    x2={152}
-                    y2={28}
-                    stroke="#cbd5e1"
-                    strokeWidth={2}
-                  />
                   <text
                     x={152}
                     y={34}
@@ -149,6 +142,8 @@ export default function TeletrafficLossModelsPage() {
                 </p>
                 {/* batch pulse diagram — axis at y=28, bars grouped with background */}
                 <svg viewBox="0 0 160 40" className="w-full mt-1">
+                  {/* axis: filled rect, drawn first so bars/backgrounds sit on top of it */}
+                  <rect x={4} y={28} width={152} height={2} fill="#cbd5e1" />
                   {(
                     [
                       [12, [16]],
@@ -165,23 +160,23 @@ export default function TeletrafficLossModelsPage() {
                     const maxH = Math.max(...heights);
                     return (
                       <g key={startX}>
-                        {/* light group background — sharp bottom so it meets the axis */}
+                        {/* light group background — bottom at y=30, flush with the axis rect */}
                         <rect
                           x={startX - 2}
                           y={28 - maxH - 3}
                           width={groupW + 4}
-                          height={maxH + 4}
+                          height={maxH + 5}
                           fill="#ede9fe"
                           rx={3}
                         />
-                        {/* bars: extend 1px past axis so rounded corners don't gap */}
+                        {/* bars: bottom at y=30, flush with the axis rect */}
                         {heights.map((h, j) => (
                           <rect
                             key={j}
                             x={startX + j * STEP}
                             y={28 - h}
                             width={BAR_W}
-                            height={h + 1}
+                            height={h + 2}
                             fill="#7c3aed"
                             rx={1}
                           />
@@ -190,9 +185,9 @@ export default function TeletrafficLossModelsPage() {
                         {heights.length > 1 && (
                           <line
                             x1={startX - 1}
-                            y1={30}
+                            y1={31}
                             x2={startX + groupW + 1}
-                            y2={30}
+                            y2={31}
                             stroke="#a78bfa"
                             strokeWidth={1.5}
                           />
@@ -200,15 +195,6 @@ export default function TeletrafficLossModelsPage() {
                       </g>
                     );
                   })}
-                  {/* axis on top of all bars */}
-                  <line
-                    x1={4}
-                    y1={28}
-                    x2={156}
-                    y2={28}
-                    stroke="#cbd5e1"
-                    strokeWidth={2}
-                  />
                   <text
                     x={156}
                     y={37}
