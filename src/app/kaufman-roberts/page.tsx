@@ -7,10 +7,10 @@ import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import KaufmanRobertsAnimation from "./KaufmanRobertsAnimation";
 import KaufmanRobertsBRAnimation from "./KaufmanRobertsBRAnimation";
-import { callBlockingProbability } from "@/lib/models/kaufman-roberts/call-blocking-probability";
-import { kaufmanRoberts } from "@/lib/models/kaufman-roberts/kaufman-roberts-formula";
-import { robertsFormulaBRPolicy } from "@/lib/models/kaufman-roberts/roberts-formula-br-policy";
-import { linkUtilizationFromProbabilities } from "@/lib/models/kaufman-roberts/link-utilization";
+import {
+  kaufmanRobertsWithSteps,
+  StepGroup,
+} from "@/lib/models/kaufman-roberts/kaufman-roberts-with-steps";
 import { ServiceClass, ServiceClassWithBR } from "@/lib/models/types";
 
 type Policy = "CS" | "BR";
@@ -44,6 +44,8 @@ export default function KaufmanRobertsPage() {
     U: number;
     efficiency: number;
   } | null>(null);
+  const [steps, setSteps] = useState<StepGroup[]>([]);
+  const [showSteps, setShowSteps] = useState(false);
   const [error, setError] = useState("");
 
   const addRow = () => {
@@ -73,12 +75,16 @@ export default function KaufmanRobertsPage() {
     setPolicy(p);
     setResults(null);
     setUtilization(null);
+    setSteps([]);
+    setShowSteps(false);
     setError("");
   };
 
   const runModel = () => {
     setError("");
     setResults(null);
+    setSteps([]);
+    setShowSteps(false);
 
     const C = Number(capacity);
     if (!capacity || isNaN(C) || C <= 0) {
@@ -115,15 +121,12 @@ export default function KaufmanRobertsPage() {
       },
     );
 
-    const cbp = callBlockingProbability(C, serviceClasses);
+    const { results: cbp, utilization: util, steps: calcSteps } =
+      kaufmanRobertsWithSteps(C, serviceClasses);
+
     setResults(cbp);
-
-    const probabilities =
-      policy === "BR"
-        ? robertsFormulaBRPolicy(C, serviceClasses as ServiceClassWithBR[])
-        : kaufmanRoberts(C, serviceClasses);
-
-    setUtilization(linkUtilizationFromProbabilities(C, probabilities));
+    setUtilization(util);
+    setSteps(calcSteps);
   };
 
   const gosEqualised =
@@ -527,6 +530,34 @@ export default function KaufmanRobertsPage() {
                         = constant.
                       </p>
                     </div>
+                  </div>
+                )}
+
+                {steps.length > 0 && (
+                  <div>
+                    <button
+                      onClick={() => setShowSteps((prev) => !prev)}
+                      className="text-sky-600 font-medium text-sm hover:text-sky-700 transition-colors"
+                    >
+                      {showSteps ? "Hide calculation" : "Show calculation"}
+                    </button>
+
+                    {showSteps && (
+                      <div className="mt-3 bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-6">
+                        {steps.map((group, gi) => (
+                          <div key={gi} className="space-y-3">
+                            <p className="text-sm font-semibold text-slate-600">
+                              {group.title}
+                            </p>
+                            {group.formulas.map((formula, fi) => (
+                              <div key={fi} className="overflow-x-auto py-1">
+                                <BlockMath math={formula} />
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
