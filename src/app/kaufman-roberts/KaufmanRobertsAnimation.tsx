@@ -291,7 +291,7 @@ export default function KaufmanRobertsAnimation({
                         k{slot!.classId}
                       </span>
                       <span className={`text-[10px] ${cls.textColor} mt-0.5`}>
-                        {slot!.ticksLeft}t
+                        {slot!.ticksLeft}
                       </span>
                     </>
                   ) : (
@@ -301,6 +301,13 @@ export default function KaufmanRobertsAnimation({
               );
             })}
           </div>
+
+          {/* Tile legend */}
+          <p className="text-[10px] text-slate-400 leading-relaxed">
+            Each tile is 1 b.u. <span className="font-mono">kX</span> = service
+            class, <span className="font-mono">Y</span> = time units left
+            until that call ends and frees the b.u.
+          </p>
 
           {/* Capacity bar */}
           <div className="h-2 rounded-full bg-slate-200 overflow-hidden">

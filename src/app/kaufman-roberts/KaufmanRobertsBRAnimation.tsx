@@ -323,7 +323,7 @@ export default function KaufmanRobertsBRAnimation({
                         k{slot!.classId}
                       </span>
                       <span className={`text-[10px] ${cls.textColor} mt-0.5`}>
-                        {slot!.ticksLeft}t
+                        {slot!.ticksLeft}
                       </span>
                     </>
                   ) : isReserved ? (
@@ -337,6 +337,15 @@ export default function KaufmanRobertsBRAnimation({
               );
             })}
           </div>
+
+          {/* Tile legend */}
+          <p className="text-[10px] text-slate-400 leading-relaxed">
+            Each tile is 1 b.u. <span className="font-mono">kX</span> = service
+            class, <span className="font-mono">Y</span> = time units left
+            until that call ends and frees the b.u.{" "}
+            <span className="text-amber-500 font-semibold">rsv</span> = b.u.
+            reserved for higher service classes.
+          </p>
 
           {/* Capacity bar with effective capacity marker */}
           <div className="relative h-2 rounded-full bg-slate-200 overflow-visible">
