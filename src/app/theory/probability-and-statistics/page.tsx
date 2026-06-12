@@ -47,20 +47,6 @@ export default function ProbabilityAndStatisticsPage() {
             </p>
           </div>
 
-          {/* Course callout */}
-          <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
-            <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">
-              📌
-            </span>
-            <p className="text-sm text-amber-900 leading-relaxed">
-              This series closely follows the lecture schedules of{" "}
-              <strong>Stanford University&apos;s CS 109</strong> (Probability
-              for Computer Scientists) and{" "}
-              <strong>University of Washington&apos;s CSE 312</strong>{" "}
-              (Foundations of Computing II).
-            </p>
-          </div>
-
           {/* Intro */}
           <section className="space-y-3">
             <p className="text-slate-600 leading-relaxed">
@@ -167,7 +153,19 @@ export default function ProbabilityAndStatisticsPage() {
             <h2 className="text-xl font-semibold text-slate-700">
               Video Resources
             </h2>
-
+            {/* Course callout */}
+            <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">
+                📌
+              </span>
+              <p className="text-sm text-amber-900 leading-relaxed">
+                This series closely follows the lecture schedules of{" "}
+                <strong>Stanford University&apos;s CS 109</strong> (Probability
+                for Computer Scientists) and{" "}
+                <strong>University of Washington&apos;s CSE 312</strong>{" "}
+                (Foundations of Computing II).
+              </p>
+            </div>
             {videos.map((v) => (
               <div
                 key={v.id}
