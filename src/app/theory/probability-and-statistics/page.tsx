@@ -49,12 +49,24 @@ export default function ProbabilityAndStatisticsPage() {
 
           {/* Intro */}
           <section className="space-y-3">
-            <p className="text-slate-600 leading-relaxed">
+            {/* <p className="text-slate-600 leading-relaxed">
               Before working with traffic models such as Erlang-B or the
               Kaufman-Roberts recursion, it helps to be comfortable with the
               mathematical notation and tools used throughout. The sections and
               videos below cover these prerequisites clearly and concisely.
-            </p>
+            </p> */}
+            <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">
+                📌
+              </span>
+              <p className="text-sm text-amber-900 leading-relaxed">
+                Before working with traffic models such as Erlang-B or the
+                Kaufman-Roberts recursion, it helps to be comfortable with the
+                mathematical notation and tools used throughout. The sections
+                and videos below cover these prerequisites clearly and
+                concisely.
+              </p>
+            </div>
           </section>
 
           {/* Factorials */}
