@@ -6,6 +6,7 @@ import Factorials from "./Factorials";
 import KPermutations from "./KPermutations";
 import KCombinations from "./KCombinations";
 import MultinomialCoefficients from "./MultinomialCoefficients";
+import StarsAndBars from "./StarsAndBars";
 
 type VideoCard = {
   id: string;
@@ -52,12 +53,6 @@ export default function ProbabilityAndStatisticsPage() {
 
           {/* Intro */}
           <section className="space-y-3">
-            {/* <p className="text-slate-600 leading-relaxed">
-              Before working with traffic models such as Erlang-B or the
-              Kaufman-Roberts recursion, it helps to be comfortable with the
-              mathematical notation and tools used throughout. The sections and
-              videos below cover these prerequisites clearly and concisely.
-            </p> */}
             <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
               <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">
                 📌
@@ -70,6 +65,25 @@ export default function ProbabilityAndStatisticsPage() {
                 concisely.
               </p>
             </div>
+            {/* Attribution */}
+            <section className="border-t border-slate-200 pt-6">
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Several of the examples and definitions below are adapted from{" "}
+                <a
+                  href="https://docs.google.com/presentation/d/1aUBEpuPIW2BwpPYpkyzhyvDtzDBKiJyzOHfzVT5uiuE/edit?slide=id.p#slide=id.p"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sky-500 hover:underline"
+                >
+                  Alex Tsun&apos;s slides
+                </a>{" "}
+                for{" "}
+                <em>
+                  Probability &amp; Statistics with Applications to Computing
+                </em>
+                .
+              </p>
+            </section>
           </section>
 
           <Factorials />
@@ -79,6 +93,8 @@ export default function ProbabilityAndStatisticsPage() {
           <KCombinations />
 
           <MultinomialCoefficients />
+
+          <StarsAndBars />
 
           {/* Video list */}
           <section className="space-y-6">
@@ -147,8 +163,11 @@ export default function ProbabilityAndStatisticsPage() {
               >
                 Alex Tsun&apos;s slides
               </a>{" "}
-              for <em>Probability &amp; Statistics with Applications to
-              Computing</em>.
+              for{" "}
+              <em>
+                Probability &amp; Statistics with Applications to Computing
+              </em>
+              .
             </p>
           </section>
         </div>
