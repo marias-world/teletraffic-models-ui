@@ -4,6 +4,7 @@ import Layout from "@/components/layout";
 import Link from "next/link";
 import Factorials from "./Factorials";
 import KPermutations from "./KPermutations";
+import KCombinations from "./KCombinations";
 
 type VideoCard = {
   id: string;
@@ -73,6 +74,8 @@ export default function ProbabilityAndStatisticsPage() {
           <Factorials />
 
           <KPermutations />
+
+          <KCombinations />
 
           {/* Video list */}
           <section className="space-y-6">
