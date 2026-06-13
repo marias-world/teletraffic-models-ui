@@ -5,6 +5,7 @@ import Link from "next/link";
 import Factorials from "./Factorials";
 import KPermutations from "./KPermutations";
 import KCombinations from "./KCombinations";
+import MultinomialCoefficients from "./MultinomialCoefficients";
 
 type VideoCard = {
   id: string;
@@ -77,6 +78,8 @@ export default function ProbabilityAndStatisticsPage() {
 
           <KCombinations />
 
+          <MultinomialCoefficients />
+
           {/* Video list */}
           <section className="space-y-6">
             <h2 className="text-xl font-semibold text-slate-700">
@@ -130,6 +133,23 @@ export default function ProbabilityAndStatisticsPage() {
                 </div>
               </div>
             ))}
+          </section>
+
+          {/* Attribution */}
+          <section className="border-t border-slate-200 pt-6">
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Several of the examples and definitions above are adapted from{" "}
+              <a
+                href="https://docs.google.com/presentation/d/1aUBEpuPIW2BwpPYpkyzhyvDtzDBKiJyzOHfzVT5uiuE/edit?slide=id.p#slide=id.p"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sky-500 hover:underline"
+              >
+                Alex Tsun&apos;s slides
+              </a>{" "}
+              for <em>Probability &amp; Statistics with Applications to
+              Computing</em>.
+            </p>
           </section>
         </div>
       </div>
