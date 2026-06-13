@@ -42,11 +42,37 @@ export default function KPermutations() {
           <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">
             ⚠️
           </span>
-          <p className="text-sm text-amber-900 leading-relaxed">
-            Order matters here. Picking 🧑 Alice 🥇 then 🧔 Bob 🥈 is a
-            different outcome from picking 🧔 Bob 🥇 then 🧑 Alice 🥈, because
-            they end up in different positions (e.g. gold vs silver).
-          </p>
+          <div className="space-y-3 w-full">
+            <p className="text-sm text-amber-900 leading-relaxed">
+              Order matters here. Picking 🧑 Alice 🥇 then 🧔 Bob 🥈 is a
+              different outcome from picking 🧔 Bob 🥇 then 🧑 Alice 🥈,
+              because they end up in different positions (e.g. gold vs
+              silver).
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <div className="flex flex-col gap-1 rounded-lg border border-amber-200 bg-white p-2.5">
+                <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <span className="text-lg">🥇</span>
+                  <span>🧑 Alice</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <span className="text-lg">🥈</span>
+                  <span>🧔 Bob</span>
+                </div>
+              </div>
+              <span className="text-xl font-bold text-amber-500">≠</span>
+              <div className="flex flex-col gap-1 rounded-lg border border-amber-200 bg-white p-2.5">
+                <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <span className="text-lg">🥇</span>
+                  <span>🧔 Bob</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <span className="text-lg">🥈</span>
+                  <span>🧑 Alice</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p className="text-slate-600 leading-relaxed text-sm">
