@@ -56,7 +56,7 @@ export default function InclusionExclusion() {
             y="0"
             width="320"
             height="180"
-            className="fill-red-500"
+            className="fill-black-500"
             clipPath="url(#ie2-union-outer)"
           />
           <rect
@@ -631,14 +631,15 @@ export default function InclusionExclusion() {
         <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-3">
           <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">ℹ️</span>
           <p className="text-sm text-sky-900 leading-relaxed">
-            Unlike <InlineMath math="i = 1" />, where <InlineMath math="\binom{E}{1}" />{" "}
-            has <strong>two</strong> subsets <InlineMath math="\{A\}" /> and{" "}
-            <InlineMath math="\{B\}" /> (so that sum has two terms,{" "}
-            <InlineMath math="P(A) + P(B)" />), here{" "}
-            <InlineMath math="\binom{E}{2}" /> has only{" "}
+            Unlike <InlineMath math="i = 1" />, where{" "}
+            <InlineMath math="\binom{E}{1}" /> has <strong>two</strong> subsets{" "}
+            <InlineMath math="\{A\}" /> and <InlineMath math="\{B\}" /> (so that
+            sum has two terms, <InlineMath math="P(A) + P(B)" />
+            ), here <InlineMath math="\binom{E}{2}" /> has only{" "}
             <strong>one</strong> subset, <InlineMath math="\{A, B\}" />. So the
             inner sum <InlineMath math="\sum_{S \in \binom{E}{2}}" /> has just
-            this single term, <InlineMath math="\prod_{E_j \in \{A,B\}} P(E_j) = P(A) \cdot P(B)" />
+            this single term,{" "}
+            <InlineMath math="\prod_{E_j \in \{A,B\}} P(E_j) = P(A) \cdot P(B)" />
             , and <InlineMath math="(-1)^{2-1} = -1" /> simply multiplies that
             one term, giving <InlineMath math="-P(A) \cdot P(B)" />, not an
             extra term to add.
