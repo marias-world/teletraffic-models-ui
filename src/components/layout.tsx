@@ -6,6 +6,7 @@ import Link from "next/link";
 const modelLinks = [
   { href: "/erlang", label: "Erlang-B" },
   { href: "/kaufman-roberts", label: "Kaufman-Roberts" },
+  { href: "/theory/limited-availability-group", label: "Limited Availability Group (LAG)" },
 ];
 
 const theoryLinks = [
