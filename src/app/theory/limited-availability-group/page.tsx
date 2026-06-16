@@ -136,8 +136,8 @@ export default function LimitedAvailabilityGroupPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen p-10 bg-slate-100">
-        <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-10">
+      <div className="min-h-screen p-4 sm:p-10 bg-slate-100">
+        <div className="max-w-3xl mx-auto bg-white p-4 sm:p-8 rounded-xl shadow-md space-y-10">
           {/* Breadcrumb + title */}
           <div>
             <p className="text-sm text-slate-500 mb-2">
@@ -177,14 +177,16 @@ export default function LimitedAvailabilityGroupPage() {
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
                 Subgroups
               </p>
-              <div className="flex items-center justify-center gap-6 overflow-x-auto py-1">
-                <SubgroupBox label="1" />
-                <SubgroupBox label="2" />
-                <span className="text-slate-400 text-lg">&hellip;</span>
-                <SubgroupBox label={"ℓ"} />
+              <div className="w-full overflow-x-auto">
+                <div className="flex items-end justify-center gap-4 py-1 min-w-max mx-auto">
+                  <SubgroupBox label="1" />
+                  <SubgroupBox label="2" />
+                  <span className="text-slate-400 text-lg pb-6">&hellip;</span>
+                  <SubgroupBox label={"ℓ"} />
+                </div>
               </div>
-              <p className="text-center text-sm text-slate-600">
-                Total system capacity{" "}
+              <p className="text-center text-sm text-slate-600 whitespace-nowrap">
+                Total system capacity&nbsp;
                 <InlineMath math="V = \ell \cdot C" />
               </p>
             </div>
