@@ -9,7 +9,12 @@ import {
   lagWithSteps,
   StepGroup,
 } from "@/lib/models/limited-availability-groups/lar-with-steps";
+import { blockingProbabilityLAR } from "@/lib/models/limited-availability-groups/blocking-probability";
+import { calculateLinkUtilization } from "@/lib/models/limited-availability-groups/link-utilization";
 import { ServiceClass } from "@/lib/models/types";
+
+const STEPS_MAX_ELL = 5;
+const STEPS_MAX_C = 5;
 
 type ServiceClassRow = {
   id: number;
@@ -112,12 +117,21 @@ export default function LimitedAvailabilityGroupPage() {
       incomingLoad_a: Number(row.incomingLoad_a),
     }));
 
-    const { results: cbp, utilization: util, steps: calcSteps } =
-      lagWithSteps(subgroups, C, serviceClasses);
+    const V = subgroups * C;
 
-    setResults(cbp);
-    setUtilization(util);
-    setSteps(calcSteps);
+    if (subgroups <= STEPS_MAX_ELL && C <= STEPS_MAX_C) {
+      const { results: cbp, utilization: util, steps: calcSteps } =
+        lagWithSteps(subgroups, C, serviceClasses);
+      setResults(cbp);
+      setUtilization(util);
+      setSteps(calcSteps);
+    } else {
+      const cbp = blockingProbabilityLAR(subgroups, C, serviceClasses);
+      const U = calculateLinkUtilization(subgroups, C, serviceClasses);
+      setResults(cbp);
+      setUtilization({ U, efficiency: (U / V) * 100 });
+      setSteps([]);
+    }
   };
 
   return (
