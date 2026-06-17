@@ -1,4 +1,3 @@
-import Layout from "@/components/layout";
 import Link from "next/link";
 
 // ─── small reusable pieces ────────────────────────────────────────────────────
@@ -31,7 +30,6 @@ function Tag({
 // ─── page ─────────────────────────────────────────────────────────────────────
 export default function TeletrafficLossModelsPage() {
   return (
-    <Layout>
       <div className="min-h-screen p-10 bg-slate-100">
         <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-10">
           {/* Breadcrumb + title */}
@@ -679,6 +677,5 @@ export default function TeletrafficLossModelsPage() {
           </section>
         </div>
       </div>
-    </Layout>
   );
 }

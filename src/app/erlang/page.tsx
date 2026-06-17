@@ -3,12 +3,10 @@
 import ModelTemplate from "@/components/modelTemplate";
 import ErlangExplanation from "./erlangExplanation";
 import ErlangAnimation from "@/components/ErlangAnimation";
-import Layout from "@/components/layout";
 import { recursiveErlangB } from "@/lib/models/erlang-b";
 
 export default function Page() {
   return (
-    <Layout>
       <div className="min-h-screen p-4 bg-slate-100">
         <div className="max-w-2xl mx-auto py-8 space-y-6">
 
@@ -36,6 +34,5 @@ export default function Page() {
 
         </div>
       </div>
-    </Layout>
   );
 }

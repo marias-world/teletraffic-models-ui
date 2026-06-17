@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "@/components/layout";
 import Link from "next/link";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
@@ -143,7 +142,6 @@ export default function LimitedAvailabilityGroupPage() {
   };
 
   return (
-    <Layout>
       <div className="min-h-screen p-4 sm:p-10 bg-slate-100">
         <div className="max-w-3xl mx-auto bg-white p-4 sm:p-8 rounded-xl shadow-md space-y-10">
           {/* Breadcrumb + title */}
@@ -591,6 +589,5 @@ export default function LimitedAvailabilityGroupPage() {
           </section>
         </div>
       </div>
-    </Layout>
   );
 }
