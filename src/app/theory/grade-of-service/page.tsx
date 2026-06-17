@@ -1,10 +1,8 @@
-import Layout from "@/components/layout";
 import { BlockMath, InlineMath } from "react-katex";
 import Link from "next/link";
 
 export default function GradeOfServicePage() {
   return (
-    <Layout>
       <div className="min-h-screen p-10 bg-slate-100">
         <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-10">
 
@@ -247,6 +245,5 @@ export default function GradeOfServicePage() {
 
         </div>
       </div>
-    </Layout>
   );
 }

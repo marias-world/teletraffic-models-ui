@@ -1,4 +1,3 @@
-import Layout from "@/components/layout";
 import Link from "next/link";
 
 // ─── SVG capacity bar diagram ─────────────────────────────────────────────────
@@ -13,7 +12,6 @@ function toX(units: number) {
 // ─── page ─────────────────────────────────────────────────────────────────────
 export default function BandwidthSharingPoliciesPage() {
   return (
-    <Layout>
       <div className="min-h-screen p-10 bg-slate-100">
         <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-10">
           {/* Breadcrumb + title */}
@@ -934,6 +932,5 @@ export default function BandwidthSharingPoliciesPage() {
           </section>
         </div>
       </div>
-    </Layout>
   );
 }

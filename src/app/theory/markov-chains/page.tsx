@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "@/components/layout";
 import Link from "next/link";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
@@ -11,7 +10,6 @@ export default function MarkovChainsPage() {
   const [animStatus, setAnimStatus] = useState<AnimStatus>("stopped");
 
   return (
-    <Layout>
       <div className="min-h-screen p-4 sm:p-10 bg-slate-100">
         <div className="max-w-2xl mx-auto space-y-6 py-8">
           {/* ── Header ──────────────────────────────────────────────────── */}
@@ -520,6 +518,5 @@ export default function MarkovChainsPage() {
           </div>
         </div>
       </div>
-    </Layout>
   );
 }

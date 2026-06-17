@@ -1,11 +1,9 @@
-import Layout from "@/components/layout";
 import { BlockMath, InlineMath } from "react-katex";
 import Link from "next/link";
 import PoissonAnimation from "@/components/PoissonAnimation";
 
 export default function PoissonTrafficPage() {
   return (
-    <Layout>
       <div className="min-h-screen p-10 bg-slate-100">
         <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-8">
 
@@ -212,6 +210,5 @@ export default function PoissonTrafficPage() {
 
         </div>
       </div>
-    </Layout>
   );
 }

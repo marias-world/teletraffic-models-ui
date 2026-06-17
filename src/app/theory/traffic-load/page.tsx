@@ -1,4 +1,3 @@
-import Layout from "@/components/layout";
 import { BlockMath, InlineMath } from "react-katex";
 import Link from "next/link";
 
@@ -35,7 +34,6 @@ const totalDuration = CALLS.reduce((s, c) => s + c.duration, 0); // 69 min
 // ─── page ─────────────────────────────────────────────────────────────────────
 export default function TrafficLoadPage() {
   return (
-    <Layout>
       <div className="min-h-screen p-10 bg-slate-100">
         <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-8">
           {/* Breadcrumb + title */}
@@ -319,6 +317,5 @@ export default function TrafficLoadPage() {
           </section>
         </div>
       </div>
-    </Layout>
   );
 }
