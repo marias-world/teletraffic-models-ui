@@ -19,7 +19,7 @@ export default function InclusionEsclusionPage() {
                 {" / "}
                 <span className="text-slate-400">Theory</span>
                 {" / "}
-                <span className="text-slate-700">Markov Chains</span>
+                <span className="text-slate-700">Inclusion-Exclusion Principle</span>
               </p>
               <h1 className="text-2xl font-bold text-slate-800">
                 Inclusion-Exclusion Principle
