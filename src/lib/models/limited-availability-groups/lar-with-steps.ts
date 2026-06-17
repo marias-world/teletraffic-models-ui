@@ -1,7 +1,9 @@
 import { ServiceClass } from "../types";
 import { blockingProbabilityLAR } from "./blocking-probability";
 import { calculateLinkUtilization } from "./link-utilization";
+import { unnormalisedLARModel } from "./limited-available-resources-model";
 import { calculateNormalizationConstant_G } from "../normalise-probabilities";
+import { NUMBER_OF_DIGITS_AFTER_DECIMAL } from "../constants";
 import { conditionalTransitionProbability } from "../utils/conditional-transition-probability";
 import { possibleArrangements } from "../utils/possible-arrangements";
 
@@ -185,4 +187,47 @@ export function lagWithSteps(
   ];
 
   return { results, utilization, steps };
+}
+
+/**
+ * Computes blocking probabilities and link utilization for the LAG model
+ * in a single pass — calls unnormalisedLARModel exactly once.
+ * Use this instead of calling blockingProbabilityLAR + calculateLinkUtilization
+ * separately, which would run the model twice.
+ */
+export function lagModelResult(
+  distinctResourceCount: number,
+  individualResourceCapacity: number,
+  serviceClasses: ServiceClass[],
+): { results: Record<string, number>; utilization: { U: number; efficiency: number } } {
+  if (!serviceClasses.length || distinctResourceCount <= 0 || individualResourceCapacity <= 0) {
+    return { results: {}, utilization: { U: 0, efficiency: 0 } };
+  }
+
+  const ell = distinctResourceCount;
+  const C = individualResourceCapacity;
+  const V = ell * C;
+
+  const probabilities = unnormalisedLARModel(ell, C, serviceClasses);
+  const G = calculateNormalizationConstant_G(probabilities);
+
+  // Blocking probability per class
+  const results: Record<string, number> = {};
+  serviceClasses.forEach((sc, idx) => {
+    const { bu } = sc;
+    const nState = ell * (C - bu + 1);
+    let cbp = 0;
+    for (let n = nState; n <= V; n++) {
+      const p_n = probabilities[n] ?? 0;
+      cbp += p_n * (1 - conditionalTransitionProbability(n, bu, ell, C));
+    }
+    results[`B_class_${idx + 1}`] = parseFloat(
+      (cbp / G).toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL),
+    );
+  });
+
+  // Link utilization
+  const U = probabilities.reduce((sum, p, j) => (j > 0 ? sum + j * (p / G) : sum), 0);
+
+  return { results, utilization: { U, efficiency: (U / V) * 100 } };
 }
