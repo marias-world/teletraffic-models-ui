@@ -7,10 +7,9 @@ import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import {
   lagWithSteps,
+  lagModelResult,
   StepGroup,
 } from "@/lib/models/limited-availability-groups/lar-with-steps";
-import { blockingProbabilityLAR } from "@/lib/models/limited-availability-groups/blocking-probability";
-import { calculateLinkUtilization } from "@/lib/models/limited-availability-groups/link-utilization";
 import { ServiceClass } from "@/lib/models/types";
 
 const STEPS_MAX_ELL = 5;
@@ -60,6 +59,7 @@ export default function LimitedAvailabilityGroupPage() {
   const [steps, setSteps] = useState<StepGroup[]>([]);
   const [showSteps, setShowSteps] = useState(false);
   const [error, setError] = useState("");
+  const [isCalculating, setIsCalculating] = useState(false);
 
   const addRow = () => {
     setRows((prev) => [
@@ -117,21 +117,29 @@ export default function LimitedAvailabilityGroupPage() {
       incomingLoad_a: Number(row.incomingLoad_a),
     }));
 
-    const V = subgroups * C;
+    setIsCalculating(true);
 
-    if (subgroups <= STEPS_MAX_ELL && C <= STEPS_MAX_C) {
-      const { results: cbp, utilization: util, steps: calcSteps } =
-        lagWithSteps(subgroups, C, serviceClasses);
-      setResults(cbp);
-      setUtilization(util);
-      setSteps(calcSteps);
-    } else {
-      const cbp = blockingProbabilityLAR(subgroups, C, serviceClasses);
-      const U = calculateLinkUtilization(subgroups, C, serviceClasses);
-      setResults(cbp);
-      setUtilization({ U, efficiency: (U / V) * 100 });
-      setSteps([]);
-    }
+    // Defer to next tick so React can render the loading state before
+    // the synchronous computation blocks the main thread.
+    setTimeout(() => {
+      try {
+        if (subgroups <= STEPS_MAX_ELL && C <= STEPS_MAX_C) {
+          const { results: cbp, utilization: util, steps: calcSteps } =
+            lagWithSteps(subgroups, C, serviceClasses);
+          setResults(cbp);
+          setUtilization(util);
+          setSteps(calcSteps);
+        } else {
+          const { results: cbp, utilization: util } =
+            lagModelResult(subgroups, C, serviceClasses);
+          setResults(cbp);
+          setUtilization(util);
+          setSteps([]);
+        }
+      } finally {
+        setIsCalculating(false);
+      }
+    }, 0);
   };
 
   return (
@@ -428,9 +436,36 @@ export default function LimitedAvailabilityGroupPage() {
 
             <button
               onClick={runModel}
-              className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 rounded-lg transition-colors duration-150"
+              disabled={isCalculating}
+              className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2 rounded-lg transition-colors duration-150 flex items-center justify-center gap-2"
             >
-              Run Model
+              {isCalculating ? (
+                <>
+                  <svg
+                    className="animate-spin h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
+                  </svg>
+                  Calculating…
+                </>
+              ) : (
+                "Run Model"
+              )}
             </button>
 
             {/* Results */}
