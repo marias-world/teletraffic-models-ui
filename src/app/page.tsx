@@ -36,7 +36,7 @@ export default function Home() {
             </li>
             <li>
               <Link
-                href="/theory/limited-availability-group"
+                href="/limited-availability-group"
                 className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
               >
                 Limited Availability Group (LAG) Model

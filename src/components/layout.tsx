@@ -6,13 +6,20 @@ import Link from "next/link";
 const modelLinks = [
   { href: "/erlang", label: "Erlang-B" },
   { href: "/kaufman-roberts", label: "Kaufman-Roberts" },
-  { href: "/theory/limited-availability-group", label: "Limited Availability Group (LAG)" },
+  {
+    href: "/limited-availability-group",
+    label: "Limited Availability Group (LAG)",
+  },
 ];
 
 const theoryLinks = [
   {
     href: "/theory/probability-and-statistics",
     label: "Probability & Statistics",
+  },
+  {
+    href: "/theory/inclusion-exclusion",
+    label: "Inclusion-Exclusion Principle",
   },
   { href: "/theory/traffic-load", label: "Traffic Load" },
   { href: "/theory/poisson-traffic", label: "Poisson Traffic" },

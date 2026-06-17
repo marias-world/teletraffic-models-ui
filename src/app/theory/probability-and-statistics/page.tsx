@@ -7,7 +7,6 @@ import KPermutations from "./KPermutations";
 import KCombinations from "./KCombinations";
 import MultinomialCoefficients from "./MultinomialCoefficients";
 import StarsAndBars from "./StarsAndBars";
-import InclusionExclusion from "./InclusionExclusion";
 
 type VideoCard = {
   id: string;
@@ -96,8 +95,6 @@ export default function ProbabilityAndStatisticsPage() {
           <MultinomialCoefficients />
 
           <StarsAndBars />
-
-          <InclusionExclusion />
 
           {/* Video list */}
           <section className="space-y-6">

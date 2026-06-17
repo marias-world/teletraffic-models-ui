@@ -5,9 +5,6 @@ import { BlockMath, InlineMath } from "react-katex";
 export default function InclusionExclusion() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
-        Inclusion-Exclusion Principle
-      </h2>
       <p className="text-slate-600 leading-relaxed">
         The inclusion-exclusion principle is a way to count how many things are
         in &quot;A or B&quot; (or &quot;A or B or C&quot;, ...) without
