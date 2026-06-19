@@ -27,7 +27,7 @@ This project covers the theory behind traffic loss models, provides worked examp
 
 ## Features
 
-- **Erlang-B calculator** with step-by-step breakdown and live blocking probability
+- **Models calculator** with step-by-step breakdown and live blocking probability
 - **Interactive simulation** of call arrivals, channel occupancy, and blocking events
 - **Theory pages** covering traffic load, Poisson traffic, and classification of loss models
 - **SVG diagrams** illustrating arrival processes, batch arrivals, and ON/OFF traffic patterns
@@ -52,7 +52,7 @@ This project covers the theory behind traffic loss models, provides worked examp
 
 ### Prerequisites
 
-- Node.js 20 or later
+- Node.js 26 or later
 - npm
 
 ### Installation
