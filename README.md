@@ -20,6 +20,7 @@ This project covers the theory behind traffic loss models, provides worked examp
 **Author:** [Maria Kourtesi](https://www.linkedin.com/in/mariakourtesi/)  
 **Thesis:** [Call blocking in cloud systems supporting multirate random traffic (IaaS)](https://apothesis.eap.gr/archive/item/228527)  
 **Source:** [github.com/marias-world/teletraffic-models-ui](https://github.com/marias-world/teletraffic-models-ui)
+
 **Mathematical Models initial implementation:** [github.com/marias-world/teletraffic-models-ui](https://github.com/marias-world/teletraffic-models-ui)
 
 ---
