@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { BlockMath, InlineMath } from "react-katex";
 
 export default function InclusionExclusion() {
@@ -708,6 +709,191 @@ export default function InclusionExclusion() {
         </a>
         .
       </p>
+
+      {/* Stars and Bars + capacity-constrained counting */}
+      <div id="stars-and-bars-example" className="space-y-4 pt-2">
+        <h2 className="text-xl font-semibold text-slate-700">
+          Counting arrangements in subgroups
+        </h2>
+
+        <p className="text-slate-600 leading-relaxed text-sm">
+          To determine the total number of possible arrangements of{" "}
+          <InlineMath math="x" /> b.u. into <InlineMath math="k" /> labeled
+          subgroups, where the order of units within each subgroup does not
+          matter and subgroup capacities can vary between 0 and{" "}
+          <InlineMath math="\infty" />, we can apply the{" "}
+          <strong>Stars and Bars</strong> method from combinatorial theory.
+        </p>
+
+        <p className="text-slate-600 leading-relaxed text-sm">
+          The Stars and Bars method provides a way to count the number of ways
+          to distribute <InlineMath math="x" /> identical objects into{" "}
+          <InlineMath math="k" /> distinct bins. The formula for this
+          distribution is given by (see{" "}
+          <Link
+            href="/theory/probability-and-statistics#stars-and-bars"
+            className="text-sky-600 hover:underline"
+          >
+            Stars and Bars
+          </Link>
+          ):
+        </p>
+
+        <div className="overflow-x-auto py-1">
+          <BlockMath math="F(x,\,k,\,\infty,\,0) = \binom{x+k-1}{k-1}" />
+        </div>
+
+        <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 space-y-2">
+          <p className="text-sm font-semibold text-sky-800">Parameter notation</p>
+          <ul className="text-sm text-sky-900 space-y-1 leading-relaxed">
+            <li>
+              <InlineMath math="x" />:free (unoccupied) bandwidth units to
+              distribute. If <InlineMath math="n" /> b.u. are busy and the total
+              capacity is <InlineMath math="k \cdot C" />, then{" "}
+              <InlineMath math="x = k \cdot C - n" />.
+            </li>
+            <li>
+              <InlineMath math="k" />:number of separate resources (subgroups).
+            </li>
+            <li>
+              <InlineMath math="C" /> or <InlineMath math="\infty" />:upper
+              capacity limit per subgroup — <InlineMath math="C" /> when a
+              finite limit applies, <InlineMath math="\infty" /> when
+              unconstrained.
+            </li>
+            <li>
+              <InlineMath math="0" />:lower limit per subgroup (each subgroup
+              holds at least 0 b.u.).
+            </li>
+          </ul>
+        </div>
+
+        <p className="text-slate-600 leading-relaxed text-sm">
+          This method assumes no restrictions on how many units each subgroup
+          can hold, meaning each subgroup can receive anywhere from 0 to{" "}
+          <InlineMath math="x" /> b.u. However, in real-world scenarios,
+          resource distribution often comes with constraints, such as capacity
+          limits, minimum requirements, or other restrictions. When there are no
+          upper limits on subgroup capacities, the standard Stars and Bars
+          approach applies directly. For example, consider the case where{" "}
+          <InlineMath math="x = 4" /> b.u. must be distributed into{" "}
+          <InlineMath math="k = 2" /> subgroups with unlimited capacity. Using
+          the formula above, we find that there are:
+        </p>
+
+        <div className="overflow-x-auto py-1">
+          <BlockMath math="F(4,\,2,\,\infty,\,0) = \binom{4+2-1}{2-1} = \binom{5}{1} = 5 \text{ ways}" />
+        </div>
+
+        {/* Figure A.1:5 ways to split 4 b.u. into 2 groups */}
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
+            5 Possible arrangements of 4 b.u. into two groups of unlimited
+            capacity (<InlineMath math="C = \infty" />)
+          </p>
+          <div className="flex flex-wrap justify-center gap-6">
+            {[
+              { label: "Way 1", left: 4, right: 0 },
+              { label: "Way 2", left: 3, right: 1 },
+              { label: "Way 3", left: 2, right: 2 },
+              { label: "Way 4", left: 1, right: 3 },
+              { label: "Way 5", left: 0, right: 4 },
+            ].map(({ label, left, right }) => (
+              <div
+                key={label}
+                className="flex flex-col items-center gap-1.5"
+              >
+                <div className="flex gap-2 items-end">
+                  {[left, right].map((fill, gi) => (
+                    <div key={gi} className="flex flex-col-reverse gap-0.5">
+                      {Array.from({ length: 4 }).map((_, si) => (
+                        <div
+                          key={si}
+                          className={`w-8 h-5 rounded-sm border ${
+                            si < fill
+                              ? "bg-slate-500 border-slate-600"
+                              : "bg-slate-100 border-slate-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-500">{label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-slate-400 text-center">
+            Each column represents a subgroup. Filled cells = occupied b.u.
+          </p>
+        </div>
+
+        <p className="text-slate-600 leading-relaxed text-sm">
+          However, if real-world constraints impose upper limits on subgroup
+          capacities, additional methods must be used to account for these
+          restrictions.
+        </p>
+
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-4">
+          <p className="text-sm font-semibold text-slate-600">
+            Example: <InlineMath math="x = 5" /> b.u. into{" "}
+            <InlineMath math="k = 3" /> subgroups with{" "}
+            <InlineMath math="C = 2" />
+          </p>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            In such cases, we can use the Inclusion-Exclusion Principle to
+            systematically subtract arrangements that violate capacity
+            constraints. This principle allows us to count all unrestricted
+            distributions first and then adjust for overcounting by excluding
+            cases where one or more subgroups exceed their allowed capacity.
+          </p>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            Consider <InlineMath math="x = 5" /> b.u. to be distributed among{" "}
+            <InlineMath math="k = 3" /> labeled subgroups, with a capacity
+            constraint of <InlineMath math="C = 2" /> for each subgroup —
+            meaning no subgroup can hold more than 2 b.u.
+          </p>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            If there were no capacity restrictions, we could apply the Stars and
+            Bars theorem directly:
+          </p>
+
+          <div className="overflow-x-auto py-1">
+            <BlockMath math="\binom{5+3-1}{3-1} = \binom{7}{2} = 21 \text{ ways}" />
+          </div>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            However, this count includes cases where one or more subgroups
+            receive more than 2 b.u., which violates our constraint. To adjust
+            for this, we use the Inclusion-Exclusion Principle to subtract the
+            invalid cases.
+          </p>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            If a subgroup contains more than <InlineMath math="C" /> b.u.
+            (i.e. <InlineMath math="C+1" /> or more), we must correct the
+            total count. The number of arrangements where a specific subgroup
+            exceeds capacity is:
+          </p>
+
+          <div className="overflow-x-auto py-1">
+            <BlockMath math="\binom{x-(C+1)+k-1}{k-1} = \binom{5-(2+1)+3-1}{3-1} = \binom{4}{2} = 6 \text{ ways}" />
+          </div>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            Since there are <InlineMath math="k = 3" /> subgroups and any of
+            them can exceed the capacity of <InlineMath math="C = 2" />, we
+            multiply by the number of subgroups:
+          </p>
+
+          <div className="overflow-x-auto py-1">
+            <BlockMath math="6 \times 3 = 18 \text{ invalid ways}" />
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

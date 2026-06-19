@@ -25,7 +25,7 @@ function SymbolRow({ sequence }: { sequence: Symbol[] }) {
 
 export default function StarsAndBars() {
   return (
-    <section className="space-y-4">
+    <section id="stars-and-bars" className="space-y-4">
       <h2 className="text-xl font-semibold text-slate-700">
         Stars and Bars (the divider method)
       </h2>
