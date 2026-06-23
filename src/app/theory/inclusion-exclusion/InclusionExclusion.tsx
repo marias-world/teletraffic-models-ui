@@ -709,7 +709,6 @@ export default function InclusionExclusion() {
         </a>
         .
       </p>
-
       {/* Stars and Bars + capacity-constrained counting */}
       <div id="stars-and-bars-example" className="space-y-4 pt-2">
         <h2 className="text-xl font-semibold text-slate-700">
@@ -744,25 +743,27 @@ export default function InclusionExclusion() {
         </div>
 
         <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 space-y-2">
-          <p className="text-sm font-semibold text-sky-800">Parameter notation</p>
+          <p className="text-sm font-semibold text-sky-800">
+            Parameter notation
+          </p>
           <ul className="text-sm text-sky-900 space-y-1 leading-relaxed">
             <li>
-              <InlineMath math="x" />:free (unoccupied) bandwidth units to
+              <InlineMath math="x" />: free (unoccupied) bandwidth units to
               distribute. If <InlineMath math="n" /> b.u. are busy and the total
               capacity is <InlineMath math="k \cdot C" />, then{" "}
               <InlineMath math="x = k \cdot C - n" />.
             </li>
             <li>
-              <InlineMath math="k" />:number of separate resources (subgroups).
+              <InlineMath math="k" />: number of separate resources (subgroups).
             </li>
             <li>
-              <InlineMath math="C" /> or <InlineMath math="\infty" />:upper
-              capacity limit per subgroup — <InlineMath math="C" /> when a
-              finite limit applies, <InlineMath math="\infty" /> when
+              <InlineMath math="C" /> or <InlineMath math="\infty" />
+              : upper capacity limit per subgroup: <InlineMath math="C" /> when
+              a finite limit applies, <InlineMath math="\infty" /> when
               unconstrained.
             </li>
             <li>
-              <InlineMath math="0" />:lower limit per subgroup (each subgroup
+              <InlineMath math="0" />: lower limit per subgroup (each subgroup
               holds at least 0 b.u.).
             </li>
           </ul>
@@ -771,18 +772,31 @@ export default function InclusionExclusion() {
         <p className="text-slate-600 leading-relaxed text-sm">
           This method assumes no restrictions on how many units each subgroup
           can hold, meaning each subgroup can receive anywhere from 0 to{" "}
-          <InlineMath math="x" /> b.u. However, in real-world scenarios,
+          <InlineMath math="\infty" /> b.u. However, in real-world scenarios,
           resource distribution often comes with constraints, such as capacity
           limits, minimum requirements, or other restrictions. When there are no
           upper limits on subgroup capacities, the standard Stars and Bars
-          approach applies directly. For example, consider the case where{" "}
-          <InlineMath math="x = 4" /> b.u. must be distributed into{" "}
-          <InlineMath math="k = 2" /> subgroups with unlimited capacity. Using
-          the formula above, we find that there are:
+          approach applies directly.
+        </p>
+
+        <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+          <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
+            💡
+          </span>
+          <p className="text-sm text-emerald-900 leading-relaxed">
+            We need <InlineMath math="k - 1" /> | bars to separate{" "}
+            <InlineMath math="x" /> ⭐ stars into subgroups.
+          </p>
+        </div>
+        <p>
+          For example, consider the case where <InlineMath math="x = 4" /> b.u.
+          (⭐ stars) must be distributed into <InlineMath math="k = 2" />{" "}
+          subgroups with unlimited capacity. Using the formula above, we find
+          that there are:
         </p>
 
         <div className="overflow-x-auto py-1">
-          <BlockMath math="F(4,\,2,\,\infty,\,0) = \binom{4+2-1}{2-1} = \binom{5}{1} = 5 \text{ ways}" />
+          <BlockMath math="F(4,\,2,\,\infty,\,0) = \binom{4+2-1}{2-1} = \binom{5}{1} = \frac{5!}{1!(5-1)!} = 5 \text{ ways}" />
         </div>
 
         {/* Figure A.1:5 ways to split 4 b.u. into 2 groups */}
@@ -799,10 +813,7 @@ export default function InclusionExclusion() {
               { label: "Way 4", left: 1, right: 3 },
               { label: "Way 5", left: 0, right: 4 },
             ].map(({ label, left, right }) => (
-              <div
-                key={label}
-                className="flex flex-col items-center gap-1.5"
-              >
+              <div key={label} className="flex flex-col items-center gap-1.5">
                 <div className="flex gap-2 items-end">
                   {[left, right].map((fill, gi) => (
                     <div key={gi} className="flex flex-col-reverse gap-0.5">
@@ -873,10 +884,10 @@ export default function InclusionExclusion() {
           </p>
 
           <p className="text-slate-600 leading-relaxed text-sm">
-            If a subgroup contains more than <InlineMath math="C" /> b.u.
-            (i.e. <InlineMath math="C+1" /> or more), we must correct the
-            total count. The number of arrangements where a specific subgroup
-            exceeds capacity is:
+            If a subgroup contains more than <InlineMath math="C" /> b.u. (i.e.{" "}
+            <InlineMath math="C+1" /> or more), we must correct the total count.
+            The number of arrangements where a specific subgroup exceeds
+            capacity is:
           </p>
 
           <div className="overflow-x-auto py-1">
