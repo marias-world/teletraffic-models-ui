@@ -688,7 +688,7 @@ export default function LimitedAvailabilityGroupPage() {
           {/* Config controls */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              Configuration — changes reset the simulation
+              Configuration (changes reset the simulation)
             </p>
 
             {/* ℓ and C steppers */}

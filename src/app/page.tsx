@@ -14,6 +14,15 @@ export default function Home() {
           and calculate Call Blocking Propabilities (CBP).
         </p>
 
+        <figure className="border-l-4 border-slate-300 pl-4 py-1 space-y-1">
+          <blockquote className="text-slate-600 italic leading-relaxed">
+            &ldquo;Essentially, all models are wrong, but some are useful.&rdquo;
+          </blockquote>
+          <figcaption className="text-sm text-slate-400 font-medium">
+            Prof. George Box
+          </figcaption>
+        </figure>
+
         <h2 className="text-2xl font-semibold">Analytical Models:</h2>
         <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
           <li>

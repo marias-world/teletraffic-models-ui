@@ -3,6 +3,81 @@
 import Link from "next/link";
 import { BlockMath, InlineMath } from "react-katex";
 
+const OVER_A: [number, number, number][] = [
+  [3, 0, 2],
+  [3, 1, 1],
+  [3, 2, 0],
+  [4, 0, 1],
+  [4, 1, 0],
+  [5, 0, 0],
+];
+const OVER_B: [number, number, number][] = [
+  [0, 3, 2],
+  [1, 3, 1],
+  [2, 3, 0],
+  [0, 4, 1],
+  [1, 4, 0],
+  [0, 5, 0],
+];
+const OVER_C: [number, number, number][] = [
+  [0, 0, 5],
+  [0, 1, 4],
+  [0, 2, 3],
+  [1, 0, 4],
+  [1, 1, 3],
+  [2, 0, 3],
+];
+const VALID_ARRS: [number, number, number][] = [
+  [1, 2, 2],
+  [2, 1, 2],
+  [2, 2, 1],
+];
+
+function ArrangementChip({
+  a,
+  b,
+  c,
+  highlightIndex,
+  variant,
+}: {
+  a: number;
+  b: number;
+  c: number;
+  highlightIndex: number; // which position (0,1,2) is the offending one
+  variant: "invalid" | "valid";
+}) {
+  const vals = [a, b, c];
+  const chipBg =
+    variant === "valid"
+      ? "bg-emerald-50 border-emerald-300"
+      : "bg-red-50 border-red-200";
+  return (
+    <span
+      className={`inline-flex items-center gap-0.5 border rounded px-1.5 py-0.5 ${chipBg}`}
+    >
+      {vals.map((v, i) => {
+        const isOffending = variant === "invalid" && i === highlightIndex;
+        const box =
+          variant === "valid"
+            ? "bg-emerald-200 text-emerald-800"
+            : isOffending
+              ? "bg-red-200 text-red-800"
+              : "bg-slate-100 text-slate-600";
+        return (
+          <span key={i} className="inline-flex items-center gap-0.5">
+            {i > 0 && <span className="text-slate-300 text-xs">·</span>}
+            <span
+              className={`text-xs rounded px-1 font-mono font-semibold ${box}`}
+            >
+              {v}
+            </span>
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
 export default function InclusionExclusion() {
   return (
     <section className="space-y-4">
@@ -847,9 +922,12 @@ export default function InclusionExclusion() {
 
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-4">
           <p className="text-sm font-semibold text-slate-600">
-            Example: <InlineMath math="x = 5" /> b.u. into{" "}
-            <InlineMath math="k = 3" /> subgroups with{" "}
-            <InlineMath math="C = 2" />
+            Example: <InlineMath math="F(4,\,2,\,C,\,0)" />
+          </p>
+          <p className="text-slate-600 leading-relaxed text-sm">
+            Distribute <InlineMath math="x = 5" /> b.u. across{" "}
+            <InlineMath math="k = 3" /> subgroups, where each subgroup can hold
+            at most <InlineMath math="C = 2" /> b.u.
           </p>
 
           <p className="text-slate-600 leading-relaxed text-sm">
@@ -858,13 +936,6 @@ export default function InclusionExclusion() {
             constraints. This principle allows us to count all unrestricted
             distributions first and then adjust for overcounting by excluding
             cases where one or more subgroups exceed their allowed capacity.
-          </p>
-
-          <p className="text-slate-600 leading-relaxed text-sm">
-            Consider <InlineMath math="x = 5" /> b.u. to be distributed among{" "}
-            <InlineMath math="k = 3" /> labeled subgroups, with a capacity
-            constraint of <InlineMath math="C = 2" /> for each subgroup —
-            meaning no subgroup can hold more than 2 b.u.
           </p>
 
           <p className="text-slate-600 leading-relaxed text-sm">
@@ -882,6 +953,90 @@ export default function InclusionExclusion() {
             for this, we use the Inclusion-Exclusion Principle to subtract the
             invalid cases.
           </p>
+
+          {/* Visual proof */}
+          <div className="rounded-xl border border-slate-200 bg-white p-4 space-y-3">
+            <p className="text-xs font-semibold text-slate-500 tracking-wider">
+              Visual breakdown: each box shows [C₁ · C₂ · C₃] b.u.
+            </p>
+
+            <div className="space-y-1.5">
+              <p className="text-xs font-medium text-red-600">
+                Subgroup 1 exceeds C = 2 → 6 invalid arrangements:
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {OVER_A.map(([a, b, c], i) => (
+                  <ArrangementChip
+                    key={i}
+                    a={a}
+                    b={b}
+                    c={c}
+                    highlightIndex={0}
+                    variant="invalid"
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <p className="text-xs font-medium text-red-600">
+                Subgroup 2 exceeds C = 2 → 6 invalid arrangements:
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {OVER_B.map(([a, b, c], i) => (
+                  <ArrangementChip
+                    key={i}
+                    a={a}
+                    b={b}
+                    c={c}
+                    highlightIndex={1}
+                    variant="invalid"
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <p className="text-xs font-medium text-red-600">
+                Subgroup 3 exceeds C = 2 → 6 invalid arrangements:
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {OVER_C.map(([a, b, c], i) => (
+                  <ArrangementChip
+                    key={i}
+                    a={a}
+                    b={b}
+                    c={c}
+                    highlightIndex={2}
+                    variant="invalid"
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="border-t border-slate-200 pt-3 space-y-1.5">
+              <p className="text-xs font-medium text-emerald-600">
+                ✓ Valid arrangements (21 − 6 − 6 − 6 = 3):
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {VALID_ARRS.map(([a, b, c], i) => (
+                  <ArrangementChip
+                    key={i}
+                    a={a}
+                    b={b}
+                    c={c}
+                    highlightIndex={-1}
+                    variant="valid"
+                  />
+                ))}
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-400 text-center">
+              Red box = subgroup exceeds C = 2. No arrangement can violate two
+              constraints at once (that would require ≥ 6 b.u., but x = 5).
+            </p>
+          </div>
 
           <p className="text-slate-600 leading-relaxed text-sm">
             If a subgroup contains more than <InlineMath math="C" /> b.u. (i.e.{" "}
