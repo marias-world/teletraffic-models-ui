@@ -363,7 +363,17 @@ export default function LimitedAvailabilityGroupPage() {
                   >
                     Inclusion-Exclusion Principle
                   </Link>
-                  .
+                  .{" "}
+                  <Link
+                    href="/theory/conditional-transition-probability"
+                    className="text-violet-700 font-medium hover:underline"
+                  >
+                    <p>
+                      <strong>
+                        See full explanation and step-by-step example.
+                      </strong>
+                    </p>
+                  </Link>
                 </p>
               </div>
             </div>
