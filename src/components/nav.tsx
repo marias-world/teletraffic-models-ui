@@ -33,6 +33,10 @@ const theoryLinks = [
     label: "Bandwidth Sharing Policies",
   },
   { href: "/theory/grade-of-service", label: "Grade of Service" },
+  {
+    href: "/theory/conditional-transition-probability",
+    label: "Conditional Transition Probability",
+  },
 ];
 
 function Dropdown({

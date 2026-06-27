@@ -499,6 +499,73 @@ export default function InclusionExclusion() {
             </div>
           </div>
         </div>
+
+        {/* Conditional transition probability */}
+        <div className="space-y-4 pt-2">
+          <h2 className="text-xl font-semibold text-slate-700">
+            Conditional transition probability{" "}
+            <InlineMath math="\sigma_i(n)" />
+          </h2>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            Computing <InlineMath math="\sigma_i(n)" /> requires counting valid
+            bandwidth allocations using <InlineMath math="F" />. It expresses
+            the probability that, in occupancy state{" "}
+            <InlineMath math="n" />, a call of class{" "}
+            <InlineMath math="i" /> can be serviced.
+          </p>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            Start by finding the number of <strong>favourable</strong>{" "}
+            allocations (the numerator):
+          </p>
+
+          <div className="overflow-x-auto py-1">
+            <BlockMath math="F(k \cdot C - n,\; k,\; C,\; 0) \;-\; F(k \cdot C - n,\; k,\; C_i - 1,\; 0)" />
+          </div>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            Dividing by the total number of allocations gives:
+          </p>
+
+          <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+            <div className="overflow-x-auto flex-1">
+              <BlockMath math="\sigma_i(n) = 1 - \frac{F(k \cdot C - n,\; k,\; C_i - 1,\; 0)}{F(k \cdot C - n,\; k,\; C,\; 0)}" />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
+            <p className="text-sm font-semibold text-slate-600">
+              What each term means
+            </p>
+            <ul className="list-disc list-inside space-y-2 text-sm text-slate-700 leading-relaxed">
+              <li>
+                <InlineMath math="F(k \cdot C - n,\; k,\; C,\; 0)" />: the
+                number of possible allocations of{" "}
+                <InlineMath math="x = k \cdot C - n" /> free b.u. across{" "}
+                <InlineMath math="k" /> subgroups (each limited to{" "}
+                <InlineMath math="C" /> b.u.). This is the total count of
+                valid states.
+              </li>
+              <li>
+                <InlineMath math="F(k \cdot C - n,\; k,\; C_i - 1,\; 0)" />:{" "}
+                the number of allocations where every subgroup holds at most{" "}
+                <InlineMath math="C_i - 1" /> b.u.. These are the{" "}
+                <strong>unfavourable</strong> allocations: states in which a
+                class-<InlineMath math="i" /> call cannot be serviced because
+                no subgroup has room for even one more b.u. of class{" "}
+                <InlineMath math="i" />.
+              </li>
+            </ul>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              The numerator <InlineMath math="F(\cdots,C,0) - F(\cdots,C_i-1,0)" />{" "}
+              therefore counts the <strong>favourable</strong> allocations,
+              i.e. those in which at least one subgroup can accommodate a
+              class-<InlineMath math="i" /> call. Dividing by the total gives
+              the probability <InlineMath math="\sigma_i(n)" />.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
