@@ -919,6 +919,18 @@ export default function InclusionExclusion() {
           capacities, additional methods must be used to account for these
           restrictions.
         </p>
+        <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+          <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
+            💡
+          </span>
+          <p className="text-sm text-emerald-900 leading-relaxed">
+            If <InlineMath math="F(4,\,2,\,0,\,0)=0" />
+            <p>
+              we cannot allocate {""} <InlineMath math="x" /> b.u. when the
+              capacity of each subgroup is zero.{" "}
+            </p>
+          </p>
+        </div>
 
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-4">
           <p className="text-sm font-semibold text-slate-600">
@@ -937,6 +949,11 @@ export default function InclusionExclusion() {
             distributions first and then adjust for overcounting by excluding
             cases where one or more subgroups exceed their allowed capacity.
           </p>
+          <h5 className="text-m font-semibold text-slate-700">
+            Step 1: Calculate the total number of ways to disctribute{" "}
+            <InlineMath math="x" /> b.u. into <InlineMath math="k" /> subgroups
+            without the limitations in the capacity <InlineMath math=" C" />
+          </h5>
 
           <p className="text-slate-600 leading-relaxed text-sm">
             If there were no capacity restrictions, we could apply the Stars and
@@ -954,7 +971,6 @@ export default function InclusionExclusion() {
             invalid cases.
           </p>
 
-          {/* Visual proof */}
           <div className="rounded-xl border border-slate-200 bg-white p-4 space-y-3">
             <p className="text-xs font-semibold text-slate-500 tracking-wider">
               Visual breakdown: each box shows [C₁ · C₂ · C₃] b.u.
@@ -1037,14 +1053,39 @@ export default function InclusionExclusion() {
               constraints at once (that would require ≥ 6 b.u., but x = 5).
             </p>
           </div>
+          <h5 className="text-m font-semibold text-slate-700">
+            Step 1: Calculate the total number of ways to disctribute{" "}
+            <InlineMath math="x" /> b.u. into <InlineMath math="k" /> subgroups
+            without the limitations in the capacity <InlineMath math=" C" />
+          </h5>
+          <p className="text-slate-600 leading-relaxed text-sm">
+            In this step we need to exclude the overcounts of step 1 (i.e. we
+            should take into account the limitation <InlineMath math=" C" />)
+          </p>
+          <h6 className="text-m font-semibold text-slate-600">
+            a) Substract those cases where one subgroup exceeds{" "}
+            <InlineMath math=" C" />
+          </h6>
+
+          <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+            <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
+              💡
+            </span>
+            <p className="text-sm text-emerald-900 leading-relaxed">
+              If one group includes <InlineMath math="C + 1" /> b.u., then we
+              need to distribute <InlineMath math="x - (C + 1)" /> b.u. into{" "}
+              <InlineMath math="k" /> subgroups.
+              <p>
+                we cannot allocate {""} <InlineMath math="x" /> b.u. when the
+                capacity of each subgroup is zero.{" "}
+              </p>
+            </p>
+          </div>
 
           <p className="text-slate-600 leading-relaxed text-sm">
-            If a subgroup contains more than <InlineMath math="C" /> b.u. (i.e.{" "}
-            <InlineMath math="C+1" /> or more), we must correct the total count.
             The number of arrangements where a specific subgroup exceeds
             capacity is:
           </p>
-
           <div className="overflow-x-auto py-1">
             <BlockMath math="\binom{x-(C+1)+k-1}{k-1} = \binom{5-(2+1)+3-1}{3-1} = \binom{4}{2} = 6 \text{ ways}" />
           </div>
@@ -1052,11 +1093,18 @@ export default function InclusionExclusion() {
           <p className="text-slate-600 leading-relaxed text-sm">
             Since there are <InlineMath math="k = 3" /> subgroups and any of
             them can exceed the capacity of <InlineMath math="C = 2" />, we
-            multiply by the number of subgroups:
+            multiply the previous value by <InlineMath math="k" />
           </p>
 
+          <p className="text-slate-600 leading-relaxed text-sm">
+            So the number of overcounted arrangements, where one subgroup
+            exceeds the capacity is:
+          </p>
           <div className="overflow-x-auto py-1">
-            <BlockMath math="6 \times 3 = 18 \text{ invalid ways}" />
+            <BlockMath math=" k \binom{x-(C+1)+k-1}{k-1} = 3 \binom{5-(2+1)+3-1}{3-1} = 3 \binom{4}{2}" />
+          </div>
+          <div className="overflow-x-auto py-1">
+            <BlockMath math="3 \times 6 = 18 \text{ invalid ways}" />
           </div>
         </div>
       </div>
