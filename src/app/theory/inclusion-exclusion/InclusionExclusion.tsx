@@ -1,6 +1,7 @@
 "use client";
 
 import { BlockMath, InlineMath } from "react-katex";
+import CapacityConstraint from "./capacityConstraint";
 
 export default function InclusionExclusion() {
   return (
@@ -708,6 +709,7 @@ export default function InclusionExclusion() {
         </a>
         .
       </p>
+      <CapacityConstraint />
     </section>
   );
 }

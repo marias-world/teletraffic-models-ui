@@ -176,14 +176,20 @@ export default function LimitedAvailabilityGroupPage() {
     setTimeout(() => {
       try {
         if (subgroups <= STEPS_MAX_ELL && C <= STEPS_MAX_C) {
-          const { results: cbp, utilization: util, steps: calcSteps } =
-            lagWithSteps(subgroups, C, serviceClasses);
+          const {
+            results: cbp,
+            utilization: util,
+            steps: calcSteps,
+          } = lagWithSteps(subgroups, C, serviceClasses);
           setResults(cbp);
           setUtilization(util);
           setSteps(calcSteps);
         } else {
-          const { results: cbp, utilization: util } =
-            lagModelResult(subgroups, C, serviceClasses);
+          const { results: cbp, utilization: util } = lagModelResult(
+            subgroups,
+            C,
+            serviceClasses,
+          );
           setResults(cbp);
           setUtilization(util);
           setSteps([]);
@@ -195,8 +201,8 @@ export default function LimitedAvailabilityGroupPage() {
   };
 
   return (
-      <div className="min-h-screen p-4 sm:p-10 bg-slate-100">
-        <div className="max-w-3xl mx-auto space-y-6">
+    <div className="min-h-screen p-4 sm:p-10 bg-slate-100">
+      <div className="max-w-3xl mx-auto space-y-6">
         <div className="bg-white p-4 sm:p-8 rounded-xl shadow-md space-y-10">
           {/* Breadcrumb + title */}
           <div>
@@ -226,10 +232,9 @@ export default function LimitedAvailabilityGroupPage() {
             <p className="text-slate-600 leading-relaxed">
               In the <strong>LAG model</strong> (also referred to as the{" "}
               <strong>Limited Availability Resources, LAR, model</strong>), the
-              total capacity of the system is not a single shared pool.
-              Instead, it is split into <InlineMath math="\ell" /> separate
-              resources, called <strong>subgroups</strong>, each with its own
-              capacity.
+              total capacity of the system is not a single shared pool. Instead,
+              it is split into <InlineMath math="\ell" /> separate resources,
+              called <strong>subgroups</strong>, each with its own capacity.
             </p>
 
             {/* subgroup diagram */}
@@ -263,10 +268,9 @@ export default function LimitedAvailabilityGroupPage() {
                   🗂️ <InlineMath math="\ell" /> identical subgroups
                 </p>
                 <p className="text-sm text-slate-600">
-                  The model assumes the existence of{" "}
-                  <InlineMath math="\ell" /> identical separate resources
-                  (subgroups), each with a capacity of{" "}
-                  <InlineMath math="C" /> b.u.
+                  The model assumes the existence of <InlineMath math="\ell" />{" "}
+                  identical separate resources (subgroups), each with a capacity
+                  of <InlineMath math="C" /> b.u.
                 </p>
               </div>
               <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 space-y-1">
@@ -284,14 +288,13 @@ export default function LimitedAvailabilityGroupPage() {
                   🚫 No splitting
                 </p>
                 <p className="text-sm text-slate-600">
-                  A request cannot be divided across more than one resource:
-                  it must be served entirely by a single subgroup.
+                  A request cannot be divided across more than one resource: it
+                  must be served entirely by a single subgroup.
                 </p>
               </div>
               <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-1">
                 <p className="text-sm font-semibold text-emerald-700">
-                  🔗 Special case{" "}
-                  <InlineMath math="\ell = 1" />
+                  🔗 Special case <InlineMath math="\ell = 1" />
                 </p>
                 <p className="text-sm text-slate-600">
                   If there&apos;s only one resource (
@@ -315,14 +318,14 @@ export default function LimitedAvailabilityGroupPage() {
               Occupancy Distribution
             </h2>
             <p className="text-slate-600 leading-relaxed">
-              As in the Kaufman-Roberts model, let <InlineMath math="q(j)" />{" "}
-              be the unnormalised probability that the system is in state{" "}
+              As in the Kaufman-Roberts model, let <InlineMath math="q(j)" /> be
+              the unnormalised probability that the system is in state{" "}
               <InlineMath math="j" /> (i.e. <InlineMath math="j" /> bandwidth
               units are occupied across all subgroups). For a system with{" "}
               <InlineMath math="K" /> service-classes, where each class{" "}
-              <InlineMath math="k" /> has offered load{" "}
-              <InlineMath math="a_k" /> and bandwidth requirement{" "}
-              <InlineMath math="b_k" />, the occupancy distribution satisfies:
+              <InlineMath math="k" /> has offered load <InlineMath math="a_k" />{" "}
+              and bandwidth requirement <InlineMath math="b_k" />, the occupancy
+              distribution satisfies:
             </p>
 
             <div className="overflow-x-auto py-1">
@@ -340,14 +343,29 @@ export default function LimitedAvailabilityGroupPage() {
               <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
                 📖
               </span>
-              <p className="text-sm text-violet-900 leading-relaxed">
-                The term <InlineMath math="\sigma_k(j-b_k)" /> is the factor
-                that distinguishes the LAG model from Kaufman-Roberts: it
-                accounts for the existence of the <InlineMath math="\ell" />{" "}
-                identical subgroups, capturing how a class-<InlineMath math="k" />{" "}
-                request can be placed into one of them when the system is in
-                state <InlineMath math="j-b_k" />.
-              </p>
+              <div className="space-y-2">
+                <p className="text-sm text-violet-900 leading-relaxed">
+                  The term <InlineMath math="\sigma_k(j-b_k)" /> is the factor
+                  that distinguishes the LAG model from Kaufman-Roberts: it
+                  accounts for the existence of the <InlineMath math="\ell" />{" "}
+                  identical subgroups, capturing how a class-
+                  <InlineMath math="k" /> request can be placed into one of them
+                  when the system is in state <InlineMath math="j-b_k" />.
+                </p>
+                <p className="text-sm text-violet-900 leading-relaxed">
+                  Computing <InlineMath math="\sigma_k(j)" /> requires counting
+                  valid bandwidth arrangements across subgroups with capacity
+                  constraints: a combinatorial problem solved with the{" "}
+                  <strong>Stars and Bars</strong> method combined with the{" "}
+                  <Link
+                    href="/theory/inclusion-exclusion#stars-and-bars-example"
+                    className="text-violet-700 font-medium hover:underline"
+                  >
+                    Inclusion-Exclusion Principle
+                  </Link>
+                  .
+                </p>
+              </div>
             </div>
 
             <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
@@ -355,10 +373,10 @@ export default function LimitedAvailabilityGroupPage() {
                 💡
               </span>
               <p className="text-sm text-emerald-900 leading-relaxed">
-                When <InlineMath math="\ell = 1" />, there is only one
-                subgroup, so <InlineMath math="\sigma_k(j-b_k) = 1" /> for
-                every reachable state, and the recursion above reduces to the
-                familiar Kaufman-Roberts formula:
+                When <InlineMath math="\ell = 1" />, there is only one subgroup,
+                so <InlineMath math="\sigma_k(j-b_k) = 1" /> for every reachable
+                state, and the recursion above reduces to the familiar
+                Kaufman-Roberts formula:
               </p>
             </div>
             <div className="overflow-x-auto py-1">
@@ -560,7 +578,8 @@ export default function LimitedAvailabilityGroupPage() {
                         {utilization.U.toFixed(4)} b.u.
                       </p>
                       <p className="text-xs text-slate-400">
-                        Mean b.u. occupied out of {Number(ell) * Number(capacity)} b.u.
+                        Mean b.u. occupied out of{" "}
+                        {Number(ell) * Number(capacity)} b.u.
                       </p>
                     </div>
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
@@ -607,7 +626,6 @@ export default function LimitedAvailabilityGroupPage() {
               </div>
             )}
           </section>
-
         </div>
 
         {/* Animation card */}
@@ -670,7 +688,7 @@ export default function LimitedAvailabilityGroupPage() {
           {/* Config controls */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              Configuration — changes reset the simulation
+              Configuration (changes reset the simulation)
             </p>
 
             {/* ℓ and C steppers */}
@@ -715,14 +733,13 @@ export default function LimitedAvailabilityGroupPage() {
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => {
-                      const minC = Math.max(
-                        ...animClasses.map((c) => c.bu),
-                        1,
-                      );
+                      const minC = Math.max(...animClasses.map((c) => c.bu), 1);
                       animC > minC &&
                         stopAndApply(() => setAnimC((n) => n - 1));
                     }}
-                    disabled={animC <= Math.max(...animClasses.map((c) => c.bu), 1)}
+                    disabled={
+                      animC <= Math.max(...animClasses.map((c) => c.bu), 1)
+                    }
                     className="w-7 h-7 rounded-md border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-30 font-bold text-base leading-none flex items-center justify-center"
                   >
                     −
@@ -858,8 +875,7 @@ export default function LimitedAvailabilityGroupPage() {
             </p>
           </div>
         </div>
-
-        </div>
       </div>
+    </div>
   );
 }
