@@ -219,13 +219,13 @@ export default function InclusionExclusion() {
           <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
             💡
           </span>
-          <p className="text-sm text-emerald-900 leading-relaxed">
-            If <InlineMath math="F(4,\,2,\,0,\,0)=0" />
+          <div className="text-sm text-emerald-900 leading-relaxed">
             <p>
-              we cannot allocate {""} <InlineMath math="x" /> b.u. when the
-              capacity of each subgroup is zero.{" "}
+              If <InlineMath math="F(4,\,2,\,0,\,0)=0" />, we cannot allocate{" "}
+              <InlineMath math="x" /> b.u. when the capacity of each subgroup is
+              zero.
             </p>
-          </p>
+          </div>
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-4">
@@ -371,10 +371,6 @@ export default function InclusionExclusion() {
               If one group includes <InlineMath math="C + 1" /> b.u., then we
               need to distribute <InlineMath math="x - (C + 1)" /> b.u. into{" "}
               <InlineMath math="k" /> subgroups.
-              <p>
-                we cannot allocate {""} <InlineMath math="x" /> b.u. when the
-                capacity of each subgroup is zero.{" "}
-              </p>
             </p>
           </div>
 
@@ -402,9 +398,108 @@ export default function InclusionExclusion() {
           <div className="overflow-x-auto py-1">
             <BlockMath math="3 \times 6 = 18 \text{ invalid ways}" />
           </div>
+          <h6 className="text-m font-semibold text-slate-600">
+            b) Substract those cases where two subgroup exceed{" "}
+            <InlineMath math="C" />
+          </h6>
+          <p className="text-slate-600 leading-relaxed text-sm">
+            The number of arrangements where two subgroups exceed the capacity{" "}
+            <InlineMath math="C" />
+            is:
+          </p>
+          <div className="overflow-x-auto py-1">
+            <BlockMath math="\binom{x-2(C+1)+k-1}{k-1} " />
+          </div>
+          <p className="text-slate-600 leading-relaxed text-sm">
+            Since there are <InlineMath math="\binom{k}{2}" /> ways to select
+            two subgroups from the <InlineMath math="k" /> subgroups that exceed
+            <InlineMath math="C" />, we multiply by{" "}
+            <InlineMath math="\binom{k}{2}" />
+          </p>
+          <p className="text-slate-600 leading-relaxed text-sm">
+            So the number of overcounted arrangements, where two subgroup exceed
+            the capacity is:
+          </p>
+          <div className="overflow-x-auto py-1">
+            <BlockMath math=" \binom{k}{2}\binom{x - 2(C+1) + k-1}{k-1}" />
+          </div>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            In our example the <InlineMath math="x - 2(c + 1)" /> is:
+          </p>
+          <div>
+            <BlockMath math="x - 2(c + 1) = 5 - 2(2 + 1) = 5 - 6 = - 1" />
+          </div>
+          <p className="text-slate-600 leading-relaxed text-sm">
+            Which is impossible!
+          </p>
+          <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+            <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
+              💡
+            </span>
+            <p className="text-sm text-emerald-900 leading-relaxed">
+              So the final results is:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math=" 21 - 18 = 3 \text { ways}" />
+            </div>
+          </div>
+          <p className="text-sm text-emerald-900 leading-relaxed">
+            Which are the following:
+            {""} <InlineMath math="(2, 2, 2), (2,1,2), (1,2,2)" />
+          </p>
+        </div>
+
+        <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 space-y-2">
+          <p className="text-sm font-semibold text-sky-800">
+            This inclusion-exclusion process continues for all possible number
+            of subgroups that can exceed <InlineMath math="C" />.
+          </p>
+          <p className="text-sm text-emerald-900 leading-relaxed">
+            This number cannot exceed:
+          </p>
+          <div className="overflow-x-auto py-1">
+            <BlockMath math="\left\lfloor \dfrac{x}{C+1} \right\rfloor" />
+          </div>
+          <p className="text-sm text-emerald-900 leading-relaxed">
+            The term that describes all the previous steps is:
+          </p>
+          <div className="gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+            <p className="text-sm text-emerald-900 leading-relaxed"></p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="(-1)^i\binom{k}{i}\binom{x + (k-1) - i(c+1)}{k - 1}" />
+            </div>
+          </div>
+
+          <ul className="list-disc list-inside space-y-1 text-sm text-sky-900 leading-relaxed">
+            <li>
+              <InlineMath math="i" /> is the number of subgroups that exceed
+              the capacity <InlineMath math="C" />.
+            </li>
+            <li>
+              <InlineMath math="(-1)^i" /> alternates between subtracting and
+              adding arrangements for each <InlineMath math="i > 0" />.
+            </li>
+            <li>
+              When <InlineMath math="i = 0" />, the term recovers the
+              unconstrained Stars and Bars count{" "}
+              <InlineMath math="\binom{x+k-1}{k-1}" /> (step 1).
+            </li>
+          </ul>
+
+          <p className="text-base font-semibold text-slate-700 leading-relaxed">
+            The total number of valid distributions of{" "}
+            <InlineMath math="x" /> free b.u. across{" "}
+            <InlineMath math="k" /> separate resources is therefore:
+          </p>
+
+          <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+            <div className="overflow-x-auto flex-1">
+              <BlockMath math="F(x,k,C,0) = \sum_{i=0}^{\left\lfloor \frac{x}{C+1} \right\rfloor} (-1)^i \binom{k}{i} \binom{x + (k-1) - i(C+1)}{k-1}" />
+            </div>
+          </div>
         </div>
       </div>
-      ;
     </section>
   );
 }
