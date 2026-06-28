@@ -44,9 +44,7 @@ const calculateOccupancyProbability = (
       individualResourceCapacity,
     );
 
-    if (isNaN(conditionalProbability) || conditionalProbability < 0) {
-      throw new Error("Invalid conditional probability calculated.");
-    }
+    const clampedProbability = Math.max(0, Math.min(1, conditionalProbability));
 
     const recursiveProbability = calculateOccupancyProbability(
       currentState - bu,
@@ -57,7 +55,7 @@ const calculateOccupancyProbability = (
     );
 
     totalProbability +=
-      incomingLoad_a * bu * conditionalProbability * recursiveProbability;
+      incomingLoad_a * bu * clampedProbability * recursiveProbability;
   }
 
   const result = (1 / currentState) * totalProbability;
