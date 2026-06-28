@@ -397,6 +397,205 @@ export default function LimitedAvailabilityGroupPage() {
             </div>
           </section>
 
+          {/* Assumptions */}
+          <section className="space-y-4">
+            <h2 className="text-xl font-semibold text-slate-700">
+              Model Approximations
+            </h2>
+            <p className="text-slate-600 leading-relaxed text-sm">
+              The recursion above relies on two approximations that keep the
+              calculation simple enough to run in practice.
+            </p>
+            <div className="space-y-3">
+              <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
+                <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">
+                  1️⃣
+                </span>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-sky-800">
+                    Assumption 1: <InlineMath math="\sigma_k" /> depends only on
+                    total occupied b.u.
+                  </p>
+                  <p className="text-sm text-sky-900 leading-relaxed">
+                    In the exact model, the probability of accepting a class-
+                    <InlineMath math="k" /> call depends on how many calls of
+                    each type are in each specific subgroup, a very large state
+                    space. We simplify by assuming it depends only on the{" "}
+                    <strong>total number of busy b.u.</strong> across all
+                    subgroups, <InlineMath math="j" />:
+                  </p>
+                  <div className="overflow-x-auto">
+                    <BlockMath math="\sigma_k(n_{1,1},\,n_{1,2},\,\ldots,\,n_{K,\ell}) \approx \sigma_k(j)" />
+                  </div>
+                  {/* Visual: two scenarios with same j but different outcomes */}
+                  <div className="rounded-lg border border-sky-200 bg-white p-3 space-y-3">
+                    <p className="text-[11px] font-semibold text-slate-500 tracking-wider text-center">
+                      Example: ℓ=3, C=5, j=12. New class-2 call arrives (needs 2
+                      free b.u. in one resource).
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-6">
+                      {[
+                        {
+                          label: "Scenario 1",
+                          busy: [4, 4, 4],
+                          result: "blocked",
+                          resultColor: "text-red-600",
+                          icon: "✗",
+                        },
+                        {
+                          label: "Scenario 2",
+                          busy: [5, 4, 3],
+                          result: "accepted (fits in R3)",
+                          resultColor: "text-emerald-600",
+                          icon: "✓",
+                        },
+                      ].map(({ label, busy, result, resultColor, icon }) => (
+                        <div
+                          key={label}
+                          className="flex flex-col items-center gap-2"
+                        >
+                          <p className="text-[11px] font-semibold text-slate-600">
+                            {label} (j = {busy.reduce((a, b) => a + b, 0)})
+                          </p>
+                          <div className="flex gap-2 items-end">
+                            {busy.map((b, gi) => (
+                              <div
+                                key={gi}
+                                className="flex flex-col items-center gap-0.5"
+                              >
+                                <div className="flex flex-col-reverse gap-0.5">
+                                  {Array.from({ length: 5 }).map((_, si) => (
+                                    <div
+                                      key={si}
+                                      className={`w-7 h-4 rounded-sm border ${si < b ? "bg-slate-400 border-slate-500" : "bg-sky-100 border-sky-300"}`}
+                                    />
+                                  ))}
+                                </div>
+                                <p className="text-[10px] text-slate-400">
+                                  R{gi + 1}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                          <p className={`text-xs font-semibold ${resultColor}`}>
+                            {icon} {result}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-[11px] text-slate-400 text-center">
+                      Both have j=12, so the model uses the same{" "}
+                      <InlineMath math="\sigma_k(12)" /> for both — even though
+                      the real outcome differs.
+                    </p>
+                  </div>
+
+                  <p className="text-xs text-sky-700 leading-relaxed">
+                    This reduces the problem from a high-dimensional state space
+                    to the simple 1D recursion. It is an approximation: two
+                    states with the same <InlineMath math="j" /> but different
+                    distributions across subgroups can give different acceptance
+                    outcomes in reality.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">
+                  2️⃣
+                </span>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-amber-800">
+                    Assumption 2: <InlineMath math="\sigma_k" /> changes slowly
+                    with <InlineMath math="j" />
+                  </p>
+                  <p className="text-sm text-amber-900 leading-relaxed">
+                    In a real system, accepting a call of one class can affect
+                    whether a call of a different class is accepted next. We
+                    make these dependencies negligible by assuming that the
+                    acceptance probability <InlineMath math="\sigma_k(j)" />{" "}
+                    changes very slowly as <InlineMath math="j" /> increases:
+                  </p>
+                  <div className="overflow-x-auto">
+                    <BlockMath math="\left|\frac{\sigma_k(j) - \sigma_k(j-1)}{\sigma_k(j)}\right| \ll 1" />
+                  </div>
+                  <p className="text-xs text-amber-700 leading-relaxed">
+                    The numerator is the change in{" "}
+                    <InlineMath math="\sigma_k" /> when one more busy unit is
+                    added. Dividing by <InlineMath math="\sigma_k(j)" /> gives
+                    the <em>relative</em> change: how large that shift is as a
+                    fraction of the current value. The formula says this
+                    fraction must be much less than 1 (i.e., much less than
+                    100%). In plain terms: adding one busy unit barely moves the
+                    acceptance probability.
+                  </p>
+                  {/* Visual: σ_k changing slowly vs abruptly */}
+                  <div className="rounded-lg border border-amber-200 bg-white p-3 space-y-3">
+                    <p className="text-[11px] font-semibold text-slate-500 tracking-wide text-center">
+                      Example: <InlineMath math="\sigma_2(j)" /> for ℓ=3, C=5,
+                      b₂=2
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      {[
+                        { j: 9, val: 1.0, color: "bg-emerald-400" },
+                        { j: 10, val: 1.0, color: "bg-emerald-400" },
+                        { j: 11, val: 1.0, color: "bg-emerald-400" },
+                        { j: 12, val: 0.9, color: "bg-emerald-400" },
+                        { j: 13, val: 0.5, color: "bg-amber-400" },
+                        { j: 14, val: 0.0, color: "bg-red-300" },
+                      ].map(({ j, val, color }) => {
+                        const pct = Math.round(val * 100);
+                        const change =
+                          j === 12
+                            ? "−10%"
+                            : j === 13
+                              ? "−44% ←"
+                              : j === 14
+                                ? "−100% ←"
+                                : "";
+                        const changeColor =
+                          j >= 13
+                            ? "text-red-600 font-semibold"
+                            : "text-slate-300";
+                        return (
+                          <div key={j} className="flex items-center gap-2">
+                            <span className="text-[11px] text-slate-500 w-12 text-right shrink-0">
+                              j = {j}
+                            </span>
+                            <div className="flex-1 h-4 rounded-sm bg-slate-100 overflow-hidden">
+                              <div
+                                className={`h-full ${color} rounded-sm`}
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                            <span className="text-[11px] text-slate-500 w-8 shrink-0">
+                              {val.toFixed(2)}
+                            </span>
+                            <span
+                              className={`text-[11px] w-16 shrink-0 ${changeColor}`}
+                            >
+                              {change}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <p className="text-[11px] text-slate-400 text-center">
+                      The assumption holds when <InlineMath math="\sigma_2" />{" "}
+                      changes slowly (low j). Near saturation it breaks down.
+                    </p>
+                  </div>
+
+                  <p className="text-xs text-amber-700 leading-relaxed">
+                    When this holds, calls of different service-classes behave
+                    almost independently of one another, and the recursion gives
+                    results very close to simulation.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Interactive calculator */}
           <section className="space-y-4">
             <h2 className="text-xl font-semibold text-slate-700">
@@ -410,14 +609,19 @@ export default function LimitedAvailabilityGroupPage() {
             </p>
 
             <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
-              <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">🚧</span>
+              <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">
+                🚧
+              </span>
               <p className="text-sm text-amber-900 leading-relaxed">
-                <strong>Bandwidth reservation</strong> policy support is coming soon.
+                <strong>Bandwidth reservation</strong> policy support is coming
+                soon.
               </p>
             </div>
 
             <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-3">
-              <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">💡</span>
+              <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">
+                💡
+              </span>
               <p className="text-sm text-sky-900 leading-relaxed">
                 Step-by-step calculations are shown when{" "}
                 <InlineMath math="\ell \leq 5" /> and{" "}
