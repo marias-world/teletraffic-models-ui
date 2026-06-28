@@ -368,7 +368,9 @@ export default function LimitedAvailabilityGroupPage() {
                     href="/theory/conditional-transition-probability"
                     className="text-violet-700 font-medium hover:underline"
                   >
-                    <strong>See full explanation and step-by-step example.</strong>
+                    <strong>
+                      See full explanation and step-by-step example.
+                    </strong>
                   </Link>
                 </p>
               </div>
@@ -382,7 +384,12 @@ export default function LimitedAvailabilityGroupPage() {
                 When <InlineMath math="\ell = 1" />, there is only one subgroup,
                 so <InlineMath math="\sigma_k(j-b_k) = 1" /> for every reachable
                 state, and the recursion above reduces to the familiar
-                Kaufman-Roberts formula:
+                <Link
+                  href="/kaufman-roberts"
+                  className="text-violet-700 font-medium hover:underline"
+                >
+                  <strong> Kaufman-Roberts formula</strong>
+                </Link>
               </p>
             </div>
             <div className="overflow-x-auto py-1">
@@ -401,6 +408,23 @@ export default function LimitedAvailabilityGroupPage() {
               traffic per service class under a{" "}
               <strong>Complete Sharing (CS)</strong> policy.
             </p>
+
+            <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
+              <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">🚧</span>
+              <p className="text-sm text-amber-900 leading-relaxed">
+                <strong>Bandwidth reservation</strong> policy support is coming soon.
+              </p>
+            </div>
+
+            <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-3">
+              <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">💡</span>
+              <p className="text-sm text-sky-900 leading-relaxed">
+                Step-by-step calculations are shown when{" "}
+                <InlineMath math="\ell \leq 5" /> and{" "}
+                <InlineMath math="C \leq 5" />. For larger inputs, only the
+                final results are displayed.
+              </p>
+            </div>
 
             {/* Subgroups & capacity */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -621,7 +645,11 @@ export default function LimitedAvailabilityGroupPage() {
                               </p>
                               {gi === 0 && (
                                 <p className="text-xs text-slate-500 leading-relaxed">
-                                  <InlineMath math="\sigma_k(j)" /> is the conditional transition probability: probability a class-<InlineMath math="k" /> call can be placed given <InlineMath math="j" /> busy b.u.
+                                  <InlineMath math="\sigma_k(j)" /> is the
+                                  conditional transition probability:
+                                  probability a class-
+                                  <InlineMath math="k" /> call can be placed
+                                  given <InlineMath math="j" /> busy b.u.
                                 </p>
                               )}
                             </div>
