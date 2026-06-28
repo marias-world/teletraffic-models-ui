@@ -9,7 +9,7 @@ An interactive educational reference for teletraffic loss models, built with Nex
 ---
 
 ## Note
-The mathematical models were initially implemented in this repo and can be executed as a CLI 
+The mathematical models were initially implemented in the repo below and can be executed as a CLI 
 https://github.com/mariakourtesi/Teletraffic-models
 
 
