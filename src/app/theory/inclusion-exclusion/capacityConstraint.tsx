@@ -473,8 +473,8 @@ export default function InclusionExclusion() {
 
           <ul className="list-disc list-inside space-y-1 text-sm text-sky-900 leading-relaxed">
             <li>
-              <InlineMath math="i" /> is the number of subgroups that exceed
-              the capacity <InlineMath math="C" />.
+              <InlineMath math="i" /> is the number of subgroups that exceed the
+              capacity <InlineMath math="C" />.
             </li>
             <li>
               <InlineMath math="(-1)^i" /> alternates between subtracting and
@@ -488,9 +488,9 @@ export default function InclusionExclusion() {
           </ul>
 
           <p className="text-base font-semibold text-slate-700 leading-relaxed">
-            The total number of valid distributions of{" "}
-            <InlineMath math="x" /> free b.u. across{" "}
-            <InlineMath math="k" /> separate resources is therefore:
+            The total number of valid distributions of <InlineMath math="x" />{" "}
+            free b.u. across <InlineMath math="k" /> separate resources is
+            therefore:
           </p>
 
           <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
@@ -503,16 +503,14 @@ export default function InclusionExclusion() {
         {/* Conditional transition probability */}
         <div className="space-y-4 pt-2">
           <h2 className="text-xl font-semibold text-slate-700">
-            Conditional transition probability{" "}
-            <InlineMath math="\sigma_i(n)" />
+            Conditional transition probability <InlineMath math="\sigma_i(n)" />
           </h2>
 
           <p className="text-slate-600 leading-relaxed text-sm">
             Computing <InlineMath math="\sigma_i(n)" /> requires counting valid
             bandwidth allocations using <InlineMath math="F" />. It expresses
-            the probability that, in occupancy state{" "}
-            <InlineMath math="n" />, a call of class{" "}
-            <InlineMath math="i" /> can be serviced.
+            the probability that, in occupancy state <InlineMath math="n" />, a
+            call of class <InlineMath math="i" /> can be serviced.
           </p>
 
           <p className="text-slate-600 leading-relaxed text-sm">
@@ -544,25 +542,474 @@ export default function InclusionExclusion() {
                 number of possible allocations of{" "}
                 <InlineMath math="x = k \cdot C - n" /> free b.u. across{" "}
                 <InlineMath math="k" /> subgroups (each limited to{" "}
-                <InlineMath math="C" /> b.u.). This is the total count of
-                valid states.
+                <InlineMath math="C" /> b.u.). This is the total count of valid
+                states.
               </li>
               <li>
-                <InlineMath math="F(k \cdot C - n,\; k,\; C_i - 1,\; 0)" />:{" "}
-                the number of allocations where every subgroup holds at most{" "}
+                <InlineMath math="F(k \cdot C - n,\; k,\; C_i - 1,\; 0)" />: the
+                number of allocations where every subgroup holds at most{" "}
                 <InlineMath math="C_i - 1" /> b.u.. These are the{" "}
                 <strong>unfavourable</strong> allocations: states in which a
-                class-<InlineMath math="i" /> call cannot be serviced because
-                no subgroup has room for even one more b.u. of class{" "}
+                class-
+                <InlineMath math="i" /> call cannot be serviced because no
+                subgroup has room for even one more b.u. of class{" "}
                 <InlineMath math="i" />.
               </li>
             </ul>
             <p className="text-sm text-slate-600 leading-relaxed">
-              The numerator <InlineMath math="F(\cdots,C,0) - F(\cdots,C_i-1,0)" />{" "}
-              therefore counts the <strong>favourable</strong> allocations,
-              i.e. those in which at least one subgroup can accommodate a
-              class-<InlineMath math="i" /> call. Dividing by the total gives
-              the probability <InlineMath math="\sigma_i(n)" />.
+              The numerator{" "}
+              <InlineMath math="F(\cdots,C,0) - F(\cdots,C_i-1,0)" /> therefore
+              counts the <strong>favourable</strong> allocations, i.e. those in
+              which at least one subgroup can accommodate a class-
+              <InlineMath math="i" /> call. Dividing by the total gives the
+              probability <InlineMath math="\sigma_i(n)" />.
+            </p>
+          </div>
+        </div>
+
+        {/* ── Worked example ─────────────────────────────────────────── */}
+        <div className="space-y-4 pt-4">
+          <h2 className="text-xl font-semibold text-slate-700">
+            Step-by-step example: Determining{" "}
+            <InlineMath math="F(12,\,3,\,5,\,0)" />
+          </h2>
+
+          <p className="text-slate-600 leading-relaxed text-sm">
+            Find the number of valid arrangements of{" "}
+            <InlineMath math="x = 12" /> free b.u. across{" "}
+            <InlineMath math="\ell = 3" /> subgroups each with capacity{" "}
+            <InlineMath math="C = 5" /> b.u.
+          </p>
+
+          {/* Step 1 */}
+          <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 space-y-2">
+            <p className="text-sm font-semibold text-sky-800">
+              Step 1: Unconstrained count (Stars and Bars)
+            </p>
+            <p className="text-sm text-sky-900 leading-relaxed">
+              Ignore the capacity limit first. Any of the 3 subgroups can hold
+              any amount:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="F(12,\,3,\,\infty,\,0) = \binom{12+3-1}{3-1} = \binom{14}{2} = 91 \text{ ways}" />
+            </div>
+          </div>
+
+          {/* Step 2a */}
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4 space-y-3">
+            <p className="text-sm font-semibold text-red-800">
+              Step 2a: Subtract: one subgroup exceeds{" "}
+              <InlineMath math="C = 5" />
+            </p>
+            <p className="text-sm text-red-900 leading-relaxed">
+              If one resource includes at least 6 b.u., we need to distribute
+              the remaining 12 − 6 = 6 b.u. into 3 resources.
+            </p>
+
+            {/* Substitution visualisation */}
+            <div className="rounded-lg border border-red-200 bg-white p-4 space-y-4">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
+                Example arrangement: A=8, B=3, C=1 (total=12, A exceeds 5)
+              </p>
+
+              <div className="flex flex-wrap items-end justify-center gap-6">
+                {/* Before */}
+                <div className="flex flex-col items-center gap-2">
+                  <p className="text-xs font-medium text-slate-600">
+                    Before substitution
+                  </p>
+                  <div className="flex gap-3 items-end">
+                    {[
+                      { label: "A = 8", fill: 8, committed: 6 },
+                      { label: "B = 3", fill: 3, committed: 0 },
+                      { label: "C = 1", fill: 1, committed: 0 },
+                    ].map(({ label, fill, committed }) => (
+                      <div
+                        key={label}
+                        className="flex flex-col items-center gap-1"
+                      >
+                        <div className="flex flex-col-reverse gap-0.5">
+                          {Array.from({ length: 8 }).map((_, si) => {
+                            const overCap = si >= 5;
+                            const isFilled = si < fill;
+                            const isCommitted = isFilled && si < committed;
+                            return (
+                              <div
+                                key={si}
+                                className={[
+                                  "w-8 h-4 rounded-sm border",
+                                  isCommitted
+                                    ? "bg-orange-400 border-orange-500"
+                                    : isFilled
+                                      ? "bg-sky-400 border-sky-500"
+                                      : overCap
+                                        ? "bg-rose-50 border-rose-200"
+                                        : "bg-slate-100 border-slate-300",
+                                  si === 5
+                                    ? "border-t-2 border-t-rose-500"
+                                    : "",
+                                ]
+                                  .filter(Boolean)
+                                  .join(" ")}
+                              />
+                            );
+                          })}
+                        </div>
+                        <p className="text-[11px] text-slate-600 font-mono">
+                          {label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-3 text-[10px] text-slate-500 justify-center">
+                    <span className="flex items-center gap-1">
+                      <span className="w-3 h-3 rounded-sm bg-orange-400 inline-block" />{" "}
+                      pre-assigned 6
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-3 h-3 rounded-sm bg-sky-400 inline-block" />{" "}
+                      A extra
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-3 h-3 rounded-sm bg-rose-50 border border-rose-200 inline-block" />{" "}
+                      above C = 5 limit
+                    </span>
+                  </div>
+                </div>
+
+                <div className="text-2xl text-slate-400 pb-8">→</div>
+
+                {/* After */}
+                <div className="flex flex-col items-center gap-2">
+                  <p className="text-xs font-medium text-slate-600">
+                    After: pre-assign 6 to A, spread the rest freely
+                  </p>
+                  <div className="flex gap-3 items-end">
+                    {[
+                      { label: "A extra = 2", fill: 2 },
+                      { label: "B = 3", fill: 3 },
+                      { label: "C = 1", fill: 1 },
+                    ].map(({ label, fill }) => (
+                      <div
+                        key={label}
+                        className="flex flex-col items-center gap-1"
+                      >
+                        <div className="flex flex-col-reverse gap-0.5">
+                          {Array.from({ length: 6 }).map((_, si) => (
+                            <div
+                              key={si}
+                              className={`w-8 h-4 rounded-sm border ${
+                                si < fill
+                                  ? "bg-sky-400 border-sky-500"
+                                  : "bg-slate-100 border-slate-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <p className="text-[11px] text-slate-600 font-mono">
+                          {label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-emerald-700 font-semibold">
+                    2 + 3 + 1 = 6 ✓
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-500 text-center leading-relaxed">
+                Subgroup A is still present as its excess above 6. All 3
+                variables are now unconstrained (≥ 0), so Stars and Bars applies
+                across all 3, not just the remaining 2.
+              </p>
+            </div>
+
+            <p className="text-sm text-red-900 leading-relaxed">
+              Distributing 6 b.u. across 3 resources gives{" "}
+              <strong>28 ways</strong>:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="\binom{x - (C+1) + l-1}{l-1} = \binom{6+3-1}{3-1} = \binom{8}{2} = 28 \text{ ways}" />
+            </div>
+            <p className="text-sm text-red-900 leading-relaxed">
+              Any of the <InlineMath math="\ell = 3" /> subgroups could be the
+              offending one, so multiply by 3:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="3 \times 28 = 84 \text{ overcounted arrangements}" />
+            </div>
+          </div>
+
+          {/* Step 2b */}
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-3">
+            <p className="text-sm font-semibold text-amber-800">
+              Step 2b: Add back: two subgroups exceed{" "}
+              <InlineMath math="C = 5" />
+            </p>
+            <p className="text-sm text-amber-900 leading-relaxed">
+              In Step 2a we subtracted every arrangement where A ≥ 6, every
+              arrangement where B ≥ 6, and every arrangement where C ≥ 6. But an
+              arrangement where <em>both</em> A ≥ 6 and B ≥ 6 got subtracted{" "}
+              <strong>twice</strong>: once in the "A over" group and once in the
+              "B over" group. We need to add those back once.
+            </p>
+
+            {/* Visual: the 3 double-counted arrangements */}
+            <div className="rounded-lg border border-amber-200 bg-white p-3 space-y-2">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
+                The 3 arrangements that were subtracted twice
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                {(
+                  [
+                    { arr: [6, 6, 0], label: "A and B both ≥ 6" },
+                    { arr: [6, 0, 6], label: "A and C both ≥ 6" },
+                    { arr: [0, 6, 6], label: "B and C both ≥ 6" },
+                  ] as { arr: number[]; label: string }[]
+                ).map(({ arr, label }) => (
+                  <div key={label} className="flex flex-col items-center gap-1">
+                    <div className="flex gap-1 items-end">
+                      {arr.map((fill, gi) => (
+                        <div key={gi} className="flex flex-col-reverse gap-0.5">
+                          {Array.from({ length: 8 }).map((_, si) => {
+                            const overCap = si >= 5;
+                            const isFilled = si < fill;
+                            return (
+                              <div
+                                key={si}
+                                className={[
+                                  "w-6 h-3 rounded-sm border",
+                                  isFilled
+                                    ? "bg-orange-400 border-orange-500"
+                                    : overCap
+                                      ? "bg-rose-50 border-rose-200"
+                                      : "bg-slate-100 border-slate-300",
+                                  si === 5
+                                    ? "border-t-2 border-t-rose-500"
+                                    : "",
+                                ]
+                                  .filter(Boolean)
+                                  .join(" ")}
+                              />
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-[10px] font-mono text-slate-500">
+                      ({arr.join(", ")})
+                    </p>
+                    <p className="text-[10px] text-amber-700 text-center">
+                      {label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-slate-400 text-center">
+                Each was subtracted twice in Step 2a, so we add it back once.
+              </p>
+            </div>
+
+            <p className="text-sm text-amber-900 leading-relaxed">
+              If two resources include at least 6 b.u., we need to distribute 12
+              − 2(C+1) = 12 − 12 = 0 b.u. into 3 resources, using the same
+              formula as above:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="\binom{0+3-1}{3-1} = \binom{2}{2} = 1 \text{ way per pair}" />
+            </div>
+            <p className="text-sm text-amber-900 leading-relaxed">
+              Since there are{" "}
+              <InlineMath math="\binom{\ell}{2} = \binom{3}{2} = 3" /> ways to
+              select two resources from <InlineMath math="\ell = 3" /> that
+              exceed <InlineMath math="C = 5" />, we multiply the previous value
+              by 3. Therefore the number of overcounted arrangements where two
+              resources exceed the capacity <InlineMath math="C = 5" /> is:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="3 \times 1 = 3" />
+            </div>
+          </div>
+
+          {/* Step 2c */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-2">
+            <p className="text-sm font-semibold text-slate-600">
+              Step 2c: Three subgroups exceed <InlineMath math="C = 5" />:
+              impossible
+            </p>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              That would require at least <InlineMath math="3 \times 6 = 18" />{" "}
+              b.u., but <InlineMath math="x = 12" />, so{" "}
+              <InlineMath math="12 - 18 = -6 < 0" />. No such arrangement
+              exists. The process stops here.
+            </p>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              This is expected: the number of resources that can exceed{" "}
+              <InlineMath math="C = 5" /> cannot be larger than{" "}
+              <InlineMath math="\left\lfloor \dfrac{x}{C+1} \right\rfloor = \left\lfloor \dfrac{12}{6} \right\rfloor = 2" />
+              .
+            </p>
+          </div>
+
+          {/* Result */}
+          <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+            <div className="overflow-x-auto flex-1">
+              <BlockMath math="F(12,\,3,\,5,\,0) = 91 - 84 + 3 = \mathbf{10} \text{ valid arrangements}" />
+            </div>
+          </div>
+
+          {/* Verification with the general formula */}
+          <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3">
+            <p className="text-sm font-semibold text-violet-800">
+              Verification using the general formula
+            </p>
+            <p className="text-sm text-violet-900 leading-relaxed">
+              The steps above are exactly what the general formula computes.
+              With <InlineMath math="x=12" />, <InlineMath math="k=3" />,{" "}
+              <InlineMath math="C=5" /> and{" "}
+              <InlineMath math="\lfloor 12/6 \rfloor = 2" />:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="F(x,k,C,0) = \sum_{i=0}^{\left\lfloor \frac{x}{C+1} \right\rfloor} (-1)^i \binom{k}{i} \binom{x+(k-1)-i(C+1)}{k-1}" />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="text-xs text-slate-700 border-collapse w-full">
+                <thead>
+                  <tr className="bg-violet-100">
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      <InlineMath math="i" />
+                    </th>
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      <InlineMath math="(-1)^i" />
+                    </th>
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      <InlineMath math="\binom{3}{i}" />
+                    </th>
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      <InlineMath math="\binom{14-6i}{2}" />
+                    </th>
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      Term
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ["0", "+1", "1", "C(14,2) = 91", "+91"],
+                    ["1", "−1", "3", "C(8,2) = 28", "−84"],
+                    ["2", "+1", "3", "C(2,2) = 1", "+3"],
+                  ].map(([i, sign, k, binom, term]) => (
+                    <tr key={i} className="even:bg-violet-50/50">
+                      <td className="border border-violet-200 px-2 py-1 font-mono">
+                        {i}
+                      </td>
+                      <td className="border border-violet-200 px-2 py-1 font-mono">
+                        {sign}
+                      </td>
+                      <td className="border border-violet-200 px-2 py-1 font-mono">
+                        {k}
+                      </td>
+                      <td className="border border-violet-200 px-2 py-1 font-mono">
+                        {binom}
+                      </td>
+                      <td className="border border-violet-200 px-2 py-1 font-mono font-semibold">
+                        {term}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="F(12,3,5,0) = 91 - 84 + 3 = \mathbf{10} \checkmark" />
+            </div>
+          </div>
+
+          {/* Visualisation of the 10 arrangements */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
+              All 10 valid arrangements of 12 b.u. across 3 subgroups (C = 5)
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              {(
+                [
+                  [5, 5, 2],
+                  [5, 2, 5],
+                  [2, 5, 5],
+                  [5, 4, 3],
+                  [5, 3, 4],
+                  [4, 5, 3],
+                  [3, 5, 4],
+                  [4, 3, 5],
+                  [3, 4, 5],
+                  [4, 4, 4],
+                ] as [number, number, number][]
+              ).map((arr, idx) => (
+                <div key={idx} className="flex flex-col items-center gap-1">
+                  <div className="flex gap-1 items-end">
+                    {arr.map((fill, gi) => (
+                      <div key={gi} className="flex flex-col-reverse gap-0.5">
+                        {Array.from({ length: 5 }).map((_, si) => (
+                          <div
+                            key={si}
+                            className={`w-6 h-4 rounded-sm border ${
+                              si < fill
+                                ? "bg-sky-400 border-sky-500"
+                                : "bg-slate-100 border-slate-300"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-slate-500 font-mono">
+                    ({arr.join(",")})
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-400 text-center">
+              Each column = one subgroup (capacity 5).
+            </p>
+          </div>
+
+          {/* Connection to sigma */}
+          <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3">
+            <p className="text-sm font-semibold text-violet-800">
+              How this connects to <InlineMath math="\sigma_k(n)" /> in the{" "}
+              <Link
+                href="/limited-availability-group"
+                className="text-violet-700 underline hover:text-violet-900"
+              >
+                LAG model
+              </Link>
+            </p>
+            <p className="text-sm text-violet-900 leading-relaxed">
+              In a system with <InlineMath math="\ell = 3" />,{" "}
+              <InlineMath math="C = 5" /> (total capacity{" "}
+              <InlineMath math="V = 15" />
+              ), these 10 arrangements are exactly the denominator of{" "}
+              <InlineMath math="\sigma_k(n)" /> at state{" "}
+              <InlineMath math="n = 3" />, since{" "}
+              <InlineMath math="x = \ell C - n = 15 - 3 = 12" />:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="\sigma_k(3) = 1 - \frac{F(12,\;3,\;b_k-1,\;0)}{F(12,\;3,\;5,\;0)} = 1 - \frac{F(12,\;3,\;b_k-1,\;0)}{10}" />
+            </div>
+            <p className="text-sm text-violet-900 leading-relaxed">
+              For a class requiring <InlineMath math="b_k = 5" /> b.u. (so{" "}
+              <InlineMath math="b_k - 1 = 4" />
+              ), unfavourable arrangements are those where every subgroup holds
+              ≤ 4 free b.u. Only <strong>(4, 4, 4)</strong> qualifies, so{" "}
+              <InlineMath math="F(12,3,4,0) = 1" />:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="\sigma_k(3) = 1 - \frac{1}{10} = \frac{9}{10} = 0.9" />
+            </div>
+            <p className="text-xs text-violet-700 leading-relaxed">
+              9 out of 10 system states have at least one subgroup with 5 free
+              b.u., so a class-5 call can be placed with probability 0.9.
             </p>
           </div>
         </div>
