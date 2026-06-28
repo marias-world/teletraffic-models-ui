@@ -96,11 +96,11 @@ export function lagWithSteps(
 
       if (den === 0) {
         recursionFormulas.push(
-          `\\sigma_{${idx + 1}}(${prevIndex}) = 1 - \\frac{F(${x},\\,${ell},\\,${bu - 1})}{F(${x},\\,${ell},\\,${C})} = 1 - \\frac{${fmt(nom)}}{0} = 0`,
+          `\\sigma_{${idx + 1}}(${prevIndex}) = 1 - \\frac{F(${x},\\,${ell},\\,${bu - 1},\\,0)}{F(${x},\\,${ell},\\,${C},\\,0)} = 1 - \\frac{${fmt(nom)}}{0} = 0`,
         );
       } else {
         recursionFormulas.push(
-          `\\sigma_{${idx + 1}}(${prevIndex}) = 1 - \\frac{F(${x},\\,${ell},\\,${bu - 1})}{F(${x},\\,${ell},\\,${C})} = 1 - \\frac{${fmt(nom)}}{${fmt(den)}} = ${fmt(sigma)}`,
+          `\\sigma_{${idx + 1}}(${prevIndex}) = 1 - \\frac{F(${x},\\,${ell},\\,${bu - 1},\\,0)}{F(${x},\\,${ell},\\,${C},\\,0)} = 1 - \\frac{${fmt(nom)}}{${fmt(den)}} = ${fmt(sigma)}`,
         );
       }
     });
@@ -173,7 +173,7 @@ export function lagWithSteps(
   const steps: StepGroup[] = [
     {
       title:
-        "Step 1: calculate the unnormalised occupancy distribution q(j). sigma_k(j) is the conditional transition probability: probability a class-k call can be placed given j busy b.u.",
+        "Step 1: calculate the unnormalised occupancy distribution q(j)",
       formulas: recursionFormulas,
     },
     {

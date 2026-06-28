@@ -368,11 +368,7 @@ export default function LimitedAvailabilityGroupPage() {
                     href="/theory/conditional-transition-probability"
                     className="text-violet-700 font-medium hover:underline"
                   >
-                    <p>
-                      <strong>
-                        See full explanation and step-by-step example.
-                      </strong>
-                    </p>
+                    <strong>See full explanation and step-by-step example.</strong>
                   </Link>
                 </p>
               </div>
@@ -619,9 +615,16 @@ export default function LimitedAvailabilityGroupPage() {
                       <div className="mt-3 bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-6">
                         {steps.map((group, gi) => (
                           <div key={gi} className="space-y-3">
-                            <p className="text-sm font-semibold text-slate-600">
-                              {group.title}
-                            </p>
+                            <div className="space-y-0.5">
+                              <p className="text-sm font-semibold text-slate-700">
+                                {group.title}
+                              </p>
+                              {gi === 0 && (
+                                <p className="text-xs text-slate-500 leading-relaxed">
+                                  <InlineMath math="\sigma_k(j)" /> is the conditional transition probability: probability a class-<InlineMath math="k" /> call can be placed given <InlineMath math="j" /> busy b.u.
+                                </p>
+                              )}
+                            </div>
                             {group.formulas.map((formula, fi) => (
                               <div key={fi} className="overflow-x-auto py-1">
                                 <BlockMath math={formula} />
