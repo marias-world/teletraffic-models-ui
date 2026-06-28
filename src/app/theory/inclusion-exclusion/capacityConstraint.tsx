@@ -977,7 +977,13 @@ export default function InclusionExclusion() {
           {/* Connection to sigma */}
           <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3">
             <p className="text-sm font-semibold text-violet-800">
-              How this connects to <InlineMath math="\sigma_k(n)" />
+              How this connects to <InlineMath math="\sigma_k(n)" /> in the{" "}
+              <Link
+                href="/limited-availability-group"
+                className="text-violet-700 underline hover:text-violet-900"
+              >
+                LAG model
+              </Link>
             </p>
             <p className="text-sm text-violet-900 leading-relaxed">
               In a system with <InlineMath math="\ell = 3" />,{" "}
