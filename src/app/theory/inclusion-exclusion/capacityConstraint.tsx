@@ -571,7 +571,7 @@ export default function InclusionExclusion() {
         <div className="space-y-4 pt-4">
           <h2 className="text-xl font-semibold text-slate-700">
             Step-by-step example: Determining{" "}
-            <InlineMath math="F(12,\,3,\,5,\,0)" /> in the LAG model
+            <InlineMath math="F(12,\,3,\,5,\,0)" />
           </h2>
 
           <p className="text-slate-600 leading-relaxed text-sm">
@@ -749,10 +749,10 @@ export default function InclusionExclusion() {
             </p>
             <p className="text-sm text-amber-900 leading-relaxed">
               In Step 2a we subtracted every arrangement where A ≥ 6, every
-              arrangement where B ≥ 6, and every arrangement where C ≥ 6. But
-              an arrangement where <em>both</em> A ≥ 6 and B ≥ 6 got subtracted{" "}
-              <strong>twice</strong>: once in the "A over" group and once in
-              the "B over" group. We need to add those back once.
+              arrangement where B ≥ 6, and every arrangement where C ≥ 6. But an
+              arrangement where <em>both</em> A ≥ 6 and B ≥ 6 got subtracted{" "}
+              <strong>twice</strong>: once in the "A over" group and once in the
+              "B over" group. We need to add those back once.
             </p>
 
             {/* Visual: the 3 double-counted arrangements */}
@@ -812,15 +812,23 @@ export default function InclusionExclusion() {
             </div>
 
             <p className="text-sm text-amber-900 leading-relaxed">
-              If two resources include at least 6 b.u., we need to distribute
-              12 − 2(C+1) = 12 − 12 = 0 b.u. into 3 resources, using the same
+              If two resources include at least 6 b.u., we need to distribute 12
+              − 2(C+1) = 12 − 12 = 0 b.u. into 3 resources, using the same
               formula as above:
             </p>
             <div className="overflow-x-auto py-1">
               <BlockMath math="\binom{0+3-1}{3-1} = \binom{2}{2} = 1 \text{ way per pair}" />
             </div>
+            <p className="text-sm text-amber-900 leading-relaxed">
+              Since there are{" "}
+              <InlineMath math="\binom{\ell}{2} = \binom{3}{2} = 3" /> ways to
+              select two resources from <InlineMath math="\ell = 3" /> that
+              exceed <InlineMath math="C = 5" />, we multiply the previous value
+              by 3. Therefore the number of overcounted arrangements where two
+              resources exceed the capacity <InlineMath math="C = 5" /> is:
+            </p>
             <div className="overflow-x-auto py-1">
-              <BlockMath math="3 \times 1 = 3 \text{ arrangements added back}" />
+              <BlockMath math="3 \times 1 = 3" />
             </div>
           </div>
 
@@ -836,12 +844,85 @@ export default function InclusionExclusion() {
               <InlineMath math="12 - 18 = -6 < 0" />. No such arrangement
               exists. The process stops here.
             </p>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              This is expected: the number of resources that can exceed{" "}
+              <InlineMath math="C = 5" /> cannot be larger than{" "}
+              <InlineMath math="\left\lfloor \dfrac{x}{C+1} \right\rfloor = \left\lfloor \dfrac{12}{6} \right\rfloor = 2" />
+              .
+            </p>
           </div>
 
           {/* Result */}
           <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
             <div className="overflow-x-auto flex-1">
               <BlockMath math="F(12,\,3,\,5,\,0) = 91 - 84 + 3 = \mathbf{10} \text{ valid arrangements}" />
+            </div>
+          </div>
+
+          {/* Verification with the general formula */}
+          <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3">
+            <p className="text-sm font-semibold text-violet-800">
+              Verification using the general formula
+            </p>
+            <p className="text-sm text-violet-900 leading-relaxed">
+              The steps above are exactly what the general formula computes.
+              With <InlineMath math="x=12" />, <InlineMath math="k=3" />,{" "}
+              <InlineMath math="C=5" /> and{" "}
+              <InlineMath math="\lfloor 12/6 \rfloor = 2" />:
+            </p>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="F(x,k,C,0) = \sum_{i=0}^{\left\lfloor \frac{x}{C+1} \right\rfloor} (-1)^i \binom{k}{i} \binom{x+(k-1)-i(C+1)}{k-1}" />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="text-xs text-slate-700 border-collapse w-full">
+                <thead>
+                  <tr className="bg-violet-100">
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      <InlineMath math="i" />
+                    </th>
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      <InlineMath math="(-1)^i" />
+                    </th>
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      <InlineMath math="\binom{3}{i}" />
+                    </th>
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      <InlineMath math="\binom{14-6i}{2}" />
+                    </th>
+                    <th className="border border-violet-200 px-2 py-1 text-left">
+                      Term
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ["0", "+1", "1", "C(14,2) = 91", "+91"],
+                    ["1", "−1", "3", "C(8,2) = 28", "−84"],
+                    ["2", "+1", "3", "C(2,2) = 1", "+3"],
+                  ].map(([i, sign, k, binom, term]) => (
+                    <tr key={i} className="even:bg-violet-50/50">
+                      <td className="border border-violet-200 px-2 py-1 font-mono">
+                        {i}
+                      </td>
+                      <td className="border border-violet-200 px-2 py-1 font-mono">
+                        {sign}
+                      </td>
+                      <td className="border border-violet-200 px-2 py-1 font-mono">
+                        {k}
+                      </td>
+                      <td className="border border-violet-200 px-2 py-1 font-mono">
+                        {binom}
+                      </td>
+                      <td className="border border-violet-200 px-2 py-1 font-mono font-semibold">
+                        {term}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="overflow-x-auto py-1">
+              <BlockMath math="F(12,3,5,0) = 91 - 84 + 3 = \mathbf{10} \checkmark" />
             </div>
           </div>
 
@@ -889,8 +970,7 @@ export default function InclusionExclusion() {
               ))}
             </div>
             <p className="text-xs text-slate-400 text-center">
-              Each column = one subgroup (capacity 5). Blue cells = free b.u. 3
-              arrangements have two full subgroups; 6 have one full; 1 has none.
+              Each column = one subgroup (capacity 5).
             </p>
           </div>
 
