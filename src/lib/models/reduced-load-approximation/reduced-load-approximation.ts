@@ -177,58 +177,6 @@ export const callBlockingProbabilityinRLA = (
   return result;
 };
 
-const links = [
-  { link: 1, bu: 4 },
-  { link: 2, bu: 5 },
-  { link: 3, bu: 6 },
-  { link: 4, bu: 7 },
-];
-
-const serviceClasses: ServiceClassWithRoute[] = [
-  {
-    serviceClass: 1,
-    incomingLoad_a: 1,
-    route: [
-      { link: 1, bu: 1 },
-      { link: 2, bu: 1 },
-      { link: 3, bu: 1 },
-      { link: 4, bu: 2 },
-    ],
-  },
-  {
-    serviceClass: 2,
-    incomingLoad_a: 1,
-    route: [
-      { link: 1, bu: 0 },
-      { link: 2, bu: 2 },
-      { link: 3, bu: 2 },
-      { link: 4, bu: 2 },
-    ],
-  },
-  {
-    serviceClass: 3,
-    incomingLoad_a: 1,
-    route: [
-      { link: 1, bu: 1 },
-      { link: 2, bu: 1 },
-      { link: 3, bu: 1 },
-      { link: 4, bu: 2 },
-    ],
-  },
-  {
-    serviceClass: 4,
-    incomingLoad_a: 1,
-    route: [
-      { link: 1, bu: 1 },
-      { link: 2, bu: 1 },
-      { link: 3, bu: 1 },
-      { link: 4, bu: 2 },
-    ],
-  },
-];
-
-console.log(callBlockingProbabilityinRLA(links, serviceClasses));
-
 export const callBlockingProbabilityinRLAForProposedModel = (
   links: networkTopology[],
   serviceClasses: ServiceClassWithRoute[],
@@ -250,8 +198,3 @@ export const callBlockingProbabilityinRLAForProposedModel = (
 
   return logs;
 };
-
-console.log(
-  "callBlockingProbabilityinRLAForProposedModel",
-  callBlockingProbabilityinRLAForProposedModel(links, serviceClasses),
-);
