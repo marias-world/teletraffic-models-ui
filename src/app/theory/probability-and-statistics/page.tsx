@@ -112,6 +112,14 @@ export default function ProbabilityAndStatisticsPage() {
                 (Foundations of Computing II).
               </p>
             </div>
+            <a
+              href="https://www.youtube.com/playlist?list=PLeB45KifGiuHesi4PALNZSYZFhViVGQJK"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-4 py-2 font-semibold text-amber-600 border border-amber-400 rounded-lg hover:bg-amber-50 transition-colors duration-200"
+            >
+              Click here for more videos on Probability &amp; Statistics
+            </a>
             {videos.map((v) => (
               <div
                 key={v.id}
