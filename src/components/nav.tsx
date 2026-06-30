@@ -10,6 +10,10 @@ const modelLinks = [
     href: "/limited-availability-group",
     label: "Limited Availability Group (LAG)",
   },
+  {
+    href: "/reduced-load-approximation",
+    label: "Reduced Load Approximation (RLA)",
+  },
 ];
 
 const theoryLinks = [
