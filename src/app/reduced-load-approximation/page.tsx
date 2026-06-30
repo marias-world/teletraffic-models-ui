@@ -34,6 +34,18 @@ export default function ReducedLoadApproximationPage() {
           <NetworkExample />
           <Formula />
           <Assumptions />
+
+          {/* Reference */}
+          <section className="border-t border-slate-200 pt-6">
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Dziong, Z. and Roberts, J. (1987, November).{" "}
+              <em>
+                Congestion probabilities in a circuit switched integrated
+                services network
+              </em>
+              . Performance Evaluation, Vol. 7, Issue 4, pp. 267-284.
+            </p>
+          </section>
         </div>
       </div>
     </div>
