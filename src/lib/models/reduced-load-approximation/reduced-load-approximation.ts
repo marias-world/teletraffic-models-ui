@@ -2,7 +2,7 @@ import { NUMBER_OF_DIGITS_AFTER_DECIMAL } from "../constants";
 import { kaufmanRoberts } from "../kaufman-roberts/kaufman-roberts-formula";
 import { networkTopology, ServiceClassWithRoute } from "../types";
 
-const THRESHOLD = 0.000001;
+const DEFAULT_THRESHOLD = 0.000001;
 const MAX_ITERATIONS = 5000;
 
 interface BlockingProbabilityResult {
@@ -99,6 +99,7 @@ export const blockingProbabilityNetworkTopology = (
 export const calculateBlockingWithReducedTrafficLoad = (
   links: networkTopology[],
   serviceClasses: ServiceClassWithRoute[],
+  threshold: number = DEFAULT_THRESHOLD,
 ): BlockingProbabilityResult => {
   let currentResult = blockingProbabilityNetworkTopology(
     links,
@@ -128,7 +129,7 @@ export const calculateBlockingWithReducedTrafficLoad = (
       ),
     );
 
-    if (maxDifference <= THRESHOLD) break;
+    if (maxDifference <= threshold) break;
 
     differenceCount[maxDifference] = (differenceCount[maxDifference] || 0) + 1;
 
@@ -155,10 +156,12 @@ export const calculateBlockingWithReducedTrafficLoad = (
 export const callBlockingProbabilityinRLA = (
   links: networkTopology[],
   serviceClasses: ServiceClassWithRoute[],
+  threshold: number = DEFAULT_THRESHOLD,
 ): { [key: string]: number } => {
   const blockingProbabilities = calculateBlockingWithReducedTrafficLoad(
     links,
     serviceClasses,
+    threshold,
   );
   const result: { [key: string]: number } = {};
 
