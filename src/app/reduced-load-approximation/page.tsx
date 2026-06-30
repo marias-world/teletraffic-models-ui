@@ -211,12 +211,7 @@ export default function ReducedLoadApproximationPage() {
             <p className="text-slate-600 leading-relaxed">
               The core idea is to find a stable state of the system, where the
               interdependent values no longer change much from one iteration to
-              the next. Starting from a first approximation, the process refines
-              it step by step until it converges. The FP method is simpler than
-              the Dziong-Roberts method, but it does not always succeed: it can
-              run into convergence problems and may not give reliable results.
-              It is a useful method, yet it does not solve every problem and is
-              not suitable in every situation.
+              the next.
             </p>
 
             <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
