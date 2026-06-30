@@ -21,7 +21,7 @@ const DEFAULT_SERVICES: ServiceRow[] = [
 export default function Calculator() {
   const [links, setLinks] = useState<LinkRow[]>(DEFAULT_LINKS);
   const [rows, setRows] = useState<ServiceRow[]>(DEFAULT_SERVICES);
-  const [threshold, setThreshold] = useState("0.000001");
+  const [thresholdInput, setThresholdInput] = useState("0.000001");
   const [results, setResults] = useState<Record<string, number> | null>(null);
   const [utilization, setUtilization] = useState<Record<string, string> | null>(null);
   const [error, setError] = useState("");
@@ -112,14 +112,14 @@ export default function Calculator() {
       serviceClasses.push({ serviceClass: i + 1, incomingLoad_a: a, route });
     }
 
-    const t = Number(threshold);
-    if (isNaN(t) || t <= 0 || t >= 1) {
+    const threshold = Number(thresholdInput);
+    if (isNaN(threshold) || threshold <= 0 || threshold >= 1) {
       setError("Threshold must be a positive number less than 1 (e.g. 0.000001).");
       return;
     }
 
     try {
-      setResults(callBlockingProbabilityinRLA(topology, serviceClasses, t));
+      setResults(callBlockingProbabilityinRLA(topology, serviceClasses, threshold));
       setUtilization(linkUtilization_U(topology, serviceClasses));
     } catch (e) {
       setError(`Calculation failed: ${e instanceof Error ? e.message : e}`);
@@ -263,9 +263,9 @@ export default function Calculator() {
           type="number"
           min={0}
           step="0.000001"
-          value={threshold}
+          value={thresholdInput}
           onChange={(e) => {
-            setThreshold(e.target.value);
+            setThresholdInput(e.target.value);
             setError("");
           }}
           placeholder="e.g. 0.000001"
