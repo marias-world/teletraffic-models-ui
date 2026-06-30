@@ -5,6 +5,7 @@ import NetworkExample from "./NetworkExample";
 import Formula from "./Formula";
 import WorkedExample from "./WorkedExample";
 import Assumptions from "./Assumptions";
+import Calculator from "./Calculator";
 
 export default function ReducedLoadApproximationPage() {
   return (
@@ -34,8 +35,10 @@ export default function ReducedLoadApproximationPage() {
           <Overview />
           <NetworkExample />
           <Formula />
-          <WorkedExample />
           <Assumptions />
+          <WorkedExample />
+
+          <Calculator />
 
           {/* Reference */}
           <section className="border-t border-slate-200 pt-6">
