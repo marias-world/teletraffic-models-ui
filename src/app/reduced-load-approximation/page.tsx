@@ -6,6 +6,7 @@ import Formula from "./Formula";
 import WorkedExample from "./WorkedExample";
 import Assumptions from "./Assumptions";
 import Calculator from "./Calculator";
+import AnimationSection from "./AnimationSection";
 
 export default function ReducedLoadApproximationPage() {
   return (
@@ -38,9 +39,13 @@ export default function ReducedLoadApproximationPage() {
           <Assumptions />
 
           <Calculator />
+          <AnimationSection />
           <WorkedExample />
-          {/* Reference */}
-          <section className="border-t border-slate-200 pt-6">
+          {/* References */}
+          <section className="border-t border-slate-200 pt-6 space-y-2">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              References
+            </p>
             <p className="text-xs text-slate-400 leading-relaxed">
               Dziong, Z. and Roberts, J. (1987, November).{" "}
               <em>
@@ -48,6 +53,19 @@ export default function ReducedLoadApproximationPage() {
                 services network
               </em>
               . Performance Evaluation, Vol. 7, Issue 4, pp. 267-284.
+            </p>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Moscholios, I. D., &amp; Logothetis, M. D. (2019).{" "}
+              <em>Efficient multirate teletraffic loss models beyond Erlang</em>
+              . John Wiley &amp; Sons Ltd.{" "}
+              <a
+                href="https://doi.org/10.1002/9781119426974"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sky-400 hover:underline"
+              >
+                https://doi.org/10.1002/9781119426974
+              </a>
             </p>
           </section>
         </div>
