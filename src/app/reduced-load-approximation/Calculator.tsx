@@ -18,15 +18,21 @@ const DEFAULT_SERVICES: ServiceRow[] = [
   { id: 2, load: "", demands: {} },
 ];
 
+const MAX_LINKS = 10;
+const MAX_CLASSES = 10;
+
 export default function Calculator() {
   const [links, setLinks] = useState<LinkRow[]>(DEFAULT_LINKS);
   const [rows, setRows] = useState<ServiceRow[]>(DEFAULT_SERVICES);
   const [thresholdInput, setThresholdInput] = useState("0.000001");
   const [results, setResults] = useState<Record<string, number> | null>(null);
-  const [utilization, setUtilization] = useState<Record<string, string> | null>(null);
+  const [utilization, setUtilization] = useState<Record<string, string> | null>(
+    null,
+  );
   const [error, setError] = useState("");
 
   const addLink = () => {
+    if (links.length >= MAX_LINKS) return;
     const nextId = links.reduce((m, l) => Math.max(m, l.id), 0) + 1;
     setLinks((p) => [...p, { id: nextId, capacity: "" }]);
     setResults(null);
@@ -52,6 +58,7 @@ export default function Calculator() {
   };
 
   const addRow = () => {
+    if (rows.length >= MAX_CLASSES) return;
     const nextId = rows.reduce((m, r) => Math.max(m, r.id), 0) + 1;
     setRows((p) => [...p, { id: nextId, load: "", demands: {} }]);
     setResults(null);
@@ -73,7 +80,9 @@ export default function Calculator() {
   const updateDemand = (rowId: number, linkId: number, value: string) => {
     setRows((p) =>
       p.map((r) =>
-        r.id === rowId ? { ...r, demands: { ...r.demands, [linkId]: value } } : r,
+        r.id === rowId
+          ? { ...r, demands: { ...r.demands, [linkId]: value } }
+          : r,
       ),
     );
     setError("");
@@ -99,7 +108,9 @@ export default function Calculator() {
       const row = rows[i];
       const a = Number(row.load);
       if (!row.load || isNaN(a) || a <= 0) {
-        setError(`Please enter a valid offered load for service class ${i + 1}.`);
+        setError(
+          `Please enter a valid offered load for service class ${i + 1}.`,
+        );
         return;
       }
       const route = links
@@ -114,12 +125,16 @@ export default function Calculator() {
 
     const threshold = Number(thresholdInput);
     if (isNaN(threshold) || threshold <= 0 || threshold >= 1) {
-      setError("Threshold must be a positive number less than 1 (e.g. 0.000001).");
+      setError(
+        "Threshold must be a positive number less than 1 (e.g. 0.000001).",
+      );
       return;
     }
 
     try {
-      setResults(callBlockingProbabilityinRLA(topology, serviceClasses, threshold));
+      setResults(
+        callBlockingProbabilityinRLA(topology, serviceClasses, threshold),
+      );
       setUtilization(linkUtilization_U(topology, serviceClasses));
     } catch (e) {
       setError(`Calculation failed: ${e instanceof Error ? e.message : e}`);
@@ -140,10 +155,16 @@ export default function Calculator() {
       {/* Links */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-slate-600">Links</p>
+          <p className="text-sm font-medium text-slate-600">
+            Links{" "}
+            <span className="text-xs font-normal text-slate-400">
+              ({links.length}/{MAX_LINKS})
+            </span>
+          </p>
           <button
             onClick={addLink}
-            className="text-xs text-sky-600 hover:text-sky-700 font-medium border border-sky-300 rounded-md px-2 py-1 hover:bg-sky-50 transition"
+            disabled={links.length >= MAX_LINKS}
+            className="text-xs text-sky-600 hover:text-sky-700 font-medium border border-sky-300 rounded-md px-2 py-1 hover:bg-sky-50 transition disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
           >
             + Add link
           </button>
@@ -158,7 +179,9 @@ export default function Calculator() {
             key={l.id}
             className="grid gap-2 items-center grid-cols-[48px_1fr_32px]"
           >
-            <span className="text-xs font-semibold text-slate-500">L{l.id}</span>
+            <span className="text-xs font-semibold text-slate-500">
+              L{l.id}
+            </span>
             <input
               type="number"
               min={1}
@@ -181,18 +204,26 @@ export default function Calculator() {
       {/* Service classes */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-slate-600">Service Classes</p>
+          <p className="text-sm font-medium text-slate-600">
+            Service Classes{" "}
+            <span className="text-xs font-normal text-slate-400">
+              ({rows.length}/{MAX_CLASSES})
+            </span>
+          </p>
           <button
             onClick={addRow}
-            className="text-xs text-sky-600 hover:text-sky-700 font-medium border border-sky-300 rounded-md px-2 py-1 hover:bg-sky-50 transition"
+            disabled={rows.length >= MAX_CLASSES}
+            className="text-xs text-sky-600 hover:text-sky-700 font-medium border border-sky-300 rounded-md px-2 py-1 hover:bg-sky-50 transition disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
           >
             + Add class
           </button>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-sm border-separate border-spacing-y-1"
-            style={{ minWidth: `${160 + links.length * 100}px` }}>
+          <table
+            className="w-full text-sm border-separate border-spacing-y-1"
+            style={{ minWidth: `${160 + links.length * 100}px` }}
+          >
             <thead>
               <tr className="text-xs font-semibold text-slate-400 tracking-wider">
                 <th className="text-left w-8 px-1" />
@@ -272,13 +303,12 @@ export default function Calculator() {
           className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"
         />
         <p className="text-xs text-slate-400 mt-1">
-          Iteration stops when all V values change by less than this amount. Default: 0.000001.
+          Iteration stops when all V values change by less than this amount.
+          Default: 0.000001.
         </p>
       </div>
 
-      {error && (
-        <p className="text-sm text-red-600 font-medium">{error}</p>
-      )}
+      {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
 
       <button
         onClick={runModel}
