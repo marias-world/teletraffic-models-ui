@@ -36,10 +36,9 @@ export default function ReducedLoadApproximationPage() {
           <NetworkExample />
           <Formula />
           <Assumptions />
-          <WorkedExample />
 
           <Calculator />
-
+          <WorkedExample />
           {/* Reference */}
           <section className="border-t border-slate-200 pt-6">
             <p className="text-xs text-slate-400 leading-relaxed">

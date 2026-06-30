@@ -9,18 +9,19 @@ type LinkRow = { id: number; capacity: string };
 type ServiceRow = { id: number; load: string; demands: Record<number, string> };
 
 const DEFAULT_LINKS: LinkRow[] = [
-  { id: 1, capacity: "4" },
-  { id: 2, capacity: "5" },
+  { id: 1, capacity: "" },
+  { id: 2, capacity: "" },
 ];
 
 const DEFAULT_SERVICES: ServiceRow[] = [
-  { id: 1, load: "1", demands: { 1: "1", 2: "1" } },
-  { id: 2, load: "1", demands: { 2: "2" } },
+  { id: 1, load: "", demands: {} },
+  { id: 2, load: "", demands: {} },
 ];
 
 export default function Calculator() {
   const [links, setLinks] = useState<LinkRow[]>(DEFAULT_LINKS);
   const [rows, setRows] = useState<ServiceRow[]>(DEFAULT_SERVICES);
+  const [threshold, setThreshold] = useState("0.000001");
   const [results, setResults] = useState<Record<string, number> | null>(null);
   const [utilization, setUtilization] = useState<Record<string, string> | null>(null);
   const [error, setError] = useState("");
@@ -111,8 +112,14 @@ export default function Calculator() {
       serviceClasses.push({ serviceClass: i + 1, incomingLoad_a: a, route });
     }
 
+    const t = Number(threshold);
+    if (isNaN(t) || t <= 0 || t >= 1) {
+      setError("Threshold must be a positive number less than 1 (e.g. 0.000001).");
+      return;
+    }
+
     try {
-      setResults(callBlockingProbabilityinRLA(topology, serviceClasses));
+      setResults(callBlockingProbabilityinRLA(topology, serviceClasses, t));
       setUtilization(linkUtilization_U(topology, serviceClasses));
     } catch (e) {
       setError(`Calculation failed: ${e instanceof Error ? e.message : e}`);
@@ -247,6 +254,28 @@ export default function Calculator() {
         </div>
       </div>
 
+      {/* Threshold */}
+      <div>
+        <label className="block text-sm font-medium text-slate-600 mb-1">
+          Convergence threshold
+        </label>
+        <input
+          type="number"
+          min={0}
+          step="0.000001"
+          value={threshold}
+          onChange={(e) => {
+            setThreshold(e.target.value);
+            setError("");
+          }}
+          placeholder="e.g. 0.000001"
+          className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"
+        />
+        <p className="text-xs text-slate-400 mt-1">
+          Iteration stops when all V values change by less than this amount. Default: 0.000001.
+        </p>
+      </div>
+
       {error && (
         <p className="text-sm text-red-600 font-medium">{error}</p>
       )}
@@ -260,41 +289,56 @@ export default function Calculator() {
 
       {/* Results */}
       {results && (
-        <div className="space-y-3">
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              Call Blocking Probabilities
-            </p>
+        <div className="space-y-4">
+          <p className="text-sm font-semibold text-slate-700">
+            Call Blocking Probabilities
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {Object.entries(results).map(([key, val]) => {
               const classNum = key.replace("B", "");
               return (
-                <div key={key} className="flex justify-between text-sm">
-                  <span className="text-slate-600">
-                    B<sub>{classNum}</sub> (class {classNum})
-                  </span>
-                  <span className="font-semibold text-slate-800">
+                <div
+                  key={key}
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1"
+                >
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    Class {classNum}
+                  </p>
+                  <p className="text-2xl font-bold text-sky-600">
                     {(val * 100).toFixed(4)}%
-                  </span>
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    B<sub>{classNum}</sub> = {val.toFixed(7)}
+                  </p>
                 </div>
               );
             })}
           </div>
 
           {utilization && (
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <>
+              <p className="text-sm font-semibold text-slate-700">
                 Link Utilization
               </p>
-              {Object.entries(utilization).map(([key, val]) => {
-                const linkNum = key.replace("link_", "");
-                return (
-                  <div key={key} className="flex justify-between text-sm">
-                    <span className="text-slate-600">Link {linkNum}</span>
-                    <span className="font-semibold text-slate-800">{val}</span>
-                  </div>
-                );
-              })}
-            </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {Object.entries(utilization).map(([key, val]) => {
+                  const linkNum = key.replace("link_", "");
+                  return (
+                    <div
+                      key={key}
+                      className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1"
+                    >
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                        Link {linkNum}
+                      </p>
+                      <p className="text-2xl font-bold text-violet-600">
+                        {val}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )}
         </div>
       )}
