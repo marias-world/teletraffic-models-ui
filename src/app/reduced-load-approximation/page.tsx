@@ -199,14 +199,12 @@ export default function ReducedLoadApproximationPage() {
             </div>
 
             <p className="text-slate-600 leading-relaxed">
-              The <strong>RLA </strong> is an iterative technique for modelling
-              systems where a single resource handles many calls at once. It
-              takes into account how serving one call affects the others,
-              capturing the way calls being processed by the shared resources
-              depend on each other. It is especially useful when calls are
-              served at the same time by shared resources, such as servers or
-              network cells. The method is simple to compute, but it gives only
-              approximate results.
+              The <strong>RLA</strong> is an iterative method for systems where
+              shared resources, such as servers or network cells, carry many
+              calls at the same time. It captures how accepting one call affects
+              the others, since calls competing for the same resources are not
+              independent. The method is quick to compute, at the cost of giving
+              approximate rather than exact results.
             </p>
 
             <p className="text-slate-600 leading-relaxed">
