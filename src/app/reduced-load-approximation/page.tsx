@@ -3,6 +3,7 @@ import "katex/dist/katex.min.css";
 import Overview from "./Overview";
 import NetworkExample from "./NetworkExample";
 import Formula from "./Formula";
+import WorkedExample from "./WorkedExample";
 import Assumptions from "./Assumptions";
 
 export default function ReducedLoadApproximationPage() {
@@ -33,6 +34,7 @@ export default function ReducedLoadApproximationPage() {
           <Overview />
           <NetworkExample />
           <Formula />
+          <WorkedExample />
           <Assumptions />
 
           {/* Reference */}
