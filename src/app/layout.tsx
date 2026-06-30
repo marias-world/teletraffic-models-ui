@@ -4,6 +4,7 @@ import "../globals.css";
 import "katex/dist/katex.min.css";
 import NavBar from "@/components/nav";
 import Footer from "@/components/footer";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
+        <Analytics />
       </body>
     </html>
   );
