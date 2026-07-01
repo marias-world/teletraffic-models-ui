@@ -1,4 +1,3 @@
-import { Capacities, ServiceClassConfigs } from "./types";
 import {
   calculateSubsystemBlockingKaufmanRoberts,
   calculateBlockingLAR,
