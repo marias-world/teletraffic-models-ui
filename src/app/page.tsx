@@ -16,7 +16,8 @@ export default function Home() {
 
         <figure className="border-l-4 border-slate-300 pl-4 py-1 space-y-1">
           <blockquote className="text-slate-600 italic leading-relaxed">
-            &ldquo;Essentially, all models are wrong, but some are useful.&rdquo;
+            &ldquo;Essentially, all models are wrong, but some are
+            useful.&rdquo;
           </blockquote>
           <figcaption className="text-sm text-slate-400 font-medium">
             Prof. George Box
@@ -30,7 +31,7 @@ export default function Home() {
               href="/erlang"
               className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
             >
-              Erlang-B Analytical Model
+              Erlang-B
             </Link>
           </li>
           <li>
@@ -38,7 +39,7 @@ export default function Home() {
               href="/kaufman-roberts"
               className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
             >
-              Kaufman-Roberts Model
+              Kaufman-Roberts
             </Link>
           </li>
           <li>
@@ -46,7 +47,7 @@ export default function Home() {
               href="/limited-availability-group"
               className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
             >
-              Limited Availability Group (LAG) Model
+              Limited Availability Group (LAG)
             </Link>
           </li>
           <li>
@@ -54,7 +55,7 @@ export default function Home() {
               href="/reduced-load-approximation"
               className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
             >
-              Reduced Load Approximation (RLA) Model
+              Reduced Load Approximation (RLA)
             </Link>
           </li>
         </ul>
