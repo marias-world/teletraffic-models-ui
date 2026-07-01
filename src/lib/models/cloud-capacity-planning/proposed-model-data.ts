@@ -36,8 +36,6 @@ export const proposedModel = (
   initialLoad: number,
   serviceClasses: ServiceClassConfigs,
 ) => {
-  const startTime = performance.now();
-
   const trafficLoad = calculateTrafficLoad(
     initialLoad,
     capacities.ramCapacity.bu,
