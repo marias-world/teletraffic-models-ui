@@ -60,11 +60,10 @@ export default function Home() {
           </li>
           <li>
             <Link
-              href="/"
+              href="/cloud-capacity-planning"
               className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
             >
-              An Algorithm for Cloud Physical Infrastructure Capacity Planning
-              (🚧 in progress)
+              Algorithm for Cloud Physical Infrastructure Capacity Planning
             </Link>
           </li>
         </ul>
