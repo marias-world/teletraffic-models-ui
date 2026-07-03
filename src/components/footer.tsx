@@ -97,7 +97,9 @@ export default function Footer() {
               <p className="text-sm leading-relaxed">
                 <span className="text-slate-400">
                   M. Vlasakis,{" "}
-                  <span className="text-slate-200 font-medium">M. Kourtesi</span>
+                  <span className="text-slate-200 font-medium">
+                    M. Kourtesi
+                  </span>
                   , I-A. Chousainov, I. Keramidi, D. Uzunidis, O. Zestas, I. D.
                   Moscholios and M. Logothetis.{" "}
                 </span>
@@ -107,9 +109,18 @@ export default function Footer() {
                 </span>
                 <span className="text-slate-500">
                   {" "}
-                  Proc. Panhellenic Conf. Electronics and Telecommunications
-                  (PACET).
+                  Panhellenic Conf. Electronics and Telecommunications (PACET).
                 </span>
+                <span> </span>
+                <a
+                  href="https://ieeexplore.ieee.org/abstract/document/11498249"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-500 hover:underline"
+                >
+                  Publisher IEEE:
+                  https://ieeexplore.ieee.org/abstract/document/11498249
+                </a>
               </p>
             </li>
           </ul>
