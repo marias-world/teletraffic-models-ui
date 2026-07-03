@@ -14,6 +14,10 @@ const modelLinks = [
     href: "/reduced-load-approximation",
     label: "Reduced Load Approximation (RLA)",
   },
+  {
+    href: "/cloud-capacity-planning",
+    label: "Cloud Infrastructure Capacity Planning",
+  },
 ];
 
 const theoryLinks = [
