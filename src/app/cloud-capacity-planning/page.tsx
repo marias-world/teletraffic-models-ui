@@ -1,6 +1,7 @@
 import Link from "next/link";
 import "katex/dist/katex.min.css";
 import Overview from "./Overview";
+import Image from "next/image";
 
 export default function CloudCapacityPlanningPage() {
   return (
@@ -24,6 +25,29 @@ export default function CloudCapacityPlanningPage() {
           </div>
 
           <Overview />
+
+          <section className="space-y-4">
+            <h2 className="text-xl font-semibold text-slate-700">
+              Model Structure
+            </h2>
+            <figure className="space-y-3">
+              <Image
+                src="/images/models.png"
+                alt="Visual representation of how the Kaufman-Roberts, Limited Availability, and Reduced Load Approximation models are combined across k identical physical machines"
+                width={800}
+                height={500}
+                className="w-full rounded-lg border border-slate-200"
+              />
+              <figcaption className="text-xs text-slate-400 text-center leading-relaxed">
+                How the Kaufman-Roberts, Limited Availability Group (LAG), and
+                Reduced Load Approximation (RLA) models are combined to
+                calculate blocking probabilities in a cloud infrastructure with{" "}
+                <em>k</em> identical physical machines (PMs). Each PM exposes
+                four resource dimensions: P (Processor), R (RAM), D (Disk), and
+                bps (Network bandwidth).
+              </figcaption>
+            </figure>
+          </section>
 
           {/* References */}
           <section className="border-t border-slate-200 pt-6 space-y-2">
