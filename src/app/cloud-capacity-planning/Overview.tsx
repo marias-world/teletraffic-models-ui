@@ -40,6 +40,33 @@ export default function Overview() {
         If any single dimension is full, the call is blocked, even if the
         remaining resources have spare capacity.
       </p>
+
+      <p className="text-slate-600 leading-relaxed">
+        The model combines the strengths of three models: the{" "}
+        <a
+          href="/kaufman-roberts"
+          className="text-sky-600 hover:underline font-medium"
+        >
+          Kaufman-Roberts model
+        </a>
+        , which handles multiple service classes sharing a single resource; the{" "}
+        <a
+          href="/limited-availability-group"
+          className="text-sky-600 hover:underline font-medium"
+        >
+          Limited Availability Group (LAG) model
+        </a>
+        , which introduces structured access restrictions across resource
+        groups; and the{" "}
+        <a
+          href="/reduced-load-approximation"
+          className="text-sky-600 hover:underline font-medium"
+        >
+          Reduced Load Approximation (RLA)
+        </a>
+        , which extends the analysis to multi-link networks by iteratively
+        accounting for blocking across routes.
+      </p>
     </section>
   );
 }
