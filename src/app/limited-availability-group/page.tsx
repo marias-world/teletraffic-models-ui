@@ -543,18 +543,17 @@ export default function LimitedAvailabilityGroupPage() {
                     with <InlineMath math="j" />
                   </p>
 
-                  {/* Step 1: the problem, demonstrated first */}
+                  {/* Step 1: the problem */}
                   <p className="text-sm text-amber-900 leading-relaxed">
                     <strong>Step 1: the problem.</strong> In a real system,
-                    whether a new call is accepted can depend on exactly how
-                    the busy units are spread across the subgroups, not only
-                    on the total number of busy units{" "}
-                    <InlineMath math="j" />. The example below shows two
-                    situations that share the exact same{" "}
+                    whether a new call is accepted can depend on exactly how the
+                    busy units are spread across the subgroups, not only on the
+                    total number of busy units <InlineMath math="j" />. The
+                    example below shows two situations that share the exact same{" "}
                     <InlineMath math="j" />, yet lead to opposite outcomes for
                     the next call. This is called{" "}
-                    <strong>mutual dependence between service classes</strong>
-                    : which subgroup absorbs one class&apos;s call can flip
+                    <strong>mutual dependence between service classes</strong>:
+                    which subgroup absorbs one class&apos;s call can flip
                     whether another class&apos;s call gets through.
                   </p>
 
@@ -562,11 +561,10 @@ export default function LimitedAvailabilityGroupPage() {
                   <div className="rounded-lg border border-amber-200 bg-white p-4 space-y-4">
                     <p className="text-xs font-semibold text-slate-600">
                       Concrete case: ℓ=3 subgroups, each with capacity C=5.
-                      Starting from occupancy j=12, split as R1=5, R2=4, R3=3,
-                      a new class-1 call arrives (it needs 1 b.u.). Which
-                      subgroup it lands in decides what happens next to a
-                      class-2 call, which needs 2 b.u. together in a single
-                      subgroup.
+                      Starting from occupancy j=12, split as R1=5, R2=4, R3=3, a
+                      new class-1 call arrives (it needs 1 b.u.). Which subgroup
+                      it lands in decides what happens next to a class-2 call,
+                      which needs 2 b.u. together in a single subgroup.
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-8">
@@ -639,7 +637,9 @@ export default function LimitedAvailabilityGroupPage() {
 
                   {/* Step 2: why this is a problem for the model */}
                   <p className="text-sm text-amber-900 leading-relaxed">
-                    <strong>Step 2: why this is a problem for the model.</strong>{" "}
+                    <strong>
+                      Step 2: why this is a problem for the model.
+                    </strong>{" "}
                     The model does not want to track every possible way of
                     splitting busy units across subgroups, that state space is
                     huge. It wants one simple number,{" "}
@@ -673,11 +673,11 @@ export default function LimitedAvailabilityGroupPage() {
                     Dividing by <InlineMath math="\sigma_k(j)" /> turns that
                     into a percentage of the current value, so it does not
                     matter whether <InlineMath math="\sigma_k" /> itself is
-                    large or small, only how much it moved relative to where
-                    it was. The symbol <InlineMath math="\ll" /> means
-                    &ldquo;much less than&rdquo;: not just below 1, but close
-                    to 0. So the condition says this percentage change must be
-                    small, like a few percent, at every step.
+                    large or small, only how much it moved relative to where it
+                    was. The symbol <InlineMath math="\ll" /> means &ldquo;much
+                    less than&rdquo;: not just below 1, but close to 0. So the
+                    condition says this percentage change must be small, like a
+                    few percent, at every step.
                   </p>
 
                   <p className="text-xs text-amber-700 leading-relaxed">
@@ -688,8 +688,8 @@ export default function LimitedAvailabilityGroupPage() {
                     <InlineMath math="\sigma_k(j-1) = 0.9" /> and{" "}
                     <InlineMath math="\sigma_k(j) = 0.5" />, the change is{" "}
                     <InlineMath math="0.4 / 0.5 = 0.8" />, 80%, close to 1 and
-                    far from 0, so it fails the condition. This tends to
-                    happen near saturation, when the system is close to full.
+                    far from 0, so it fails the condition. This tends to happen
+                    near saturation, when the system is close to full.
                   </p>
 
                   {/* Step 4: the explicit connection */}
@@ -699,17 +699,16 @@ export default function LimitedAvailabilityGroupPage() {
                     <InlineMath math="j" /> can hide very different true
                     acceptance probabilities depending on how busy units are
                     split. The assumption (Step 3) does not remove that
-                    phenomenon, it bounds it: if{" "}
-                    <InlineMath math="\sigma_k" /> barely moves from{" "}
-                    <InlineMath math="j-1" /> to <InlineMath math="j" />, then
-                    any two situations sharing that <InlineMath math="j" />{" "}
-                    cannot have truly different acceptance probabilities
-                    either, so replacing them with one shared{" "}
-                    <InlineMath math="\sigma_k(j)" /> costs little accuracy.
-                    When <InlineMath math="\sigma_k" /> instead swings sharply
-                    (as in the 80% example, typically near saturation), that
-                    is exactly when the mutual dependence from Step 1 starts
-                    to matter, and the approximation gets less reliable.
+                    phenomenon, it bounds it: if <InlineMath math="\sigma_k" />{" "}
+                    barely moves from <InlineMath math="j-1" /> to{" "}
+                    <InlineMath math="j" />, then any two situations sharing
+                    that <InlineMath math="j" /> cannot have truly different
+                    acceptance probabilities either, so replacing them with one
+                    shared <InlineMath math="\sigma_k(j)" /> costs little
+                    accuracy. When <InlineMath math="\sigma_k" /> instead swings
+                    sharply (as in the 80% example, typically near saturation),
+                    that is exactly when the mutual dependence from Step 1
+                    starts to matter, and the approximation gets less reliable.
                   </p>
                 </div>
               </div>
