@@ -21,7 +21,7 @@ This project covers the theory behind traffic loss models, provides worked examp
 **Thesis:** [Call blocking in cloud systems supporting multirate random traffic (IaaS)](https://apothesis.eap.gr/archive/item/228527)  
 **Source:** [github.com/marias-world/teletraffic-models-ui](https://github.com/marias-world/teletraffic-models-ui)
 
-**Mathematical Models initial implementation:** [github.com/marias-world/teletraffic-models-ui](https://github.com/marias-world/teletraffic-models-ui)
+**Mathematical Models initial implementation:** [github.com/mariakourtesi/Teletraffic-models](https://github.com/mariakourtesi/Teletraffic-models)
 
 ---
 
@@ -95,7 +95,12 @@ src/
     layout.tsx            # Shared navbar and footer
   lib/
     models/
-      erlang-b.ts         # Recursive Erlang-B formula
+      erlang-b/   # Recursive Erlang-B formula
+      limited-availability-group/
+      kaufman-roberts/
+      reduced-load-approximation/
+      cloud-capacity-planning/
+
 ```
 
 ---
