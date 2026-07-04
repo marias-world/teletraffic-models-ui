@@ -122,7 +122,7 @@ All contributions must comply with the [CC BY-NC 4.0 licence](https://creativeco
 
 M. Vlasakis, **M. Kourtesi**, I-A. Chousainov, I. Keramidi, D. Uzunidis, O. Zestas, I. D. Moscholios and M. Logothetis.
 *"On the limited-availability group model for multirate Poisson traffic."*
-Proc. Panhellenic Conf. Electronics and Telecommunications (PACET).
+Proc. Panhellenic Conf. Electronics and Telecommunications (PACET). [https://ieeexplore.ieee.org/abstract/document/11498249](https://ieeexplore.ieee.org/abstract/document/11498249)
 
 ---
 
