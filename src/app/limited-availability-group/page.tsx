@@ -40,11 +40,11 @@ export default function LimitedAvailabilityGroupPage() {
           <Assumptions />
           <OccupancyDistribution />
           <BlockingProbability />
-          <ModelApproximations />
           <Calculator />
         </div>
 
         <AnimationSection />
+        <ModelApproximations />
         <References />
       </div>
     </div>
