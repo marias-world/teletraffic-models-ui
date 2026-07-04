@@ -413,8 +413,8 @@ export default function LimitedAvailabilityGroupPage() {
 
             <p className="text-slate-600 leading-relaxed">
               After finding all the probabilities <InlineMath math="q(j)" /> and{" "}
-              <InlineMath math="\sigma_k(j)" />, we can calculate the CBP for the
-              class <InlineMath math="k" /> calls via the formula:
+              <InlineMath math="\sigma_k(j)" />, we can calculate the CBP for
+              the class <InlineMath math="k" /> calls via the formula:
             </p>
 
             <div className="overflow-x-auto py-1">
@@ -422,12 +422,11 @@ export default function LimitedAvailabilityGroupPage() {
             </div>
 
             <p className="text-slate-600 leading-relaxed text-sm">
-              where{" "}
-              <InlineMath math="j = \ell C - \ell b_k + \ell" /> indicates the
-              threshold beyond which a new class <InlineMath math="k" /> call
-              cannot be accepted, leading the system to block it. This mechanism
-              ensures that all states where the system reaches or exceeds this
-              point are accurately included in the CBP calculation.
+              where <InlineMath math="j = \ell C - \ell b_k + \ell" /> indicates
+              the threshold beyond which a new class <InlineMath math="k" />{" "}
+              call cannot be accepted, leading the system to block it. This
+              mechanism ensures that all states where the system reaches or
+              exceeds this point are accurately included in the CBP calculation.
             </p>
           </section>
 
@@ -464,7 +463,7 @@ export default function LimitedAvailabilityGroupPage() {
                   {/* Visual: two scenarios with same j but different outcomes */}
                   <div className="rounded-lg border border-sky-200 bg-white p-3 space-y-3">
                     <p className="text-[11px] font-semibold text-slate-500 tracking-wider text-center">
-                      Example: ℓ=3, C=5, j=12. New class-2 call arrives (needs 2
+                      Example: ℓ=3, C=5, j=12. New class-k call arrives (needs 2
                       free b.u. in one resource).
                     </p>
                     <div className="flex flex-wrap justify-center gap-6">
@@ -538,92 +537,178 @@ export default function LimitedAvailabilityGroupPage() {
                 <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">
                   2️⃣
                 </span>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <p className="text-sm font-semibold text-amber-800">
                     Assumption 2: <InlineMath math="\sigma_k" /> changes slowly
                     with <InlineMath math="j" />
                   </p>
+
+                  {/* Step 1: the problem */}
                   <p className="text-sm text-amber-900 leading-relaxed">
-                    In a real system, accepting a call of one class can affect
-                    whether a call of a different class is accepted next. We
-                    make these dependencies negligible by assuming that the
-                    acceptance probability <InlineMath math="\sigma_k(j)" />{" "}
-                    changes very slowly as <InlineMath math="j" /> increases:
+                    <strong>Step 1: the problem.</strong> In a real system,
+                    whether a new call is accepted can depend on exactly how the
+                    busy units are spread across the subgroups, not only on the
+                    total number of busy units <InlineMath math="j" />. The
+                    example below shows two situations that share the exact same{" "}
+                    <InlineMath math="j" />, yet lead to opposite outcomes for
+                    the next call. This is called{" "}
+                    <strong>mutual dependence between service classes</strong>:
+                    which subgroup absorbs one class&apos;s call can flip
+                    whether another class&apos;s call gets through.
                   </p>
-                  <div className="overflow-x-auto">
-                    <BlockMath math="\left|\frac{\sigma_k(j) - \sigma_k(j-1)}{\sigma_k(j)}\right| \ll 1" />
-                  </div>
-                  <p className="text-xs text-amber-700 leading-relaxed">
-                    The numerator is the change in{" "}
-                    <InlineMath math="\sigma_k" /> when one more busy unit is
-                    added. Dividing by <InlineMath math="\sigma_k(j)" /> gives
-                    the <em>relative</em> change: how large that shift is as a
-                    fraction of the current value. The formula says this
-                    fraction must be much less than 1 (i.e., much less than
-                    100%). In plain terms: adding one busy unit barely moves the
-                    acceptance probability.
-                  </p>
-                  {/* Visual: σ_k changing slowly vs abruptly */}
-                  <div className="rounded-lg border border-amber-200 bg-white p-3 space-y-3">
-                    <p className="text-[11px] font-semibold text-slate-500 tracking-wide text-center">
-                      Example: <InlineMath math="\sigma_2(j)" /> for ℓ=3, C=5,
-                      b₂=2
+
+                  {/* Two-case example */}
+                  <div className="rounded-lg border border-amber-200 bg-white p-4 space-y-4">
+                    <p className="text-xs font-semibold text-slate-600">
+                      Concrete case: ℓ=3 subgroups, each with capacity C=5.
+                      Starting from occupancy j=12, split as R1=5, R2=4, R3=3, a
+                      new class-1 call arrives (it needs 1 b.u.). Which subgroup
+                      it lands in decides what happens next to a class-2 call,
+                      which needs 2 b.u. together in a single subgroup.
                     </p>
-                    <div className="flex flex-col gap-2">
+
+                    <div className="flex flex-wrap justify-center gap-8">
                       {[
-                        { j: 9, val: 1.0, color: "bg-emerald-400" },
-                        { j: 10, val: 1.0, color: "bg-emerald-400" },
-                        { j: 11, val: 1.0, color: "bg-emerald-400" },
-                        { j: 12, val: 0.9, color: "bg-emerald-400" },
-                        { j: 13, val: 0.5, color: "bg-amber-400" },
-                        { j: 14, val: 0.0, color: "bg-red-300" },
-                      ].map(({ j, val, color }) => {
-                        const pct = Math.round(val * 100);
-                        const change =
-                          j === 12
-                            ? "−10%"
-                            : j === 13
-                              ? "−44% ←"
-                              : j === 14
-                                ? "−100% ←"
-                                : "";
-                        const changeColor =
-                          j >= 13
-                            ? "text-red-600 font-semibold"
-                            : "text-slate-300";
-                        return (
-                          <div key={j} className="flex items-center gap-2">
-                            <span className="text-[11px] text-slate-500 w-12 text-right shrink-0">
-                              j = {j}
-                            </span>
-                            <div className="flex-1 h-4 rounded-sm bg-slate-100 overflow-hidden">
+                        {
+                          label: "Case a: call placed in R2",
+                          after: [5, 5, 3],
+                          next: "class-2 accepted",
+                          nextColor: "text-emerald-600",
+                          icon: "✓",
+                          note: "R3 still has 2 free slots",
+                        },
+                        {
+                          label: "Case b: call placed in R3",
+                          after: [5, 4, 4],
+                          next: "class-2 blocked",
+                          nextColor: "text-red-600",
+                          icon: "✗",
+                          note: "No resource has 2 free slots",
+                        },
+                      ].map(({ label, after, next, nextColor, icon, note }) => (
+                        <div
+                          key={label}
+                          className="flex flex-col items-center gap-2"
+                        >
+                          <p className="text-[11px] font-semibold text-slate-600 text-center">
+                            {label} (j = 13)
+                          </p>
+                          <div className="flex gap-2 items-end">
+                            {after.map((busy, gi) => (
                               <div
-                                className={`h-full ${color} rounded-sm`}
-                                style={{ width: `${pct}%` }}
-                              />
-                            </div>
-                            <span className="text-[11px] text-slate-500 w-8 shrink-0">
-                              {val.toFixed(2)}
-                            </span>
-                            <span
-                              className={`text-[11px] w-16 shrink-0 ${changeColor}`}
-                            >
-                              {change}
-                            </span>
+                                key={gi}
+                                className="flex flex-col items-center gap-0.5"
+                              >
+                                <div className="flex flex-col-reverse gap-0.5">
+                                  {Array.from({ length: 5 }).map((_, si) => (
+                                    <div
+                                      key={si}
+                                      className={`w-7 h-4 rounded-sm border ${
+                                        si < busy
+                                          ? "bg-slate-400 border-slate-500"
+                                          : "bg-sky-100 border-sky-300"
+                                      }`}
+                                    />
+                                  ))}
+                                </div>
+                                <p className="text-[10px] text-slate-400">
+                                  R{gi + 1}
+                                </p>
+                              </div>
+                            ))}
                           </div>
-                        );
-                      })}
+                          <p className="text-[10px] text-slate-400 text-center">
+                            {note}
+                          </p>
+                          <p className={`text-xs font-semibold ${nextColor}`}>
+                            {icon} Next class-2: {next}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                    <p className="text-[11px] text-slate-400 text-center">
-                      The assumption holds when <InlineMath math="\sigma_2" />{" "}
-                      changes slowly (low j). Near saturation it breaks down.
+
+                    <p className="text-[11px] text-slate-500 text-center leading-relaxed">
+                      Same starting point (j=12) and same occupancy after the
+                      new call (j=13), but two different outcomes for the next
+                      call. Total occupancy alone does not decide the outcome;
+                      how it is split across subgroups does too.
                     </p>
                   </div>
 
+                  {/* Step 2: why this is a problem for the model */}
+                  <p className="text-sm text-amber-900 leading-relaxed">
+                    <strong>
+                      Step 2: why this is a problem for the model.
+                    </strong>{" "}
+                    The model does not want to track every possible way of
+                    splitting busy units across subgroups, that state space is
+                    huge. It wants one simple number,{" "}
+                    <InlineMath math="\sigma_k(j)" />, that depends only on the
+                    total <InlineMath math="j" />. But Step 1 just showed that
+                    two situations with the same <InlineMath math="j" /> can
+                    behave differently in reality. So using a single{" "}
+                    <InlineMath math="\sigma_k(j)" /> for both is necessarily
+                    wrong for at least one of them, by some amount.
+                  </p>
+
+                  {/* Step 3: the assumption that keeps the error small */}
+                  <p className="text-sm text-amber-900 leading-relaxed">
+                    <strong>Step 3: the fix.</strong> Assumption 2 does not
+                    claim mutual dependence goes away, it claims the error it
+                    causes stays small. It does this by requiring{" "}
+                    <InlineMath math="\sigma_k" /> to change only slightly
+                    between two neighbouring occupancy levels,{" "}
+                    <InlineMath math="j - 1" /> and <InlineMath math="j" />:
+                  </p>
+
+                  <div className="overflow-x-auto">
+                    <BlockMath math="\left|\frac{\sigma_k(j) - \sigma_k(j-1)}{\sigma_k(j)}\right| \ll 1" />
+                  </div>
+
                   <p className="text-xs text-amber-700 leading-relaxed">
-                    When this holds, calls of different service-classes behave
-                    almost independently of one another, and the recursion gives
-                    results very close to simulation.
+                    <InlineMath math="\sigma_k(j)" /> is the current state,{" "}
+                    <InlineMath math="\sigma_k(j-1)" /> is the previous state,
+                    one busy unit earlier. The numerator is how much the
+                    acceptance probability moved between those two states.
+                    Dividing by <InlineMath math="\sigma_k(j)" /> turns that
+                    into a percentage of the current value, so it does not
+                    matter whether <InlineMath math="\sigma_k" /> itself is
+                    large or small, only how much it moved relative to where it
+                    was. The symbol <InlineMath math="\ll" /> means &ldquo;much
+                    less than&rdquo;: not just below 1, but close to 0. So the
+                    condition says this percentage change must be small, like a
+                    few percent, at every step.
+                  </p>
+
+                  <p className="text-xs text-amber-700 leading-relaxed">
+                    Example: if <InlineMath math="\sigma_k(j-1) = 1.0" /> and{" "}
+                    <InlineMath math="\sigma_k(j) = 0.9" />, the change is{" "}
+                    <InlineMath math="0.1 / 0.9 \approx 0.11" />, about 11%,
+                    small enough to satisfy <InlineMath math="\ll 1" />. But if{" "}
+                    <InlineMath math="\sigma_k(j-1) = 0.9" /> and{" "}
+                    <InlineMath math="\sigma_k(j) = 0.5" />, the change is{" "}
+                    <InlineMath math="0.4 / 0.5 = 0.8" />, 80%, close to 1 and
+                    far from 0, so it fails the condition. This tends to happen
+                    near saturation, when the system is close to full.
+                  </p>
+
+                  {/* Step 4: the explicit connection */}
+                  <p className="text-sm text-amber-900 leading-relaxed">
+                    <strong>Step 4: how it all connects.</strong> Mutual
+                    dependence (Step 1) is the real phenomenon: identical{" "}
+                    <InlineMath math="j" /> can hide very different true
+                    acceptance probabilities depending on how busy units are
+                    split. The assumption (Step 3) does not remove that
+                    phenomenon, it bounds it: if <InlineMath math="\sigma_k" />{" "}
+                    barely moves from <InlineMath math="j-1" /> to{" "}
+                    <InlineMath math="j" />, then any two situations sharing
+                    that <InlineMath math="j" /> cannot have truly different
+                    acceptance probabilities either, so replacing them with one
+                    shared <InlineMath math="\sigma_k(j)" /> costs little
+                    accuracy. When <InlineMath math="\sigma_k" /> instead swings
+                    sharply (as in the 80% example, typically near saturation),
+                    that is exactly when the mutual dependence from Step 1
+                    starts to matter, and the approximation gets less reliable.
                   </p>
                 </div>
               </div>
