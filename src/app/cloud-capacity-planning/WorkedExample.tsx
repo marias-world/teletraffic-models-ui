@@ -24,6 +24,17 @@ const STEP2_RESULTS = [
   },
 ];
 
+const STEP3_RESULTS = [
+  { dim: "P", label: "C_P = 18", values: ["0.00924", "0.02242", "0.03466"] },
+  { dim: "R", label: "C_R = 17", values: ["0.01738", "0.04108", "0.06206"] },
+  { dim: "D", label: "C_D = 19", values: ["0.26481", "0.38145", "0.46094"] },
+  {
+    dim: "bps",
+    label: "C_{bps} = 20",
+    values: ["0.21711", "0.31602", "0.38743"],
+  },
+];
+
 const PM_CAPACITY = [
   { label: "C_P", value: 18 },
   { label: "C_R", value: 17 },
@@ -356,6 +367,68 @@ export default function WorkedExample() {
           Blocking is lower than the raw Step 1 numbers might suggest, even with
           triple the traffic, because a request now has{" "}
           <InlineMath math="T = 3" /> PMs to choose from instead of just one.
+        </p>
+      </div>
+
+      {/* Step 3: ratio between LAR and EMLM */}
+      <div className="border-t border-slate-200 pt-4 space-y-3">
+        <p className="text-sm font-semibold text-slate-700">
+          Step 3 (Determining the ratio <InlineMath math="ρ" /> between the
+          blocking probabilities obtained in Steps 1 &amp; 2)
+        </p>
+        <p className="text-slate-600 leading-relaxed text-sm">
+          For each service class <InlineMath math="k" /> and each resource{" "}
+          <InlineMath math="y \in \{P, R, D, bps\}" />, the ratio{" "}
+          <InlineMath math="ρ_{k,y}" /> is obtained by dividing the Step 2 (LAR)
+          result by the Step 1 (EMLM) result:
+        </p>
+
+        <div className="overflow-x-auto">
+          <BlockMath math="ρ_{k,y} = \frac{B_{k,\text{LAR},y}}{B_{k,\text{EMLM},y}}" />
+        </div>
+
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          Output
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-separate border-spacing-y-1">
+            <thead>
+              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+                <th className="text-left px-2">Subsystem</th>
+                <th className="text-left px-2">Class 1</th>
+                <th className="text-left px-2">Class 2</th>
+                <th className="text-left px-2">Class 3</th>
+              </tr>
+            </thead>
+            <tbody>
+              {STEP3_RESULTS.map(({ dim, label, values }) => (
+                <tr key={dim} className="bg-slate-50">
+                  <td className="px-2 py-2 rounded-l-lg font-mono text-slate-700">
+                    <InlineMath math={label} />
+                  </td>
+                  {values.map((v, i) => (
+                    <td
+                      key={i}
+                      className={`px-2 py-2 text-slate-600 font-mono ${
+                        i === values.length - 1 ? "rounded-r-lg" : ""
+                      }`}
+                    >
+                      <InlineMath math={`ρ_{${i + 1},${dim}} = ${v}`} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="text-xs text-slate-400 leading-relaxed">
+          This ratio captures how much the group structure changes blocking
+          compared to a single subsystem: a value close to 0 (as on processor
+          and RAM) means the group of <InlineMath math="T = 3" /> PMs blocks far
+          less than one PM would alone, while a value closer to 1 (as on disk
+          and network) means the group offers less relief from a single PM's
+          blocking.
         </p>
       </div>
     </section>
