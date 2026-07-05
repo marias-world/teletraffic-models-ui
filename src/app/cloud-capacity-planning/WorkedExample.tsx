@@ -35,6 +35,17 @@ const STEP3_RESULTS = [
   },
 ];
 
+const STEP4_RESULTS = [
+  { dim: "P", label: "C_P = 18", values: ["0.00292", "0.00766", "0.01517"] },
+  { dim: "R", label: "C_R = 17", values: ["0.00489", "0.01262", "0.02450"] },
+  { dim: "D", label: "C_D = 19", values: ["0.08422", "0.13622", "0.19537"] },
+  {
+    dim: "bps",
+    label: "C_{bps} = 20",
+    values: ["0.06223", "0.10265", "0.14945"],
+  },
+];
+
 const PM_CAPACITY = [
   { label: "C_P", value: 18 },
   { label: "C_R", value: 17 },
@@ -429,6 +440,83 @@ export default function WorkedExample() {
           less than one PM would alone, while a value closer to 1 (as on disk
           and network) means the group offers less relief from a single PM's
           blocking.
+        </p>
+      </div>
+
+      {/* Step 4: RLA within a single PM */}
+      <div className="border-t border-slate-200 pt-4 space-y-3">
+        <p className="text-sm font-semibold text-slate-700">
+          Step 4 (Applying the RLA method in a single PM)
+        </p>
+        <p className="text-slate-600 leading-relaxed text-sm">
+          A single PM is not really four independent subsystems: a VM only
+          starts if processor, RAM, disk, and network all have room for it{" "}
+          <em>at the same time</em>. The{" "}
+          <Link
+            href="/reduced-load-approximation"
+            className="text-sky-600 hover:underline font-medium"
+          >
+            Reduced Load Approximation (RLA)
+          </Link>{" "}
+          treats the four resources like the links of a small network that
+          every request must cross together, and iterates until the blocking
+          seen by each class on each resource settles down.
+        </p>
+
+        <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
+          <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">ℹ️</span>
+          <p className="text-sm text-sky-900 leading-relaxed">
+            The values below, <InlineMath math="V_{y,k}" />, are the RLA
+            fixed-point blocking probabilities of class <InlineMath math="k" />{" "}
+            on resource <InlineMath math="y" />, computed within a single PM
+            using the original per-PM traffic-loads from Step 1 (
+            <InlineMath math="\alpha_1 = 3.0" />,{" "}
+            <InlineMath math="\alpha_2 = 1.5" />,{" "}
+            <InlineMath math="\alpha_3 = 1.0" /> erl). The iteration was run
+            with a convergence threshold of <InlineMath math="0.00001" /> and
+            settled after 15 iterations.
+          </p>
+        </div>
+
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          Output
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-separate border-spacing-y-1">
+            <thead>
+              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+                <th className="text-left px-2">Subsystem</th>
+                <th className="text-left px-2">Class 1</th>
+                <th className="text-left px-2">Class 2</th>
+                <th className="text-left px-2">Class 3</th>
+              </tr>
+            </thead>
+            <tbody>
+              {STEP4_RESULTS.map(({ dim, label, values }) => (
+                <tr key={dim} className="bg-slate-50">
+                  <td className="px-2 py-2 rounded-l-lg font-mono text-slate-700">
+                    <InlineMath math={label} />
+                  </td>
+                  {values.map((v, i) => (
+                    <td
+                      key={i}
+                      className={`px-2 py-2 text-slate-600 font-mono ${
+                        i === values.length - 1 ? "rounded-r-lg" : ""
+                      }`}
+                    >
+                      <InlineMath math={`V_{${dim},${i + 1}} = ${v}`} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="text-xs text-slate-400 leading-relaxed">
+          These <InlineMath math="V_{y,k}" /> values feed into the next step,
+          where they are combined across all four resources to obtain each
+          class's overall blocking probability within a single PM.
         </p>
       </div>
     </section>
