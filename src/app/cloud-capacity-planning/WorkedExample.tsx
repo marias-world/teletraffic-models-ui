@@ -1,0 +1,164 @@
+import Image from "next/image";
+import { InlineMath } from "react-katex";
+
+const PM_CAPACITY = [
+  { label: "C_P", value: 18 },
+  { label: "C_R", value: 17 },
+  { label: "C_D", value: 19 },
+  { label: "C_{bps}", value: 20 },
+];
+
+const SERVICE_CLASSES = [
+  {
+    k: 1,
+    instance: "m9g.medium",
+    vcpu: 1,
+    ram: 1,
+    disk: 2,
+    network: 2,
+  },
+  {
+    k: 2,
+    instance: "m9g.large",
+    vcpu: 2,
+    ram: 2,
+    disk: 3,
+    network: 3,
+  },
+  {
+    k: 3,
+    instance: "m9g.xlarge",
+    vcpu: 3,
+    ram: 3,
+    disk: 4,
+    network: 4,
+  },
+];
+
+export default function WorkedExample() {
+  return (
+    <section className="space-y-4">
+      <h2 className="text-xl font-semibold text-slate-700">
+        Worked Example: AWS EC2 Instance Types as Service Classes
+      </h2>
+
+      <p className="text-slate-600 leading-relaxed text-sm">
+        To make the model concrete, consider a{" "}
+        <a
+          href="https://aws.amazon.com/ec2/instance-types/m9g/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sky-600 hover:underline font-medium"
+        >
+          general-purpose family of AWS EC2 instances (m9g)
+        </a>
+        . Each instance size becomes a service class <InlineMath math="k" />:
+        the bigger the instance, the more processor, RAM, and disk it demands
+        from the physical machine that hosts it.
+      </p>
+
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border-separate border-spacing-y-1">
+          <thead>
+            <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+              <th className="text-left px-2">Class</th>
+              <th className="text-left px-2">Instance type</th>
+              <th className="text-left px-2">
+                vCPU (<InlineMath math="b_{k,P}" />)
+              </th>
+              <th className="text-left px-2">
+                RAM GiB (<InlineMath math="b_{k,R}" />)
+              </th>
+              <th className="text-left px-2">
+                Disk GB (<InlineMath math="b_{k,D}" />)
+              </th>
+              <th className="text-left px-2">
+                Network Gbps (<InlineMath math="b_{k,bps}" />)
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {SERVICE_CLASSES.map((row) => (
+              <tr key={row.k} className="bg-slate-50">
+                <td className="px-2 py-2 rounded-l-lg font-semibold text-slate-500">
+                  k{row.k}
+                </td>
+                <td className="px-2 py-2 font-mono text-slate-700">
+                  {row.instance}
+                </td>
+                <td className="px-2 py-2 text-slate-600">{row.vcpu}</td>
+                <td className="px-2 py-2 text-slate-600">{row.ram}</td>
+                <td className="px-2 py-2 text-slate-600">{row.disk}</td>
+                <td className="px-2 py-2 rounded-r-lg text-slate-600">
+                  {row.network}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
+        <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">ℹ️</span>
+        <p className="text-sm text-sky-900 leading-relaxed">
+          A class-1 request (m9g.medium) needs 1 vCPU, 1 GiB of RAM, 2 GB of
+          disk, and 2 Gbps of network bandwidth. A class-3 request (m9g.xlarge)
+          needs 3 vCPU, 3 GiB of RAM, 4 GB of disk, and 4 Gbps of network
+          bandwidth, the largest demand on every resource. Once a PM has
+          accepted a VM, that amount is reserved on all four resources until the
+          VM finishes.
+        </p>
+      </div>
+
+      <p className="text-xs text-slate-400 leading-relaxed">
+        These figures are illustrative, chosen to show how instance sizes
+        translate into resource-demand vectors{" "}
+        <InlineMath math="(b_{k,P}, b_{k,R}, b_{k,D}, b_{k,bps})" />, and do not
+        necessarily match the exact published specifications of the m9g family.
+      </p>
+
+      <p className="text-slate-600 leading-relaxed text-sm">
+        Let's consider the case of <InlineMath math="K = 3" /> service classes
+        and <InlineMath math="T = 3" /> PMs.
+      </p>
+      <p className="text-slate-600 leading-relaxed text-sm">
+        Each subresource (CPU, RAM, DISK, Network) contains the following
+        capacities <InlineMath math="C_P = 18" />,{" "}
+        <InlineMath math="C_R = 17" />, <InlineMath math="C_D = 19" />, and{" "}
+        <InlineMath math="C_{bps} = 20" />.
+      </p>
+
+      {/* PM group visual */}
+      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-6 overflow-x-auto">
+        <div className="flex items-start justify-center gap-4 sm:gap-8 min-w-max mx-auto">
+          {[1, 2, 3].map((pm) => (
+            <div key={pm} className="flex flex-col items-center gap-1.5">
+              <Image
+                src="/images/server.png"
+                alt={`Physical machine ${pm}`}
+                width={56}
+                height={56}
+              />
+              <p className="text-xs font-semibold text-slate-700">PM{pm}</p>
+              <div className="flex flex-col items-center gap-0.5">
+                {PM_CAPACITY.map(({ label, value }) => (
+                  <p
+                    key={label}
+                    className="text-[11px] font-mono text-slate-500"
+                  >
+                    <InlineMath math={label} /> = {value}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p className="text-xs text-slate-400 text-center leading-relaxed">
+        The <InlineMath math="T = 3" /> identical PMs of a Group Manager, each
+        with the same capacity across all four resource dimensions.
+      </p>
+    </section>
+  );
+}

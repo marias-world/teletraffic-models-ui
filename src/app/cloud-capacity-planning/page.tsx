@@ -2,6 +2,7 @@ import Link from "next/link";
 import "katex/dist/katex.min.css";
 import Overview from "./Overview";
 import RequestFlow from "./RequestFlow";
+import WorkedExample from "./WorkedExample";
 import Image from "next/image";
 
 export default function CloudCapacityPlanningPage() {
@@ -50,6 +51,8 @@ export default function CloudCapacityPlanningPage() {
               </figcaption>
             </figure>
           </section>
+
+          <WorkedExample />
 
           {/* References */}
           <section className="border-t border-slate-200 pt-6 space-y-2">
