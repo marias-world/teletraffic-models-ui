@@ -30,6 +30,58 @@ const calculateSeviceClassesForRLA = (
   });
 };
 
+// Runs Steps 1-5 of the proposed model given service classes that already
+// carry their per-PM offered load (no traffic-load derivation). Reused by
+// `proposedModel` below and by the "Try it" calculator.
+export const calculateCloudCapacityBlockingProbabilities = (
+  resourceCount: number,
+  capacities: Capacities,
+  serviceClasses: ServiceClassConfigs,
+) => {
+  const kaufmanRoberts = calculateSubsystemBlockingKaufmanRoberts(
+    capacities,
+    serviceClasses,
+  );
+
+  const serviceClassConfigsLAR = {
+    ram: serviceClasses.ram.map((item) => ({
+      ...item,
+      incomingLoad_a: item.incomingLoad_a * resourceCount,
+    })),
+    processor: serviceClasses.processor.map((item) => ({
+      ...item,
+      incomingLoad_a: item.incomingLoad_a * resourceCount,
+    })),
+    disk: serviceClasses.disk.map((item) => ({
+      ...item,
+      incomingLoad_a: item.incomingLoad_a * resourceCount,
+    })),
+    bitrate: (serviceClasses.bitrate ?? []).map((item) => ({
+      ...item,
+      incomingLoad_a: item.incomingLoad_a * resourceCount,
+    })),
+  };
+
+  const lar = calculateBlockingLAR(
+    resourceCount,
+    capacities,
+    serviceClassConfigsLAR,
+  );
+
+  const relationR = calculateBlockingRatios(kaufmanRoberts, lar);
+
+  const serviceClassesinRLA = calculateSeviceClassesForRLA(serviceClasses);
+
+  const reducedLoadApproximation = processResultInRLA(
+    capacities,
+    serviceClassesinRLA,
+  );
+
+  const Ei = calculateEi(relationR, reducedLoadApproximation);
+
+  return { kaufmanRoberts, lar, relationR, reducedLoadApproximation, Ei };
+};
+
 export const proposedModel = (
   resourceCount: number,
   capacities: Capacities,
@@ -51,49 +103,11 @@ export const proposedModel = (
     });
   });
 
-  const kaufmanRoberts = calculateSubsystemBlockingKaufmanRoberts(
+  const { Ei } = calculateCloudCapacityBlockingProbabilities(
+    resourceCount,
     capacities,
     serviceClasses,
   );
 
-  const serviceClassConfigsLAR = {
-    ram: serviceClasses.ram.map((item) => ({
-      ...item,
-      incomingLoad_a: item.incomingLoad_a * 3,
-    })),
-    processor: serviceClasses.processor.map((item) => ({
-      ...item,
-      incomingLoad_a: item.incomingLoad_a * 3,
-    })),
-    disk: serviceClasses.disk.map((item) => ({
-      ...item,
-      incomingLoad_a: item.incomingLoad_a * 3,
-    })),
-    bitrate: (serviceClasses.bitrate ?? []).map((item) => ({
-      ...item,
-      incomingLoad_a: item.incomingLoad_a * 3,
-    })),
-  };
-
-  const lar = calculateBlockingLAR(
-    resourceCount,
-    capacities,
-    serviceClassConfigsLAR,
-  );
-
-  const relationR = calculateBlockingRatios(kaufmanRoberts, lar);
-
-  const serviceClassesinRLA = calculateSeviceClassesForRLA(serviceClasses);
-
-  const reducedLoadApproximation = processResultInRLA(
-    capacities,
-    serviceClassesinRLA,
-  );
-
-  const Ei = calculateEi(relationR, reducedLoadApproximation);
-
-  // console.log(
-  //   `Time taken to execute proposed model: ${performance.now() - startTime} milliseconds`
-  // );
   return Ei;
 };
