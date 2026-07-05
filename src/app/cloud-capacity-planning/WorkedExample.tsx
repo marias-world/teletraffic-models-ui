@@ -1,6 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { InlineMath } from "react-katex";
+import { BlockMath, InlineMath } from "react-katex";
+
+const STEP1_RESULTS = [
+  { dim: "P", label: "C_P = 18", values: ["0.01199", "0.02896", "0.05240"] },
+  { dim: "R", label: "C_R = 17", values: ["0.01718", "0.04090", "0.07281"] },
+  { dim: "D", label: "C_D = 19", values: ["0.11369", "0.17947", "0.25110"] },
+  {
+    dim: "bps",
+    label: "C_{bps} = 20",
+    values: ["0.09617", "0.15362", "0.21644"],
+  },
+];
 
 const PM_CAPACITY = [
   { label: "C_P", value: 18 },
@@ -165,9 +176,7 @@ export default function WorkedExample() {
       </p>
 
       <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
-          📊
-        </span>
+        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">📊</span>
         <p className="text-sm text-violet-900 leading-relaxed">
           Offered traffic-load of each service class (in erl):{" "}
           <InlineMath math="\alpha_1 = 3.0" />,{" "}
@@ -180,6 +189,75 @@ export default function WorkedExample() {
             Traffic Load
           </Link>{" "}
           for what this quantity means and how it is calculated.
+        </p>
+      </div>
+
+      {/* Step 1: Kaufman-Roberts per subsystem */}
+      <div className="border-t border-slate-200 pt-4 space-y-3">
+        <p className="text-sm font-semibold text-slate-700">
+          Step 1 (Applying the Kaufman-Roberts (EMLM) in each subsystem)
+        </p>
+        <p className="text-slate-600 leading-relaxed text-sm">
+          Each of the four resources, processor, RAM, disk, and network, is
+          treated as its own single-resource system. We calculate the blocking
+          probability of every service class in each subsystem separately, using
+          the{" "}
+          <Link
+            href="/kaufman-roberts"
+            className="text-sky-600 hover:underline font-medium"
+          >
+            Kaufman-Roberts formula (EMLM)
+          </Link>
+          , with capacity <InlineMath math="C_P, C_R, C_D, C_{bps}" /> and
+          demands <InlineMath math="b_{k,P}, b_{k,R}, b_{k,D}, b_{k,bps}" />{" "}
+          respectively.
+        </p>
+
+        <div className="overflow-x-auto">
+          <BlockMath math="q(j) = \frac{1}{j}\sum_{k=1}^{K} \alpha_k \cdot b_k \cdot q(j-b_k), \qquad B_{k,\text{EMLM}} = \sum_{j=C-b_k+1}^{C} Q(j)" />
+        </div>
+
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          Output
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-separate border-spacing-y-1">
+            <thead>
+              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+                <th className="text-left px-2">Subsystem</th>
+                <th className="text-left px-2">Class 1</th>
+                <th className="text-left px-2">Class 2</th>
+                <th className="text-left px-2">Class 3</th>
+              </tr>
+            </thead>
+            <tbody>
+              {STEP1_RESULTS.map(({ dim, label, values }) => (
+                <tr key={dim} className="bg-slate-50">
+                  <td className="px-2 py-2 rounded-l-lg font-mono text-slate-700">
+                    <InlineMath math={label} />
+                  </td>
+                  {values.map((v, i) => (
+                    <td
+                      key={i}
+                      className={`px-2 py-2 text-slate-600 font-mono ${
+                        i === values.length - 1 ? "rounded-r-lg" : ""
+                      }`}
+                    >
+                      <InlineMath
+                        math={`B_{${i + 1},\\text{EMLM},${dim}} = ${v}`}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="text-xs text-slate-400 leading-relaxed">
+          Each subsystem sees only the classes competing for that one resource,
+          so blocking is worst on disk (the tightest capacity relative to
+          demand) and lowest on processor.
         </p>
       </div>
     </section>
