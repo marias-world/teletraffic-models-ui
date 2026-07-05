@@ -3,6 +3,7 @@ import "katex/dist/katex.min.css";
 import Overview from "./Overview";
 import RequestFlow from "./RequestFlow";
 import WorkedExample from "./WorkedExample";
+import Calculator from "./Calculator";
 import Image from "next/image";
 
 export default function CloudCapacityPlanningPage() {
@@ -51,7 +52,7 @@ export default function CloudCapacityPlanningPage() {
               </figcaption>
             </figure>
           </section>
-
+          <Calculator />
           <WorkedExample />
 
           {/* References */}
