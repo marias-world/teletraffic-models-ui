@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { InlineMath } from "react-katex";
 
 const PM_CAPACITY = [
@@ -162,6 +163,25 @@ export default function WorkedExample() {
         The <InlineMath math="T = 3" /> identical PMs of a Group Manager, each
         with the same capacity across all four resource dimensions.
       </p>
+
+      <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
+        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
+          📊
+        </span>
+        <p className="text-sm text-violet-900 leading-relaxed">
+          Offered traffic-load of each service class (in erl):{" "}
+          <InlineMath math="\alpha_1 = 3.0" />,{" "}
+          <InlineMath math="\alpha_2 = 1.5" />,{" "}
+          <InlineMath math="\alpha_3 = 1.0" />. See{" "}
+          <Link
+            href="/theory/traffic-load"
+            className="text-violet-700 font-medium hover:underline"
+          >
+            Traffic Load
+          </Link>{" "}
+          for what this quantity means and how it is calculated.
+        </p>
+      </div>
     </section>
   );
 }
