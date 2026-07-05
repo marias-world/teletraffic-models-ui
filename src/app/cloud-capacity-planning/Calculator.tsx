@@ -363,16 +363,39 @@ export default function Calculator() {
               <div className="mt-3 bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-6">
                 {(
                   [
-                    ["Step 1: EMLM per subsystem", results.kaufmanRoberts, "B_{EMLM}"],
-                    ["Step 2: LAR across the T subsystems", results.lar, "B_{LAR}"],
-                    ["Step 3: Ratio ρ = LAR / EMLM", results.relationR, "\\rho"],
-                    ["Step 4: RLA within a single PM", results.reducedLoadApproximation, "V"],
+                    [
+                      "Step 1 (Applying the EMLM in each subsystem)",
+                      "q(j) = \\frac{1}{j}\\sum_{k=1}^{K} \\alpha_k \\cdot b_k \\cdot q(j-b_k)",
+                      results.kaufmanRoberts,
+                      "B_{EMLM}",
+                    ],
+                    [
+                      "Step 2 (Applying the LAR model in the group of T subsystems)",
+                      "B_{k,\\text{LAR},y} \\text{ with offered load } \\alpha_k \\cdot T",
+                      results.lar,
+                      "B_{LAR}",
+                    ],
+                    [
+                      "Step 3 (Determining the ratio ρ between Steps 1 & 2)",
+                      "\\rho_{k,y} = \\frac{B_{k,\\text{LAR},y}}{B_{k,\\text{EMLM},y}}",
+                      results.relationR,
+                      "\\rho",
+                    ],
+                    [
+                      "Step 4 (Applying the RLA method in a single PM)",
+                      "V_{y,k} \\text{ from the RLA fixed-point iteration across the four resources}",
+                      results.reducedLoadApproximation,
+                      "V",
+                    ],
                   ] as const
-                ).map(([title, table, symbol]) => (
+                ).map(([title, formula, table, symbol]) => (
                   <div key={title} className="space-y-2">
                     <p className="text-sm font-semibold text-slate-700">
                       {title}
                     </p>
+                    <div className="overflow-x-auto">
+                      <BlockMath math={formula} />
+                    </div>
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm border-separate border-spacing-y-1">
                         <thead>
@@ -415,6 +438,34 @@ export default function Calculator() {
                     </div>
                   </div>
                 ))}
+
+                {/* Step 5: total blocking probability */}
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-slate-700">
+                    Step 5 (Total blocking probability in the CC system)
+                  </p>
+                  <div className="overflow-x-auto">
+                    <BlockMath math="B_k = 1 - \Bigl[\bigl(1 - B^*_{k,P}\bigr)\bigl(1 - B^*_{k,R}\bigr)\bigl(1 - B^*_{k,D}\bigr)\bigl(1 - B^*_{k,bps}\bigr)\Bigr], \qquad B^*_{k,y} = \rho_{k,y} \cdot V_{y,k}" />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {rows.map((_, i) => {
+                      const value = results.Ei[`B_class_${i + 1}`] ?? 0;
+                      return (
+                        <div
+                          key={i}
+                          className="bg-white border border-slate-200 rounded-lg p-3 text-center"
+                        >
+                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            Class {i + 1}
+                          </p>
+                          <p className="text-sm font-mono text-sky-600">
+                            <InlineMath math={`B_${i + 1} \\approx ${value.toFixed(5)}`} />
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             )}
           </div>
