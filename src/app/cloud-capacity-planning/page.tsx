@@ -52,10 +52,8 @@ export default function CloudCapacityPlanningPage() {
               </figcaption>
             </figure>
           </section>
-
-          <WorkedExample />
-
           <Calculator />
+          <WorkedExample />
 
           {/* References */}
           <section className="border-t border-slate-200 pt-6 space-y-2">
