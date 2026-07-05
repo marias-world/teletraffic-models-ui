@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BlockMath, InlineMath } from "react-katex";
+import { InlineMath } from "react-katex";
 import { calculateCloudCapacityBlockingProbabilities } from "@/lib/models/cloud-capacity-planning/proposed-model-data";
 import {
   BlockingRatios,
