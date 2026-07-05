@@ -1,6 +1,7 @@
 import Link from "next/link";
 import "katex/dist/katex.min.css";
 import Overview from "./Overview";
+import RequestFlow from "./RequestFlow";
 import Image from "next/image";
 
 export default function CloudCapacityPlanningPage() {
@@ -25,6 +26,7 @@ export default function CloudCapacityPlanningPage() {
           </div>
 
           <Overview />
+          <RequestFlow />
 
           <section className="space-y-4">
             <h2 className="text-xl font-semibold text-slate-700">
@@ -36,7 +38,7 @@ export default function CloudCapacityPlanningPage() {
                 alt="Visual representation of how the Kaufman-Roberts, Limited Availability, and Reduced Load Approximation models are combined across k identical physical machines"
                 width={800}
                 height={500}
-                className="w-full rounded-lg border border-slate-200"
+                className="w-full max-w-md mx-auto rounded-lg border border-slate-200"
               />
               <figcaption className="text-xs text-slate-400 text-center leading-relaxed">
                 How the Kaufman-Roberts, Limited Availability Group (LAG), and
