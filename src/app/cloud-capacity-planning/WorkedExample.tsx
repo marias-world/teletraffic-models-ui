@@ -136,15 +136,18 @@ export default function WorkedExample() {
               <Image
                 src="/images/server.png"
                 alt={`Physical machine ${pm}`}
-                width={56}
-                height={56}
+                width={96}
+                height={96}
+                className="w-14 sm:w-24 h-auto"
               />
-              <p className="text-xs font-semibold text-slate-700">PM{pm}</p>
+              <p className="text-sm sm:text-base font-semibold text-slate-700">
+                PM{pm}
+              </p>
               <div className="flex flex-col items-center gap-0.5">
                 {PM_CAPACITY.map(({ label, value }) => (
                   <p
                     key={label}
-                    className="text-[11px] font-mono text-slate-500"
+                    className="text-xs sm:text-sm font-mono text-slate-500"
                   >
                     <InlineMath math={label} /> = {value}
                   </p>
