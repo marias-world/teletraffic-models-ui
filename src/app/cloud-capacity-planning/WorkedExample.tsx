@@ -46,6 +46,12 @@ const STEP4_RESULTS = [
   },
 ];
 
+const STEP5_RESULTS = [
+  { k: 1, value: "0.03562" },
+  { k: 2, value: "0.08335" },
+  { k: 3, value: "0.14494" },
+];
+
 const PM_CAPACITY = [
   { label: "C_P", value: 18 },
   { label: "C_R", value: 17 },
@@ -384,18 +390,18 @@ export default function WorkedExample() {
       {/* Step 3: ratio between LAR and EMLM */}
       <div className="border-t border-slate-200 pt-4 space-y-3">
         <p className="text-sm font-semibold text-slate-700">
-          Step 3 (Determining the ratio <InlineMath math="ρ" /> between the
+          Step 3 (Determining the ratio <InlineMath math="\rho" /> between the
           blocking probabilities obtained in Steps 1 &amp; 2)
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
           For each service class <InlineMath math="k" /> and each resource{" "}
           <InlineMath math="y \in \{P, R, D, bps\}" />, the ratio{" "}
-          <InlineMath math="ρ_{k,y}" /> is obtained by dividing the Step 2 (LAR)
-          result by the Step 1 (EMLM) result:
+          <InlineMath math="\rho_{k,y}" /> is obtained by dividing the Step 2
+          (LAR) result by the Step 1 (EMLM) result:
         </p>
 
         <div className="overflow-x-auto">
-          <BlockMath math="ρ_{k,y} = \frac{B_{k,\text{LAR},y}}{B_{k,\text{EMLM},y}}" />
+          <BlockMath math="\rho_{k,y} = \frac{B_{k,\text{LAR},y}}{B_{k,\text{EMLM},y}}" />
         </div>
 
         <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
@@ -424,7 +430,7 @@ export default function WorkedExample() {
                         i === values.length - 1 ? "rounded-r-lg" : ""
                       }`}
                     >
-                      <InlineMath math={`ρ_{${i + 1},${dim}} = ${v}`} />
+                      <InlineMath math={`\\rho_{${i + 1},${dim}} = ${v}`} />
                     </td>
                   ))}
                 </tr>
@@ -458,9 +464,9 @@ export default function WorkedExample() {
           >
             Reduced Load Approximation (RLA)
           </Link>{" "}
-          treats the four resources like the links of a small network that
-          every request must cross together, and iterates until the blocking
-          seen by each class on each resource settles down.
+          treats the four resources like the links of a small network that every
+          request must cross together, and iterates until the blocking seen by
+          each class on each resource settles down.
         </p>
 
         <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
@@ -517,6 +523,97 @@ export default function WorkedExample() {
           These <InlineMath math="V_{y,k}" /> values feed into the next step,
           where they are combined across all four resources to obtain each
           class's overall blocking probability within a single PM.
+        </p>
+      </div>
+
+      {/* Step 5: total blocking probability in the CC system */}
+      <div className="border-t border-slate-200 pt-4 space-y-3">
+        <p className="text-sm font-semibold text-slate-700">Step 5</p>
+        <p className="text-slate-600 leading-relaxed text-sm">
+          Determination of the total blocking probability of each service class
+          in the Cloud Computing system. The total blocking probability of a VM
+          request that belongs to service class <InlineMath math="k" /> is given
+          by the same all-or-nothing rule used throughout: a class-
+          <InlineMath math="k" /> request is blocked if it is blocked on{" "}
+          <em>any</em> of the four resources.
+        </p>
+
+        <div className="overflow-x-auto">
+          <BlockMath math="B_k = 1 - \Bigl[\bigl(1 - B^*_{k,P}\bigr)\bigl(1 - B^*_{k,R}\bigr)\bigl(1 - B^*_{k,D}\bigr)\bigl(1 - B^*_{k,bps}\bigr)\Bigr]" />
+        </div>
+
+        <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
+          <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">ℹ️</span>
+          <div className="text-sm text-sky-900 leading-relaxed space-y-2">
+            <div className="overflow-x-auto">
+              <BlockMath math="B^*_{k,y} = \rho_{k,y} \cdot V_{y,k}, \qquad y \in \{P, R, D, bps\}" />
+            </div>
+            <p>
+              <InlineMath math="B_k" /> is the overall blocking probability of a
+              class-
+              <InlineMath math="k" /> VM request in the whole cloud system.{" "}
+              <InlineMath math="B^*_{k,y}" /> is the effective blocking
+              probability of class <InlineMath math="k" /> on resource{" "}
+              <InlineMath math="y" />, obtained by combining{" "}
+              <InlineMath math="\rho_{k,y}" /> (the ratio from Step 3, which
+              captures how much the group of <InlineMath math="T" /> PMs changes
+              blocking compared to a single subsystem) with{" "}
+              <InlineMath math="V_{y,k}" /> (the RLA blocking probability from
+              Step 4, which accounts for the correlation between the four
+              resources within a single PM).
+            </p>
+          </div>
+        </div>
+
+        <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
+          <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
+            💡
+          </span>
+          <div className="text-sm text-violet-900 leading-relaxed space-y-2">
+            <p>
+              Reading the formula in simple terms: each{" "}
+              <InlineMath math="B^*_{k,y}" /> is the chance of being{" "}
+              <em>blocked</em> on subresource <InlineMath math="y" />
+              ,(Processor, RAM, Disk, Network) so{" "}
+              <InlineMath math="1 - B^*_{k,y}" /> is the chance of{" "}
+              <em>fitting</em> on that subresource. Multiplying the four terms{" "}
+              <InlineMath math="(1 - B^*_{k,P})(1 - B^*_{k,R})(1 - B^*_{k,D})(1 - B^*_{k,bps})" />{" "}
+              gives the probability of fitting on all subresources; processor{" "}
+              <em>and</em> RAM <em>and</em> disk <em>and</em> network, i.e. the
+              probability the VM is accepted in a Physical Machine.
+            </p>
+            <p>
+              Why the final <InlineMath math="1 - \ldots" />? The product gives
+              the probability of <em>accepting</em> the VM, not blocking it, and
+              since those are the only two outcomes, blocking = 1 − acceptance.
+            </p>
+          </div>
+        </div>
+
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          Output
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {STEP5_RESULTS.map(({ k, value }) => (
+            <div
+              key={k}
+              className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1 text-center"
+            >
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Class {k}
+              </p>
+              <p className="text-2xl font-bold text-sky-600">
+                <InlineMath math={`B_${k} \\approx ${value}`} />
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p className="text-xs text-slate-400 leading-relaxed">
+          The smaller instance (class 1) sees the lowest blocking, and the
+          largest instance (class 3) the highest: bigger VMs need more of every
+          resource at once, so they are harder to place across the whole cloud
+          infrastructure.
         </p>
       </div>
     </section>
