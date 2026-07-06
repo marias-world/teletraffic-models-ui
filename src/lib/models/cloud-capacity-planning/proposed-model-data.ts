@@ -37,6 +37,7 @@ export const calculateCloudCapacityBlockingProbabilities = (
   resourceCount: number,
   capacities: Capacities,
   serviceClasses: ServiceClassConfigs,
+  rlaThreshold?: number,
 ) => {
   const kaufmanRoberts = calculateSubsystemBlockingKaufmanRoberts(
     capacities,
@@ -75,6 +76,7 @@ export const calculateCloudCapacityBlockingProbabilities = (
   const reducedLoadApproximation = processResultInRLA(
     capacities,
     serviceClassesinRLA,
+    rlaThreshold,
   );
 
   const Ei = calculateEi(relationR, reducedLoadApproximation);

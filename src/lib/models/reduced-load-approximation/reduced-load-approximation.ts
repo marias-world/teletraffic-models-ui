@@ -183,10 +183,12 @@ export const callBlockingProbabilityinRLA = (
 export const callBlockingProbabilityinRLAForProposedModel = (
   links: networkTopology[],
   serviceClasses: ServiceClassWithRoute[],
+  threshold: number = DEFAULT_THRESHOLD,
 ): { [key: string]: number } => {
   const blockingProbabilities = calculateBlockingWithReducedTrafficLoad(
     links,
     serviceClasses,
+    threshold,
   );
   const logs: { [key: string]: number } = {};
 

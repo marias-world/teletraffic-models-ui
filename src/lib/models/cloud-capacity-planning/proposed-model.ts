@@ -123,11 +123,13 @@ enum Subsystem {
 export const processResultInRLA = (
   capacities: Capacities,
   serviceClasses: ServiceClassWithRoute[],
+  threshold?: number,
 ): BlockingRatios => {
   const links = Object.values(capacities);
   const rla = callBlockingProbabilityinRLAForProposedModel(
     links,
     serviceClasses,
+    threshold,
   );
 
   const result: BlockingRatios = { RAM: {}, Processor: {}, Disk: {}, Bps: {} };
