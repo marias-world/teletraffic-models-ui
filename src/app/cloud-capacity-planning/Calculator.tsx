@@ -47,6 +47,7 @@ export default function Calculator() {
     bps: "",
   });
   const [rows, setRows] = useState<ServiceClassRow[]>(DEFAULT_ROWS);
+  const [thresholdInput, setThresholdInput] = useState("0.000001");
   const [results, setResults] = useState<ReturnType<
     typeof calculateCloudCapacityBlockingProbabilities
   > | null>(null);
@@ -130,6 +131,14 @@ export default function Calculator() {
       }
     }
 
+    const rlaThreshold = Number(thresholdInput);
+    if (isNaN(rlaThreshold) || rlaThreshold <= 0 || rlaThreshold >= 1) {
+      setError(
+        "RLA threshold must be a positive number less than 1 (e.g. 0.000001).",
+      );
+      return;
+    }
+
     const capacitiesForModel: Capacities = {
       ramCapacity: { link: 1, bu: capacityValues.R },
       processorCapacity: { link: 2, bu: capacityValues.P },
@@ -168,6 +177,7 @@ export default function Calculator() {
           groupSize,
           capacitiesForModel,
           serviceClassConfigs,
+          rlaThreshold,
         );
         setResults(result);
       } catch (e) {
@@ -309,6 +319,29 @@ export default function Calculator() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* RLA convergence threshold */}
+      <div>
+        <label className="block text-sm font-medium text-slate-600 mb-1">
+          RLA convergence threshold
+        </label>
+        <input
+          type="number"
+          min={0}
+          step="0.000001"
+          value={thresholdInput}
+          onChange={(e) => {
+            setThresholdInput(e.target.value);
+            setError("");
+          }}
+          placeholder="e.g. 0.000001"
+          className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"
+        />
+        <p className="text-xs text-slate-400 mt-1">
+          Used in Step 4 (RLA within a single PM): iteration stops when all V
+          values change by less than this amount. Default: 0.000001.
+        </p>
       </div>
 
       {error && <p className="text-red-500 text-sm font-medium">{error}</p>}
