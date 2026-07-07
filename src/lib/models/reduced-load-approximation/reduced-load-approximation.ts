@@ -4,6 +4,13 @@ import { networkTopology, ServiceClassWithRoute } from "../types";
 
 const DEFAULT_THRESHOLD = 0.000001;
 const MAX_ITERATIONS = 5000;
+// If the same (rounded) step size repeats this many times, the iteration is
+// treated as oscillating rather than genuinely still converging.
+const OSCILLATION_REPEAT_LIMIT = 20;
+// When oscillation is detected, the relaxation (damping) factor is
+// multiplied by this each time, shrinking the step size until it settles.
+const DAMPING_DECAY = 0.5;
+const MIN_DAMPING = 0.05;
 
 interface BlockingProbabilityResult {
   finalResult: { [key: string]: number };
@@ -106,17 +113,34 @@ export const calculateBlockingWithReducedTrafficLoad = (
     serviceClasses,
     {},
   );
-  const differenceCount: { [key: number]: number } = {};
+  let differenceCount: { [key: string]: number } = {};
   let iterations = 0;
+  // Starts undamped (1 = take the raw result outright), exactly like the
+  // original iteration. Damping only kicks in, and is only strengthened,
+  // once oscillation is actually detected, so well-behaved topologies that
+  // already converge cleanly are completely unaffected.
+  let damping = 1;
 
   while (iterations < MAX_ITERATIONS) {
     iterations++;
     const previousResult = { ...currentResult };
-    currentResult = blockingProbabilityNetworkTopology(
+    const rawNextResult = blockingProbabilityNetworkTopology(
       links,
       serviceClasses,
       previousResult.finalResult,
     );
+
+    const dampedFinalResult: { [key: string]: number } = {};
+    for (const key of Object.keys(rawNextResult.finalResult)) {
+      const prevValue =
+        previousResult.finalResult[key] ?? rawNextResult.finalResult[key];
+      dampedFinalResult[key] =
+        prevValue + damping * (rawNextResult.finalResult[key] - prevValue);
+    }
+    currentResult = {
+      finalResult: dampedFinalResult,
+      linkStateProbabilities: rawNextResult.linkStateProbabilities,
+    };
 
     const maxDifference = Math.max(
       ...Object.keys(currentResult.finalResult).map((key) =>
@@ -131,11 +155,28 @@ export const calculateBlockingWithReducedTrafficLoad = (
 
     if (maxDifference <= threshold) break;
 
-    differenceCount[maxDifference] = (differenceCount[maxDifference] || 0) + 1;
+    // Round before using as a dictionary key: without this, floating-point
+    // noise between otherwise-identical oscillating iterations can produce
+    // slightly different numbers each time, so the "same difference
+    // repeating" check below would never trigger.
+    const roundedDifference = maxDifference.toFixed(10);
+    differenceCount[roundedDifference] =
+      (differenceCount[roundedDifference] || 0) + 1;
 
-    if (differenceCount[maxDifference] >= 20) {
+    if (differenceCount[roundedDifference] >= OSCILLATION_REPEAT_LIMIT) {
+      if (damping > MIN_DAMPING) {
+        // Oscillating: shrink the step size and keep going instead of
+        // giving up. This is what lets topologies that used to bounce
+        // between two or more states forever settle into a fixed point.
+        damping *= DAMPING_DECAY;
+        differenceCount = {};
+        console.warn(
+          `RLA fixed-point iteration is oscillating; reducing damping to ${damping} and continuing.`,
+        );
+        continue;
+      }
       console.warn(
-        "Same difference occurred more than twice. Breaking the loop.",
+        "RLA fixed-point iteration is still oscillating after damping; stopping early with the best available estimate.",
       );
       break;
     }
@@ -172,9 +213,18 @@ export const callBlockingProbabilityinRLA = (
       return cbp * (1 - (blockingProbabilities.finalResult[key] || 0));
     }, 1);
 
-    result[`B${serviceClass}`] = +(1 - totalBlockingProbability).toFixed(
-      NUMBER_OF_DIGITS_AFTER_DECIMAL,
+    // Clamp to [0, 1]: multiplying several (1 - V) terms together can drift
+    // very slightly negative from floating-point rounding, especially when
+    // a class can never fit on one of its links (V close to or at 1), which
+    // would otherwise show up as a blocking probability just over 1
+    // (e.g. 1.0000001) instead of the true value of 1.
+    const clampedTotalBlockingProbability = Math.max(
+      0,
+      Math.min(1, totalBlockingProbability),
     );
+    result[`B${serviceClass}`] = +(
+      1 - clampedTotalBlockingProbability
+    ).toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL);
   });
 
   return result;

@@ -191,7 +191,7 @@ export default function Calculator() {
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-semibold text-slate-700">
-        Try it: Cloud Capacity Planning Calculator
+        Try it: What&apos;s My System&apos;s Blocking Probability?
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
         Enter the number of PMs per group <InlineMath math="T" />, the

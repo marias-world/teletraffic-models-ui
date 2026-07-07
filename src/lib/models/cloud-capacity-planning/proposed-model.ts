@@ -174,9 +174,16 @@ export const calculateEi = (
       return relRValue * rlaValue;
     });
 
-    // Calculate Ei for this class
-    const Ei =
-      1 - multiplications.reduce((product, value) => product * (1 - value), 1);
+    // Calculate Ei for this class. Clamp the product to [0, 1] first: it can
+    // drift very slightly negative from floating-point rounding when one of
+    // the B* values is close to or at 1, which would otherwise show up as a
+    // blocking probability just over 1 (e.g. 1.0000001) instead of 1.
+    const product = multiplications.reduce(
+      (acc, value) => acc * (1 - value),
+      1,
+    );
+    const clampedProduct = Math.max(0, Math.min(1, product));
+    const Ei = 1 - clampedProduct;
     result[classKey] = +Ei.toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL);
   });
 

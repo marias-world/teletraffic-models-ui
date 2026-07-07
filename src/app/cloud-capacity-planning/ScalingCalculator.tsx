@@ -254,7 +254,7 @@ export default function ScalingCalculator() {
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-semibold text-slate-700">
-        Try it: Capacity Scaling Calculator
+        Try it: How Much Do I Need to Scale?
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
         Say you already have a fixed number of physical machines{" "}
