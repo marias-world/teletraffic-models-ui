@@ -97,12 +97,15 @@ export const calculateBlockingRatios = (
             );
           }
 
+          // A krValue of 0 means the EMLM blocking probability rounded down
+          // to negligible at this capacity, so the ratio is 0 rather than an
+          // undefined (NaN) or infinite division.
           result[subsystem as keyof BlockingRatios][className] =
-            !isNaN(krValue) && !isNaN(larValue)
-              ? parseFloat(
+            krValue === 0
+              ? 0
+              : parseFloat(
                   (larValue / krValue).toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL),
-                )
-              : NaN;
+                );
         }
       }
     }
