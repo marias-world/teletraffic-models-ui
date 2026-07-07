@@ -4,6 +4,7 @@ import Overview from "./Overview";
 import RequestFlow from "./RequestFlow";
 import WorkedExample from "./WorkedExample";
 import Calculator from "./Calculator";
+import ScalingCalculator from "./ScalingCalculator";
 import AnimationSection from "./AnimationSection";
 import Image from "next/image";
 
@@ -54,6 +55,7 @@ export default function CloudCapacityPlanningPage() {
             </figure>
           </section>
           <Calculator />
+          <ScalingCalculator />
           <AnimationSection />
           <WorkedExample />
 
