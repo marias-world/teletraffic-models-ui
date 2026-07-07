@@ -10,6 +10,10 @@ import {
 } from "@/lib/models/cloud-capacity-planning/types";
 
 const MAX_CLASSES = 6;
+const MAX_T = 50;
+const MAX_CAPACITY = 100;
+const MAX_LOAD = 50;
+const MAX_BU = 30;
 
 type ResourceKey = "P" | "R" | "D" | "bps";
 const RESOURCE_KEYS: ResourceKey[] = ["P", "R", "D", "bps"];
@@ -102,6 +106,12 @@ export default function Calculator() {
       setError("Please enter a valid number of PMs per group (T).");
       return;
     }
+    if (groupSize > MAX_T) {
+      setError(
+        `T is capped at ${MAX_T} to keep the calculation fast. Try scaling down: e.g. use 5 to represent 50 machines.`,
+      );
+      return;
+    }
 
     const capacityValues: Record<ResourceKey, number> = {
       P: Number(capacities.P),
@@ -114,6 +124,12 @@ export default function Calculator() {
         setError(`Please enter a valid capacity for ${RESOURCE_LABELS[y]}.`);
         return;
       }
+      if (capacityValues[y] > MAX_CAPACITY) {
+        setError(
+          `${RESOURCE_LABELS[y]} capacity is capped at ${MAX_CAPACITY} b.u. Try scaling down: e.g. use 10 to represent 100 b.u.`,
+        );
+        return;
+      }
     }
 
     for (const row of rows) {
@@ -121,10 +137,22 @@ export default function Calculator() {
         setError("Please fill in the offered traffic for every service class.");
         return;
       }
+      if (Number(row.incomingLoad_a) > MAX_LOAD) {
+        setError(
+          `Offered traffic is capped at ${MAX_LOAD} erl per class. Try scaling down: e.g. use 5 to represent 50 erl.`,
+        );
+        return;
+      }
       for (const y of RESOURCE_KEYS) {
         if (!row.bu[y]) {
           setError(
             `Please fill in the ${RESOURCE_LABELS[y]} demand for every service class.`,
+          );
+          return;
+        }
+        if (Number(row.bu[y]) > MAX_BU) {
+          setError(
+            `${RESOURCE_LABELS[y]} demand is capped at ${MAX_BU} b.u. per class.`,
           );
           return;
         }
@@ -201,6 +229,18 @@ export default function Calculator() {
         single PM, and the combined total blocking probability.
       </p>
 
+      <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-3">
+        <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">💡</span>
+        <p className="text-sm text-sky-900 leading-relaxed">
+          Prefer smaller numbers: think of them as tens rather than ones,
+          e.g. enter 1 to represent 10 real machines or b.u., 5 for 50, 10 for
+          100. The blocking probabilities come out the same either way, and
+          smaller numbers keep the calculation fast. Inputs are capped at{" "}
+          T&nbsp;≤&nbsp;{MAX_T}, capacity&nbsp;≤&nbsp;{MAX_CAPACITY} b.u., and
+          traffic&nbsp;≤&nbsp;{MAX_LOAD}&nbsp;erl per class.
+        </p>
+      </div>
+
       {/* T and capacities */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
@@ -210,6 +250,7 @@ export default function Calculator() {
           <input
             type="number"
             min={1}
+            max={MAX_T}
             value={T}
             onChange={(e) => {
               setT(e.target.value);
@@ -230,6 +271,7 @@ export default function Calculator() {
             <input
               type="number"
               min={1}
+              max={MAX_CAPACITY}
               value={capacities[y]}
               onChange={(e) => {
                 setCapacities((prev) => ({ ...prev, [y]: e.target.value }));
@@ -286,6 +328,7 @@ export default function Calculator() {
                     <input
                       type="number"
                       min={0}
+                      max={MAX_LOAD}
                       step="0.1"
                       value={row.incomingLoad_a}
                       onChange={(e) => updateLoad(row.id, e.target.value)}
@@ -298,6 +341,7 @@ export default function Calculator() {
                       <input
                         type="number"
                         min={0}
+                        max={MAX_BU}
                         value={row.bu[y]}
                         onChange={(e) => updateBu(row.id, y, e.target.value)}
                         placeholder="e.g. 1"

@@ -8,6 +8,13 @@ import { Capacities, ServiceClassConfigs } from "@/lib/models/cloud-capacity-pla
 const MAX_CLASSES = 6;
 const MAX_CAPACITY_STEP_SEARCH = 40; // extra b.u. added to every resource, tried one at a time
 const MAX_SERVER_STEP_SEARCH = 20; // extra PMs added, tried one at a time
+// Base input caps. The scan can add up to MAX_CAPACITY_STEP_SEARCH more b.u.
+// or MAX_SERVER_STEP_SEARCH more PMs on top of these, so the worst case
+// stays well within what the underlying model can handle quickly.
+const MAX_T = 30;
+const MAX_CAPACITY = 60;
+const MAX_LOAD = 50;
+const MAX_BU = 30;
 
 type ResourceKey = "P" | "R" | "D" | "bps";
 const RESOURCE_KEYS: ResourceKey[] = ["P", "R", "D", "bps"];
@@ -100,6 +107,12 @@ export default function ScalingCalculator() {
       setError("Please enter the specific number of physical machines (T) you have.");
       return;
     }
+    if (groupSize > MAX_T) {
+      setError(
+        `T is capped at ${MAX_T} to keep the search fast. Try scaling down: e.g. use 3 to represent 30 machines.`,
+      );
+      return;
+    }
 
     const baseCapacityValues: Record<ResourceKey, number> = {
       P: Number(baseCapacities.P),
@@ -116,6 +129,12 @@ export default function ScalingCalculator() {
         setError(`Please enter a valid current capacity for ${RESOURCE_LABELS[y]}.`);
         return;
       }
+      if (baseCapacityValues[y] > MAX_CAPACITY) {
+        setError(
+          `${RESOURCE_LABELS[y]} capacity is capped at ${MAX_CAPACITY} b.u. Try scaling down: e.g. use 6 to represent 60 b.u.`,
+        );
+        return;
+      }
     }
 
     for (const row of rows) {
@@ -123,10 +142,22 @@ export default function ScalingCalculator() {
         setError("Please fill in the offered traffic for every service class.");
         return;
       }
+      if (Number(row.incomingLoad_a) > MAX_LOAD) {
+        setError(
+          `Offered traffic is capped at ${MAX_LOAD} erl per class. Try scaling down: e.g. use 5 to represent 50 erl.`,
+        );
+        return;
+      }
       for (const y of RESOURCE_KEYS) {
         if (!row.bu[y]) {
           setError(
             `Please fill in the ${RESOURCE_LABELS[y]} demand for every service class.`,
+          );
+          return;
+        }
+        if (Number(row.bu[y]) > MAX_BU) {
+          setError(
+            `${RESOURCE_LABELS[y]} demand is capped at ${MAX_BU} b.u. per class.`,
           );
           return;
         }
@@ -300,6 +331,18 @@ export default function ScalingCalculator() {
         </div>
       </div>
 
+      <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-3">
+        <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">💡</span>
+        <p className="text-sm text-sky-900 leading-relaxed">
+          Prefer smaller numbers: think of them as tens rather than ones,
+          e.g. enter 1 to represent 10 real machines or b.u., 5 for 50, 10 for
+          100. The blocking probabilities come out the same either way, and
+          smaller numbers keep the search fast. Inputs are capped at{" "}
+          T&nbsp;≤&nbsp;{MAX_T}, capacity&nbsp;≤&nbsp;{MAX_CAPACITY} b.u., and
+          traffic&nbsp;≤&nbsp;{MAX_LOAD}&nbsp;erl per class.
+        </p>
+      </div>
+
       {/* T: fixed number of physical machines */}
       <div>
         <label className="block text-sm font-medium text-slate-600 mb-1">
@@ -308,6 +351,7 @@ export default function ScalingCalculator() {
         <input
           type="number"
           min={1}
+          max={MAX_T}
           value={T}
           onChange={(e) => {
             setT(e.target.value);
@@ -327,6 +371,7 @@ export default function ScalingCalculator() {
             <input
               type="number"
               min={1}
+              max={MAX_CAPACITY}
               value={baseCapacities[y]}
               onChange={(e) => {
                 setBaseCapacities((prev) => ({ ...prev, [y]: e.target.value }));
@@ -388,6 +433,7 @@ export default function ScalingCalculator() {
                     <input
                       type="number"
                       min={0}
+                      max={MAX_LOAD}
                       step="0.1"
                       value={row.incomingLoad_a}
                       onChange={(e) => updateLoad(row.id, e.target.value)}
@@ -400,6 +446,7 @@ export default function ScalingCalculator() {
                       <input
                         type="number"
                         min={0}
+                        max={MAX_BU}
                         value={row.bu[y]}
                         onChange={(e) => updateBu(row.id, y, e.target.value)}
                         placeholder="e.g. 1"
