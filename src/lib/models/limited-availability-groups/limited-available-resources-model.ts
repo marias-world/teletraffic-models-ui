@@ -76,11 +76,7 @@ export const unnormalisedLARModel = (
   if (serviceClasses.length === 0) return [];
 
   const results: number[] = [];
-  // Shared across every i in the loop below: calculateOccupancyProbability(i)
-  // only depends on smaller states, so reusing one memo instead of starting
-  // fresh for each i avoids recomputing the same overlapping subproblems
-  // O(totalCapacity) times (see the equivalent Kaufman-Roberts fix for the
-  // full explanation of why this made large capacities slow).
+
   const memo: Record<number, number> = {};
 
   const totalCapacity = distinctResourceCount * individualResourceCapacity;
