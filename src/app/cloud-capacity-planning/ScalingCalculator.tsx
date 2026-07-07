@@ -543,37 +543,48 @@ export default function ScalingCalculator() {
             result.mode === "capacity" && result.capacities ? (
               <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center space-y-2">
                 <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wider">
-                  Required capacity per PM ({T} PMs total)
+                  {result.step === 0
+                    ? "You're already there"
+                    : `Required capacity per PM (${T} PMs total)`}
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {RESOURCE_KEYS.map((y) => (
-                    <div key={y}>
-                      <p className="text-[10px] text-emerald-600 uppercase tracking-wider">
-                        {RESOURCE_LABELS[y]}
-                      </p>
-                      <p className="text-xl font-bold text-emerald-700">
-                        {result.capacities![y]}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                {result.step === 0 ? (
+                  <p className="text-lg font-bold text-emerald-700">
+                    No capacity upgrade needed
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {RESOURCE_KEYS.map((y) => (
+                      <div key={y}>
+                        <p className="text-[10px] text-emerald-600 uppercase tracking-wider">
+                          {RESOURCE_LABELS[y]}
+                        </p>
+                        <p className="text-xl font-bold text-emerald-700">
+                          {result.capacities![y]}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <p className="text-xs text-emerald-600">
-                  That&apos;s +{result.step} b.u. on every resource compared to
-                  what you have now.
+                  {result.step === 0
+                    ? "Your current capacity already keeps every VM type at or below the target, with T unchanged."
+                    : `That's +${result.step} b.u. on every resource compared to what you have now.`}
                 </p>
               </div>
             ) : (
               <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center space-y-1">
                 <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wider">
-                  Machines needed
+                  {result.step === 0 ? "You're already there" : "Machines needed"}
                 </p>
                 <p className="text-3xl font-bold text-emerald-700">
-                  {result.totalT} PMs total
+                  {result.step === 0
+                    ? "No new machines needed"
+                    : `${result.totalT} PMs total`}
                 </p>
                 <p className="text-xs text-emerald-600">
-                  That&apos;s +{result.step} more machine
-                  {result.step === 1 ? "" : "s"} than the {T} you have now,
-                  same capacity per machine.
+                  {result.step === 0
+                    ? `Your current ${T} machines already keep every VM type at or below the target.`
+                    : `That's +${result.step} more machine${result.step === 1 ? "" : "s"} than the ${T} you have now, same capacity per machine.`}
                 </p>
               </div>
             )
