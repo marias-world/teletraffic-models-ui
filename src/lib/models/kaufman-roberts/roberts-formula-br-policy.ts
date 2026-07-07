@@ -2,10 +2,6 @@ import { ServiceClassWithBR } from "../../models/types";
 import { normaliseProbabilityValues } from "../../models/normalise-probabilities";
 import { NUMBER_OF_DIGITS_AFTER_DECIMAL } from "../../models/constants";
 
-// q(j) only depends on smaller states q(j - b_i), so the whole range can be
-// filled bottom-up with one shared array instead of recursing from scratch
-// for every j (see the equivalent fix in kaufman-roberts-formula.ts for the
-// full explanation of why the per-call memo made large capacities slow).
 export const robertsFormulaBRPolicy = (
   capacity: number,
   serviceClasses: ServiceClassWithBR[],
