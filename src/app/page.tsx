@@ -28,6 +28,14 @@ export default function Home() {
         <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
           <li>
             <Link
+              href="/cloud-capacity-planning"
+              className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+            >
+              Algorithm for Cloud Physical Infrastructure Capacity Planning
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/erlang"
               className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
             >
@@ -56,14 +64,6 @@ export default function Home() {
               className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
             >
               Reduced Load Approximation (RLA)
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/cloud-capacity-planning"
-              className="block sm:inline-block px-4 py-2 font-bold border border-blue-500 text-blue-500 rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
-            >
-              Algorithm for Cloud Physical Infrastructure Capacity Planning
             </Link>
           </li>
         </ul>
