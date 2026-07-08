@@ -73,15 +73,19 @@ export const calculateCloudCapacityBlockingProbabilities = (
 
   const serviceClassesinRLA = calculateSeviceClassesForRLA(serviceClasses);
 
-  const reducedLoadApproximation = processResultInRLA(
-    capacities,
-    serviceClassesinRLA,
-    rlaThreshold,
-  );
+  const { result: reducedLoadApproximation, iterations: rlaIterations } =
+    processResultInRLA(capacities, serviceClassesinRLA, rlaThreshold);
 
   const Ei = calculateEi(relationR, reducedLoadApproximation);
 
-  return { kaufmanRoberts, lar, relationR, reducedLoadApproximation, Ei };
+  return {
+    kaufmanRoberts,
+    lar,
+    relationR,
+    reducedLoadApproximation,
+    rlaIterations,
+    Ei,
+  };
 };
 
 export const proposedModel = (

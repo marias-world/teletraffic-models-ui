@@ -127,9 +127,9 @@ export const processResultInRLA = (
   capacities: Capacities,
   serviceClasses: ServiceClassWithRoute[],
   threshold?: number,
-): BlockingRatios => {
+): { result: BlockingRatios; iterations: number } => {
   const links = Object.values(capacities);
-  const rla = callBlockingProbabilityinRLAForProposedModel(
+  const { logs, iterations } = callBlockingProbabilityinRLAForProposedModel(
     links,
     serviceClasses,
     threshold,
@@ -137,8 +137,8 @@ export const processResultInRLA = (
 
   const result: BlockingRatios = { RAM: {}, Processor: {}, Disk: {}, Bps: {} };
 
-  for (const key in rla) {
-    const value = rla[key];
+  for (const key in logs) {
+    const value = logs[key];
 
     const subsystem =
       Subsystem[key.match(/V_(link\d)/)?.[1] as keyof typeof Subsystem];
@@ -149,7 +149,7 @@ export const processResultInRLA = (
     }
   }
 
-  return result;
+  return { result, iterations };
 };
 
 // Step 5: Determine the blocking probabilities in the cloud for each service class

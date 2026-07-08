@@ -84,15 +84,15 @@ export default function Overview() {
       <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
         <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">💡</span>
         <p className="text-sm text-violet-900 leading-relaxed">
-          In plain terms: requests for a given VM type (class{" "}
-          <InlineMath math="k" />) arrive at random, at some average rate{" "}
-          <InlineMath math="\lambda_k" />. Each request needs a fixed amount of
-          the four resources above, all at once. If there is enough free room in{" "}
-          <em>all four</em> right now, the VM is created and stays running for
-          some random amount of time (on average <InlineMath math="1/\mu_k" />)
-          before it finishes and releases its resources. If even one of the four
-          resources does not have enough room, the request is rejected outright,
-          it is not queued or retried, it is simply lost.
+          Requests for a given VM type (class <InlineMath math="k" />) arrive at
+          random, at some average rate <InlineMath math="\lambda_k" />. Each
+          request needs a fixed amount of the four resources above, all at once.
+          If there is enough free room in <em>all four</em> right now, the VM is
+          created and stays running for some random amount of time (on average{" "}
+          <InlineMath math="1/\mu_k" />) before it finishes and releases its
+          resources. If even one of the four resources does not have enough
+          room, the request is rejected outright, it is not queued or retried,
+          it is simply lost.
         </p>
       </div>
 

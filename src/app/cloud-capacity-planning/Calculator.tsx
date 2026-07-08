@@ -470,6 +470,12 @@ export default function Calculator() {
                     <p className="text-sm font-semibold text-slate-700">
                       {title}
                     </p>
+                    {title.startsWith("Step 4") && (
+                      <p className="text-xs text-slate-400">
+                        Converged after {results.rlaIterations} iteration
+                        {results.rlaIterations === 1 ? "" : "s"}.
+                      </p>
+                    )}
                     <div className="overflow-x-auto">
                       <BlockMath math={formula} />
                     </div>

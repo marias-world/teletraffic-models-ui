@@ -17,6 +17,10 @@ interface BlockingProbabilityResult {
   linkStateProbabilities: Record<string, Record<string, number>>;
 }
 
+interface BlockingProbabilityResultWithIterations extends BlockingProbabilityResult {
+  iterations: number;
+}
+
 const initializeResult = (
   key: string,
   previousResult: { [key: string]: number },
@@ -107,7 +111,7 @@ export const calculateBlockingWithReducedTrafficLoad = (
   links: networkTopology[],
   serviceClasses: ServiceClassWithRoute[],
   threshold: number = DEFAULT_THRESHOLD,
-): BlockingProbabilityResult => {
+): BlockingProbabilityResultWithIterations => {
   let currentResult = blockingProbabilityNetworkTopology(
     links,
     serviceClasses,
@@ -186,11 +190,10 @@ export const calculateBlockingWithReducedTrafficLoad = (
     console.warn("Reached maximum iterations without convergence.");
   }
 
-  console.log(`Number of iterations: ${iterations}`);
-
   return {
     finalResult: currentResult.finalResult,
     linkStateProbabilities: currentResult.linkStateProbabilities,
+    iterations,
   };
 };
 
@@ -222,9 +225,9 @@ export const callBlockingProbabilityinRLA = (
       0,
       Math.min(1, totalBlockingProbability),
     );
-    result[`B${serviceClass}`] = +(
-      1 - clampedTotalBlockingProbability
-    ).toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL);
+    result[`B${serviceClass}`] = +(1 - clampedTotalBlockingProbability).toFixed(
+      NUMBER_OF_DIGITS_AFTER_DECIMAL,
+    );
   });
 
   return result;
@@ -234,7 +237,7 @@ export const callBlockingProbabilityinRLAForProposedModel = (
   links: networkTopology[],
   serviceClasses: ServiceClassWithRoute[],
   threshold: number = DEFAULT_THRESHOLD,
-): { [key: string]: number } => {
+): { logs: { [key: string]: number }; iterations: number } => {
   const blockingProbabilities = calculateBlockingWithReducedTrafficLoad(
     links,
     serviceClasses,
@@ -251,5 +254,5 @@ export const callBlockingProbabilityinRLAForProposedModel = (
     });
   });
 
-  return logs;
+  return { logs, iterations: blockingProbabilities.iterations };
 };
