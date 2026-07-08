@@ -31,6 +31,38 @@ const RESOURCE_TO_SUBSYSTEM: Record<ResourceKey, keyof BlockingRatios> = {
   bps: "Bps",
 };
 
+// Illustrative b.u.-to-real-unit conversions, so entering small b.u. numbers
+// still maps to something concrete instead of an abstract "think in tens" tip.
+const BU_REFERENCE: { resource: ResourceKey; realUnit: string }[] = [
+  { resource: "R", realUnit: "8 GB" },
+  { resource: "P", realUnit: "2 vCPU" },
+  { resource: "D", realUnit: "75 GB" },
+  { resource: "bps", realUnit: "1 Gbps" },
+];
+
+const EXAMPLE_INSTANCE_TYPES = [
+  { instance: "m5.large", P: 1, R: 1, D: 1, bps: 10 },
+  { instance: "m5.xlarge", P: 2, R: 2, D: 2, bps: 10 },
+  { instance: "m5.2xlarge", P: 4, R: 4, D: 4, bps: 10 },
+];
+
+// AWS's EC2 on-demand SLA credit tiers, expressed as blocking-probability
+// (CBP) thresholds: CBP = 1 - uptime, so 99.99% uptime <=> CBP <= 0.0001.
+const SLA_TIERS = [
+  {
+    maxCbp: 0.0001,
+    uptime: "≥ 99.99%",
+    credit: "meets the standard SLA, no credit owed",
+  },
+  { maxCbp: 0.01, uptime: "99.0% – 99.99%", credit: "10% service credit tier" },
+  { maxCbp: 0.05, uptime: "95.0% – 99.0%", credit: "30% service credit tier" },
+  { maxCbp: Infinity, uptime: "< 95.0%", credit: "100% service credit tier" },
+] as const;
+
+const getSlaTier = (cbp: number) =>
+  SLA_TIERS.find((tier) => cbp <= tier.maxCbp) ??
+  SLA_TIERS[SLA_TIERS.length - 1];
+
 type ServiceClassRow = {
   id: number;
   incomingLoad_a: string;
@@ -120,7 +152,11 @@ export default function Calculator() {
       bps: Number(capacities.bps),
     };
     for (const y of RESOURCE_KEYS) {
-      if (!capacities[y] || isNaN(capacityValues[y]) || capacityValues[y] <= 0) {
+      if (
+        !capacities[y] ||
+        isNaN(capacityValues[y]) ||
+        capacityValues[y] <= 0
+      ) {
         setError(`Please enter a valid capacity for ${RESOURCE_LABELS[y]}.`);
         return;
       }
@@ -222,22 +258,84 @@ export default function Calculator() {
         Try it: What&apos;s My System&apos;s Blocking Probability?
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
-        Enter the number of PMs per group <InlineMath math="T" />, the
-        capacity of each resource, and the offered traffic and per-resource
-        demand for each service class. This runs the same five steps as the
-        worked example above: EMLM, LAR, the ratio between them, RLA within a
-        single PM, and the combined total blocking probability.
+        Enter the number of PMs per group <InlineMath math="T" />, the capacity
+        of each resource, and the offered traffic and per-resource demand for
+        each service class (or VM). This runs the EMLM, LAR, the ratio between
+        them, RLA within a single PM, and the combined total blocking
+        probability.
       </p>
 
-      <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-3">
-        <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">💡</span>
+      <div className="bg-sky-50 border border-sky-200 rounded-xl p-3 space-y-3">
         <p className="text-sm text-sky-900 leading-relaxed">
-          Prefer smaller numbers: think of them as tens rather than ones,
-          e.g. enter 1 to represent 10 real machines or b.u., 5 for 50, 10 for
-          100. The blocking probabilities come out the same either way, and
-          smaller numbers keep the calculation fast. Inputs are capped at{" "}
-          T&nbsp;≤&nbsp;{MAX_T}, capacity&nbsp;≤&nbsp;{MAX_CAPACITY} b.u., and
-          traffic&nbsp;≤&nbsp;{MAX_LOAD}&nbsp;erl per class.
+          Not sure what a b.u. (bandwidth unit) is worth? Here&apos;s one way to
+          read it, so you can enter small numbers that still mean something
+          concrete:
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-separate border-spacing-y-1">
+            <tbody>
+              {BU_REFERENCE.map(({ resource, realUnit }) => (
+                <tr key={resource} className="bg-white">
+                  <td className="px-2 py-1.5 font-semibold text-slate-500 rounded-l-lg">
+                    {RESOURCE_LABELS[resource]}
+                  </td>
+                  <td className="px-2 py-1.5 text-slate-600 rounded-r-lg">
+                    1 b.u. = {realUnit}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-sm text-sky-900 leading-relaxed">
+          For example, common instance sizes translate to b.u. demand per
+          service class (VM or EC2 instance type) like this:
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-separate border-spacing-y-1">
+            <thead>
+              <tr className="text-xs font-semibold text-sky-500 tracking-wider">
+                <th className="text-left px-2">Instance type</th>
+                <th className="text-left px-2">
+                  vCPU (<InlineMath math="b_{k,P}" />)
+                </th>
+                <th className="text-left px-2">
+                  RAM (<InlineMath math="b_{k,R}" />)
+                </th>
+                <th className="text-left px-2">
+                  Disk (<InlineMath math="b_{k,D}" />)
+                </th>
+                <th className="text-left px-2">
+                  Network (<InlineMath math="b_{k,bps}" />)
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {EXAMPLE_INSTANCE_TYPES.map((row) => (
+                <tr key={row.instance} className="bg-white">
+                  <td className="px-2 py-1.5 font-mono text-slate-700 rounded-l-lg">
+                    {row.instance}
+                  </td>
+                  <td className="px-2 py-1.5 text-slate-600">{row.P}</td>
+                  <td className="px-2 py-1.5 text-slate-600">{row.R}</td>
+                  <td className="px-2 py-1.5 text-slate-600">{row.D}</td>
+                  <td className="px-2 py-1.5 text-slate-600 rounded-r-lg">
+                    {row.bps}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-sky-700">
+          These EC2 numbers are approximate and meant to illustrate the
+          connection to real virtual machines, not an exact match to what AWS
+          currently offers.
+        </p>
+        <p className="text-xs text-sky-700">
+          Inputs are capped at T&nbsp;≤&nbsp;{MAX_T}, capacity&nbsp;≤&nbsp;
+          {MAX_CAPACITY} b.u., and traffic&nbsp;≤&nbsp;{MAX_LOAD}&nbsp;erl per
+          class.
         </p>
       </div>
 
@@ -405,10 +503,25 @@ export default function Calculator() {
             Total Blocking Probabilities
           </h3>
 
+          <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-3">
+            <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
+              💡
+            </span>
+            <p className="text-sm text-violet-900 leading-relaxed">
+              A blocking probability doubles as an uptime/SLA figure: since
+              blocked requests are effectively "downtime" for that VM type,
+              1&nbsp;−&nbsp;CBP is the uptime a class experiences. AWS&apos;s
+              on-demand EC2 SLA guarantees 99.99% uptime (CBP&nbsp;≤&nbsp;
+              0.01%) before service credits kick in, so each class below shows
+              which SLA/credit tier its blocking probability falls into.
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {rows.map((_, i) => {
               const key = `B_class_${i + 1}`;
               const value = results.Ei[key] ?? 0;
+              const sla = getSlaTier(value);
               return (
                 <div
                   key={key}
@@ -422,6 +535,9 @@ export default function Calculator() {
                   </p>
                   <p className="text-xs text-slate-400 font-mono">
                     B<sub>{i + 1}</sub> = {value.toFixed(7)}
+                  </p>
+                  <p className="text-xs text-violet-600">
+                    SLA: {sla.uptime} uptime — {sla.credit}
                   </p>
                 </div>
               );
@@ -542,7 +658,9 @@ export default function Calculator() {
                             Class {i + 1}
                           </p>
                           <p className="text-sm font-mono text-sky-600">
-                            <InlineMath math={`B_${i + 1} \\approx ${value.toFixed(5)}`} />
+                            <InlineMath
+                              math={`B_${i + 1} \\approx ${value.toFixed(5)}`}
+                            />
                           </p>
                         </div>
                       );

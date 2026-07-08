@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { InlineMath } from "react-katex";
 import { calculateCloudCapacityBlockingProbabilities } from "@/lib/models/cloud-capacity-planning/proposed-model-data";
-import { Capacities, ServiceClassConfigs } from "@/lib/models/cloud-capacity-planning/types";
+import {
+  Capacities,
+  ServiceClassConfigs,
+} from "@/lib/models/cloud-capacity-planning/types";
 
 const MAX_CLASSES = 6;
 const MAX_CAPACITY_STEP_SEARCH = 40; // extra b.u. added to every resource, tried one at a time
@@ -24,6 +27,23 @@ const RESOURCE_LABELS: Record<ResourceKey, string> = {
   D: "Disk",
   bps: "Network",
 };
+
+// AWS's EC2 on-demand SLA credit tiers, expressed as blocking-probability
+// (CBP) thresholds: CBP = 1 - uptime, so 99.99% uptime <=> CBP <= 0.0001.
+const SLA_TIERS = [
+  {
+    maxCbp: 0.0001,
+    uptime: "≥ 99.99%",
+    credit: "meets the standard SLA, no credit owed",
+  },
+  { maxCbp: 0.01, uptime: "99.0% – 99.99%", credit: "10% service credit tier" },
+  { maxCbp: 0.05, uptime: "95.0% – 99.0%", credit: "30% service credit tier" },
+  { maxCbp: Infinity, uptime: "< 95.0%", credit: "100% service credit tier" },
+] as const;
+
+const getSlaTier = (cbp: number) =>
+  SLA_TIERS.find((tier) => cbp <= tier.maxCbp) ??
+  SLA_TIERS[SLA_TIERS.length - 1];
 
 type ScalingMode = "capacity" | "servers";
 
@@ -52,7 +72,9 @@ type ScalingResult = {
 
 export default function ScalingCalculator() {
   const [T, setT] = useState("");
-  const [baseCapacities, setBaseCapacities] = useState<Record<ResourceKey, string>>({
+  const [baseCapacities, setBaseCapacities] = useState<
+    Record<ResourceKey, string>
+  >({
     P: "",
     R: "",
     D: "",
@@ -69,7 +91,11 @@ export default function ScalingCalculator() {
     if (rows.length >= MAX_CLASSES) return;
     setRows((prev) => [
       ...prev,
-      { id: Date.now(), incomingLoad_a: "", bu: { P: "", R: "", D: "", bps: "" } },
+      {
+        id: Date.now(),
+        incomingLoad_a: "",
+        bu: { P: "", R: "", D: "", bps: "" },
+      },
     ]);
     setResult(null);
     setError("");
@@ -104,7 +130,9 @@ export default function ScalingCalculator() {
 
     const groupSize = Number(T);
     if (!T || isNaN(groupSize) || groupSize <= 0) {
-      setError("Please enter the specific number of physical machines (T) you have.");
+      setError(
+        "Please enter the specific number of physical machines (T) you have.",
+      );
       return;
     }
     if (groupSize > MAX_T) {
@@ -126,7 +154,9 @@ export default function ScalingCalculator() {
         isNaN(baseCapacityValues[y]) ||
         baseCapacityValues[y] <= 0
       ) {
-        setError(`Please enter a valid current capacity for ${RESOURCE_LABELS[y]}.`);
+        setError(
+          `Please enter a valid current capacity for ${RESOURCE_LABELS[y]}.`,
+        );
         return;
       }
       if (baseCapacityValues[y] > MAX_CAPACITY) {
@@ -293,8 +323,8 @@ export default function ScalingCalculator() {
         capacity per machine, the traffic for each type of VM you run (small,
         medium, large, or whatever mix you offer), and how much blocking
         you&apos;re willing to accept, to find the smallest change, either
-        upgrading each machine or adding more of them, that keeps{" "}
-        <em>every</em> VM type at or below that target, not just the average.
+        upgrading each machine or adding more of them, that keeps <em>every</em>{" "}
+        VM type at or below that target, not just the average.
       </p>
 
       {/* What does a blocking % mean? */}
@@ -304,26 +334,25 @@ export default function ScalingCalculator() {
           <p>
             <strong>What does a blocking percentage actually mean?</strong> A
             target of <InlineMath math="1\%" /> means about 1 in every 100 VM
-            requests gets rejected because no machine had room for it, the
-            rest are accepted right away. It is the same idea as an SLA
+            requests gets rejected because no physical machine had room for it,
+            the rest are accepted right away. It is the same idea as an SLA
             number: a &ldquo;99% availability&rdquo; commitment is another way
             of saying &ldquo;at most 1% of requests can fail&rdquo;, and
             &ldquo;99.9%&rdquo; (three nines) corresponds to a stricter{" "}
             <InlineMath math="0.1\%" /> target.
           </p>
           <p>
-            It is also a trade-off against how full your machines run. To
-            work out the maximum traffic a system can support, it helps to
-            require the blocking probability stay below{" "}
-            <InlineMath math="0.01\%" /> (or, at most,{" "}
-            <InlineMath math="0.02\%" />), a success rate of 99.99% or higher
-            across every VM type. But that safety margin has a cost: at a
-            blocking probability below <InlineMath math="0.02\%" />, system
-            utilisation can drop to around 43%, meaning the system is
-            underutilised. More than half of its capacity, and the energy
-            that powers it, sits idle: hardware stays switched on without
-            being put to use, which drives up cost, energy use, and carbon
-            footprint. Accepting a higher target (e.g.{" "}
+            It is also a trade-off against how full your machines run. To work
+            out the maximum traffic a system can support, it helps to require
+            the blocking probability stay below <InlineMath math="0.01\%" />{" "}
+            (or, at most, <InlineMath math="0.02\%" />
+            ), a success rate of 99.99% or higher across every VM type. But that
+            safety margin has a cost: at a blocking probability below{" "}
+            <InlineMath math="0.02\%" />, system utilisation can drop to around
+            43%, meaning the system is underutilised. More than half of its
+            capacity, and the energy that powers it, sits idle: hardware stays
+            switched on without being put to use, which drives up cost, energy
+            use, and carbon footprint. Accepting a higher target (e.g.{" "}
             <InlineMath math="5\%" />) lets you run machines closer to fully
             utilised, but more requests get turned away when several arrive at
             once.
@@ -334,11 +363,12 @@ export default function ScalingCalculator() {
       <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-3">
         <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">💡</span>
         <p className="text-sm text-sky-900 leading-relaxed">
-          Prefer smaller numbers: think of them as tens rather than ones,
-          e.g. enter 1 to represent 10 real machines or b.u., 5 for 50, 10 for
-          100. The blocking probabilities come out the same either way, and
-          smaller numbers keep the search fast. Inputs are capped at{" "}
-          T&nbsp;≤&nbsp;{MAX_T}, capacity&nbsp;≤&nbsp;{MAX_CAPACITY} b.u., and
+          For the calculator prefer smaller numbers: think of them as tens
+          rather than ones, e.g. enter 1 to represent 10 real machines or b.u.,
+          5 for 50, 10 for 100. The blocking probabilities come out the same
+          either way, and smaller numbers keep the search fast. Inputs are
+          capped at T&nbsp;≤&nbsp;
+          {MAX_T}, capacity&nbsp;≤&nbsp;{MAX_CAPACITY} b.u., and
           traffic&nbsp;≤&nbsp;{MAX_LOAD}&nbsp;erl per class.
         </p>
       </div>
@@ -496,12 +526,10 @@ export default function ScalingCalculator() {
           How would you like to scale?
         </label>
         <div className="flex gap-2 flex-wrap">
-          {(
-            [
-              { value: "capacity" as const, label: "Upgrade existing machines" },
-              { value: "servers" as const, label: "Add more machines" },
-            ]
-          ).map(({ value, label }) => (
+          {[
+            { value: "capacity" as const, label: "Upgrade existing machines" },
+            { value: "servers" as const, label: "Add more machines" },
+          ].map(({ value, label }) => (
             <button
               key={value}
               onClick={() => {
@@ -574,7 +602,9 @@ export default function ScalingCalculator() {
             ) : (
               <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center space-y-1">
                 <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wider">
-                  {result.step === 0 ? "You're already there" : "Machines needed"}
+                  {result.step === 0
+                    ? "You're already there"
+                    : "Machines needed"}
                 </p>
                 <p className="text-3xl font-bold text-emerald-700">
                   {result.step === 0
@@ -607,6 +637,7 @@ export default function ScalingCalculator() {
               {rows.map((_, i) => {
                 const key = `B_class_${i + 1}`;
                 const value = result.perClassB![key] ?? 0;
+                const sla = getSlaTier(value);
                 return (
                   <div
                     key={key}
@@ -620,6 +651,9 @@ export default function ScalingCalculator() {
                     </p>
                     <p className="text-xs text-slate-400 font-mono">
                       B<sub>{i + 1}</sub> = {value.toFixed(7)}
+                    </p>
+                    <p className="text-xs text-violet-600">
+                      SLA: {sla.uptime} uptime — {sla.credit}
                     </p>
                   </div>
                 );
@@ -639,7 +673,9 @@ export default function ScalingCalculator() {
                 <thead>
                   <tr className="text-xs font-semibold text-slate-400 tracking-wider">
                     <th className="text-left px-2">
-                      {result.mode === "capacity" ? "+b.u. per resource" : "+PMs"}
+                      {result.mode === "capacity"
+                        ? "+b.u. per resource"
+                        : "+PMs"}
                     </th>
                     <th className="text-left px-2">Worst-class CBP</th>
                   </tr>
@@ -648,7 +684,9 @@ export default function ScalingCalculator() {
                   {result.scan.map(({ step, maxB }) => (
                     <tr
                       key={step}
-                      className={result.step === step ? "bg-emerald-50" : "bg-slate-50"}
+                      className={
+                        result.step === step ? "bg-emerald-50" : "bg-slate-50"
+                      }
                     >
                       <td className="px-2 py-1.5 font-mono text-slate-600">
                         +{step}
