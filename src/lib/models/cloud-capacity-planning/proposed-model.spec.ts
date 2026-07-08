@@ -24,7 +24,7 @@ describe("Proposed model for IEEE", () => {
     serviceClassConfigsLAR,
   );
   const relationR = calculateBlockingRatios(kaufmanRoberts, blockingLAR);
-  const reducedLoadApproximation = processResultInRLA(
+  const { result: reducedLoadApproximation } = processResultInRLA(
     capacities,
     serviceClasses,
   );
