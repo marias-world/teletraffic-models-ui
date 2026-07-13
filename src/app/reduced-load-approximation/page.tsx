@@ -5,6 +5,7 @@ import NetworkExample from "./NetworkExample";
 import Formula from "./Formula";
 import WorkedExample from "./WorkedExample";
 import Assumptions from "./Assumptions";
+import ConvergenceNote from "./ConvergenceNote";
 import Calculator from "./Calculator";
 import AnimationSection from "./AnimationSection";
 
@@ -36,6 +37,7 @@ export default function ReducedLoadApproximationPage() {
           <Overview />
           <NetworkExample />
           <Formula />
+          <ConvergenceNote />
           <Assumptions />
 
           <Calculator />
