@@ -39,38 +39,6 @@ export default function ConvergenceNote() {
         can use the damping method programmatically when convergence issues are
         observed.
       </p>
-
-      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-          Where else this shows up
-        </p>
-        <p className="text-sm text-slate-600 leading-relaxed">
-          Taking a small step towards a new value instead of jumping straight to
-          it is a common trick, used all over computing under different names:
-        </p>
-        <ul className="list-disc pl-5 space-y-1 text-sm text-slate-600 leading-relaxed">
-          <li>
-            <strong>Numerical methods</strong> call it <em>relaxation</em>, used
-            to solve big systems of equations, like simulating heat flow or the
-            stress on a bridge.
-          </li>
-          <li>
-            <strong>Machine learning</strong> calls it a <em>soft update</em>,
-            used so an AI model updates gradually during training instead of in
-            jarring jumps.
-          </li>
-          <li>
-            <strong>Networking</strong> calls it <em>exponential smoothing</em>,
-            used by TCP to estimate network delay without one slow moment
-            throwing the whole estimate off.
-          </li>
-          <li>
-            <strong>Games and animation</strong> call it <em>lerping</em>, used
-            to make a camera glide smoothly after a moving character instead of
-            snapping straight to it.
-          </li>
-        </ul>
-      </div>
     </section>
   );
 }
