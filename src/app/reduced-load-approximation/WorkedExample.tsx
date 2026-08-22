@@ -284,9 +284,13 @@ export default function WorkedExample() {
 
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
         <p className="text-sm font-semibold text-slate-700">
-          Repetition 3 (values used in this step{" "}
-          <InlineMath math="V_{11} = 0.0153846,\ V_{21} = 0.1057441,\ V_{22} = 0.2689295" />)
+          Repetition 3 (values used in this step)
         </p>
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 py-1">
+          <InlineMath math="V_{11} = 0.0153846" />
+          <InlineMath math="V_{21} = 0.1057441" />
+          <InlineMath math="V_{22} = 0.2689295" />
+        </div>
 
         <p className="text-slate-600 leading-relaxed text-sm">
           The reduced load of class 1 on resource 1 is now{" "}

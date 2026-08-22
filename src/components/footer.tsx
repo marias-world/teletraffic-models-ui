@@ -94,7 +94,7 @@ export default function Footer() {
           <ul className="space-y-4">
             <li className="flex gap-3">
               <span className="mt-0.5 flex-shrink-0 w-1 rounded-full bg-sky-500" />
-              <p className="text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed break-words">
                 <span className="text-slate-400">
                   M. Vlasakis,{" "}
                   <span className="text-slate-200 font-medium">
@@ -116,7 +116,7 @@ export default function Footer() {
                   href="https://ieeexplore.ieee.org/abstract/document/11498249"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-500 hover:underline"
+                  className="text-slate-500 hover:underline break-all"
                 >
                   Publisher IEEE:
                   https://ieeexplore.ieee.org/abstract/document/11498249
