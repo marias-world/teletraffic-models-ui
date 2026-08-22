@@ -545,8 +545,9 @@ export default function WorkedExample() {
         <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
           <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">ℹ️</span>
           <div className="text-sm text-sky-900 leading-relaxed space-y-2">
-            <div className="overflow-x-auto">
-              <BlockMath math="B^*_{k,y} = \rho_{k,y} \cdot V_{y,k}, \qquad y \in \{P, R, D, bps\}" />
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 py-1">
+              <InlineMath math="B^*_{k,y} = \rho_{k,y} \cdot V_{y,k}" />
+              <InlineMath math="y \in \{P, R, D, bps\}" />
             </div>
             <p>
               <InlineMath math="B_k" /> is the overall blocking probability of a
@@ -576,8 +577,15 @@ export default function WorkedExample() {
               <em>blocked</em> on subresource <InlineMath math="y" />
               ,(Processor, RAM, Disk, Network) so{" "}
               <InlineMath math="1 - B^*_{k,y}" /> is the chance of{" "}
-              <em>fitting</em> on that subresource. Multiplying the four terms{" "}
-              <InlineMath math="(1 - B^*_{k,P})(1 - B^*_{k,R})(1 - B^*_{k,D})(1 - B^*_{k,bps})" />{" "}
+              <em>fitting</em> on that subresource. Multiplying the four terms:
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-2 py-1">
+              <InlineMath math="(1 - B^*_{k,P})" />
+              <InlineMath math="(1 - B^*_{k,R})" />
+              <InlineMath math="(1 - B^*_{k,D})" />
+              <InlineMath math="(1 - B^*_{k,bps})" />
+            </div>
+            <p>
               gives the probability of fitting on all subresources; processor{" "}
               <em>and</em> RAM <em>and</em> disk <em>and</em> network, i.e. the
               probability the VM is accepted in a Physical Machine.
