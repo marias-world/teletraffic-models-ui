@@ -20,6 +20,8 @@ const modelLinks = [
   },
 ];
 
+const simulationLinks = [{ href: "/simulation/erlang-b", label: "Erlang-B" }];
+
 const theoryLinks = [
   {
     href: "/theory/probability-and-statistics",
@@ -117,6 +119,7 @@ export default function NavBar() {
         </Link>
         <div className="flex items-center gap-1">
           <Dropdown label="Models" links={modelLinks} width="w-52" />
+          <Dropdown label="Simulation" links={simulationLinks} width="w-44" />
           <Dropdown label="Theory" links={theoryLinks} width="w-56" />
         </div>
       </div>
