@@ -87,43 +87,20 @@ export default function Footer() {
 
       {/* Publications */}
       <div className="border-t border-slate-800">
-        <div className="max-w-4xl mx-auto px-6 py-8 space-y-4">
+        <div className="max-w-4xl mx-auto px-6 py-8 space-y-3">
           <h3 className="text-white text-sm font-semibold uppercase tracking-wider">
             Publications
           </h3>
-          <ul className="space-y-4">
-            <li className="flex gap-3">
-              <span className="mt-0.5 flex-shrink-0 w-1 rounded-full bg-sky-500" />
-              <p className="text-sm leading-relaxed break-words">
-                <span className="text-slate-400">
-                  M. Vlasakis,{" "}
-                  <span className="text-slate-200 font-medium">
-                    M. Kourtesi
-                  </span>
-                  , I-A. Chousainov, I. Keramidi, D. Uzunidis, O. Zestas, I. D.
-                  Moscholios and M. Logothetis.{" "}
-                </span>
-                <span className="text-slate-300 italic">
-                  &ldquo;On the limited-availability group model for multirate
-                  Poisson traffic.&rdquo;
-                </span>
-                <span className="text-slate-500">
-                  {" "}
-                  Panhellenic Conf. Electronics and Telecommunications (PACET).
-                </span>
-                <span> </span>
-                <a
-                  href="https://ieeexplore.ieee.org/abstract/document/11498249"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-500 hover:underline break-all"
-                >
-                  Publisher IEEE:
-                  https://ieeexplore.ieee.org/abstract/document/11498249
-                </a>
-              </p>
-            </li>
-          </ul>
+          <p className="text-sm text-slate-400 leading-relaxed">
+            Journal papers, conference papers, and presentations related to
+            the models on this site.
+          </p>
+          <a
+            href="/publications"
+            className="inline-block text-sm text-sky-500 hover:text-sky-400 transition-colors duration-150"
+          >
+            View all publications &rarr;
+          </a>
         </div>
       </div>
 
