@@ -121,6 +121,12 @@ export default function NavBar() {
           <Dropdown label="Models" links={modelLinks} width="w-52" />
           <Dropdown label="Simulation" links={simulationLinks} width="w-44" />
           <Dropdown label="Theory" links={theoryLinks} width="w-56" />
+          <Link
+            href="/publications"
+            className="px-3 py-1 rounded-md text-sky-600 hover:bg-sky-100 font-medium text-sm"
+          >
+            Publications
+          </Link>
         </div>
       </div>
     </nav>
