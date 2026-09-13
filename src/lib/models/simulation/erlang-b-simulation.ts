@@ -147,10 +147,26 @@ export function runErlangBSimulation(
 
 export interface ReplicationSummary {
   qMean: number[];
+  // Sample standard deviation of q(j) across seeds, one entry per state -
+  // how much that state's estimate varies from run to run, same idea as
+  // blockingStdev but per state instead of for the single blocking figure.
+  qStdev: number[];
   utilization: number;
   blockingMean: number;
   blockingStdev: number;
   n: number;
+}
+
+// Mean and sample standard deviation of a set of independent observations
+// (Bessel-corrected: divide by n-1, undefined for a single observation).
+function meanAndStdev(values: number[]): { mean: number; stdev: number } {
+  const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+  const variance =
+    values.length > 1
+      ? values.reduce((sum, v) => sum + (v - mean) ** 2, 0) /
+        (values.length - 1)
+      : 0;
+  return { mean, stdev: Math.sqrt(variance) };
 }
 
 // Combines independent replication runs into a mean/stdev summary. Shared
@@ -160,29 +176,23 @@ export interface ReplicationSummary {
 export function aggregateErlangBRuns(
   runs: ErlangBSimulationResult[],
 ): ReplicationSummary {
-  const qMean = runs[0].q.map(
-    (_, j) => runs.reduce((sum, r) => sum + r.q[j], 0) / runs.length,
-  );
+  const qStats = runs[0].q.map((_, j) => meanAndStdev(runs.map((r) => r.q[j])));
+  const qMean = qStats.map((s) => s.mean);
+  const qStdev = qStats.map((s) => s.stdev);
+
   const utilization =
     runs.reduce((sum, r) => sum + r.utilization, 0) / runs.length;
 
-  const blockingValues = runs.map((r) => r.callBlocking);
-  const blockingMean =
-    blockingValues.reduce((sum, b) => sum + b, 0) / blockingValues.length;
-  const blockingVariance =
-    blockingValues.length > 1
-      ? blockingValues.reduce(
-          (sum, b) => sum + (b - blockingMean) ** 2,
-          0,
-        ) /
-        (blockingValues.length - 1)
-      : 0;
+  const { mean: blockingMean, stdev: blockingStdev } = meanAndStdev(
+    runs.map((r) => r.callBlocking),
+  );
 
   return {
     qMean,
+    qStdev,
     utilization,
     blockingMean,
-    blockingStdev: Math.sqrt(blockingVariance),
+    blockingStdev,
     n: runs.length,
   };
 }

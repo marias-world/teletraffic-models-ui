@@ -90,6 +90,19 @@ describe("replicateErlangBSimulation", () => {
     expect(summary.qMean.reduce((a, b) => a + b, 0)).toBeCloseTo(1, 9);
   });
 
+  it("reports qStdev alongside qMean, one entry per state, non-negative", () => {
+    const summary = replicateErlangBSimulation([1, 2, 3, 4, 5], {
+      arrivalRate: 5,
+      serviceRate: 1,
+      capacity: 5,
+      numCallsToSimulate: 20_000,
+    });
+    expect(summary.qStdev).toHaveLength(summary.qMean.length);
+    for (const s of summary.qStdev) {
+      expect(s).toBeGreaterThanOrEqual(0);
+    }
+  });
+
   it("matches aggregating the same per-seed runs directly", () => {
     // replicateErlangBSimulation runs seeds itself; aggregateErlangBRuns
     // aggregates runs gathered some other way (e.g. from parallel Web
