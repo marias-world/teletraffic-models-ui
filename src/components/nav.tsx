@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 
 const modelLinks = [
@@ -59,7 +59,9 @@ function Dropdown({
   width?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [offset, setOffset] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -70,6 +72,31 @@ function Dropdown({
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+
+    function reposition() {
+      const buttonRect = ref.current!.getBoundingClientRect();
+      const panelWidth = panelRef.current!.offsetWidth;
+      const margin = 16;
+
+      const desiredLeft = buttonRect.right - panelWidth;
+      const left = Math.min(
+        Math.max(desiredLeft, margin),
+        window.innerWidth - margin - panelWidth,
+      );
+      setOffset(left - buttonRect.left);
+    }
+
+    reposition();
+
+    // Panels stay open across a resize (e.g. rotating a phone, or
+    // dragging the DevTools width) so this must rerun then too, not
+    // just once on open.
+    window.addEventListener("resize", reposition);
+    return () => window.removeEventListener("resize", reposition);
+  }, [open]);
 
   return (
     <div className="relative" ref={ref}>
@@ -92,7 +119,9 @@ function Dropdown({
 
       {open && (
         <div
-          className={`absolute right-0 mt-1 ${width} bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1`}
+          ref={panelRef}
+          style={{ left: `${offset}px` }}
+          className={`absolute mt-1 ${width} max-w-[calc(100vw-2rem)] bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1`}
         >
           {links.map(({ href, label: linkLabel }) => (
             <Link
