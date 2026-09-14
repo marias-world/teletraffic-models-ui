@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen p-10 bg-slate-100">
-      <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-6">
+    <div className="min-h-screen p-4 sm:p-10 bg-slate-100">
+      <div className="max-w-3xl mx-auto bg-white p-4 sm:p-8 rounded-xl shadow-md space-y-6">
         <h1 className="text-3xl font-bold">
           Mathematical Models for Capacity Planning
         </h1>

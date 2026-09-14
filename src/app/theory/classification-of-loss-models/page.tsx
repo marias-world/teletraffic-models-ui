@@ -31,8 +31,8 @@ function Tag({
 // ─── page ─────────────────────────────────────────────────────────────────────
 export default function TeletrafficLossModelsPage() {
   return (
-    <div className="min-h-screen p-10 bg-slate-100">
-      <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md space-y-10">
+    <div className="min-h-screen p-4 sm:p-10 bg-slate-100">
+      <div className="max-w-3xl mx-auto bg-white p-4 sm:p-8 rounded-xl shadow-md space-y-10">
         {/* Breadcrumb + title */}
         <div>
           <p className="text-sm text-slate-500 mb-2">
