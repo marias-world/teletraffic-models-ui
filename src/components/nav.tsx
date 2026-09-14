@@ -113,11 +113,11 @@ function Dropdown({
 export default function NavBar() {
   return (
     <nav className="bg-white shadow-md p-4">
-      <div className="max-w-4xl mx-auto flex justify-between items-center">
+      <div className="max-w-4xl mx-auto flex flex-wrap justify-between items-center gap-y-2">
         <Link href="/" className="font-bold text-xl text-sky-600">
           Home
         </Link>
-        <div className="flex items-center gap-1">
+        <div className="flex flex-wrap items-center justify-end gap-1">
           <Dropdown label="Models" links={modelLinks} width="w-52" />
           <Dropdown label="Simulation" links={simulationLinks} width="w-44" />
           <Dropdown label="Theory" links={theoryLinks} width="w-56" />
