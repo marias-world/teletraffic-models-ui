@@ -91,9 +91,6 @@ function Dropdown({
 
     reposition();
 
-    // Panels stay open across a resize (e.g. rotating a phone, or
-    // dragging the DevTools width) so this must rerun then too, not
-    // just once on open.
     window.addEventListener("resize", reposition);
     return () => window.removeEventListener("resize", reposition);
   }, [open]);
