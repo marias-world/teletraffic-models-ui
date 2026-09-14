@@ -1,5 +1,6 @@
 import { BlockMath, InlineMath } from "react-katex";
 import Link from "next/link";
+import MoscholiosBookReference from "@/components/MoscholiosBookReference";
 
 // ─── call data for the diagram ────────────────────────────────────────────────
 // Each call: { line (0-3), start (min), duration (min) }
@@ -314,6 +315,7 @@ export default function TrafficLoadPage() {
             Try the Erlang-B Model →
           </Link>
         </section>
+        <MoscholiosBookReference />
       </div>
     </div>
   );
