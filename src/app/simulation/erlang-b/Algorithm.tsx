@@ -97,7 +97,7 @@ const STEPS: { title: string; body: React.ReactNode }[] = [
     ),
   },
   {
-    title: "Step 7: Track time spent in each state",
+    title: "Step 7: Calculate blocking, two ways",
     body: (
       <>
         <p>
@@ -108,6 +108,31 @@ const STEPS: { title: string; body: React.ReactNode }[] = [
         </p>
         <div className="overflow-x-auto py-1">
           <BlockMath math="q(j) = \frac{\text{total time spent with } j \text{ busy servers}}{\text{total simulated time}}" />
+        </div>
+        <p>
+          Blocking is the special case <InlineMath math="j = c" />: the
+          fraction of time the system is completely full,{" "}
+          <InlineMath math="q(c)" />, is the <strong>time-congestion</strong>{" "}
+          estimate of <InlineMath math="B" />.
+        </p>
+        <p>
+          Separately, every time an arrival is blocked (Step 5), a counter is
+          incremented. Dividing that counter by the total number of offered
+          calls gives the <strong>call-congestion</strong> estimate of{" "}
+          <InlineMath math="B" />:
+        </p>
+        <div className="overflow-x-auto py-1">
+          <BlockMath math="B = \frac{\text{total calls blocked}}{\text{total calls offered}}" />
+        </div>
+        <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <span className="text-amber-500 flex-shrink-0">💡</span>
+          <p className="text-amber-900">
+            These are two independent measurements, one from elapsed time,
+            one from a call count. If <InlineMath math="q(c)" /> and the
+            call-based <InlineMath math="B" /> come out equal, that&apos;s the
+            PASTA property showing up: for Poisson arrivals, what an arrival
+            sees matches what a random instant in time sees.
+          </p>
         </div>
       </>
     ),

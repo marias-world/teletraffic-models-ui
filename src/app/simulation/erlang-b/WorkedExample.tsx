@@ -89,19 +89,56 @@ export default function WorkedExample() {
       {/* PASTA */}
       <div className="space-y-2">
         <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-          The PASTA property
+          PASTA: why two ways of counting blocking agree
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
-          PASTA stands for &ldquo;Poisson Arrivals See Time Averages&rdquo;. It
-          says that when arrivals are Poisson (random in time, memoryless), the
-          fraction of arrivals that see the system in a given state equals the
-          fraction of <em>time</em> the system spends in that state. For
-          Erlang-B, that means two quantities, measured in completely different
-          ways, should be equal: <strong>call blocking</strong> (an
-          arrival-average, of all arriving calls, the fraction that found the
-          system full, measured by counting arrivals), and{" "}
-          <InlineMath math="q(c)" /> (a time-average, the fraction of time the
-          system spent completely full, measured by tracking elapsed time).
+          Blocking probability <InlineMath math="B" /> can be estimated two
+          different ways, corresponding to two different observation points.
+          PASTA is precisely the reason both observation points land on the same
+          answer:
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
+            <p className="text-sm font-semibold text-slate-700">
+              Inside observer: time congestion
+            </p>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Sits inside the system and watches the clock:{" "}
+              <InlineMath math="B" /> is the <em>percentage of time</em> the
+              system is fully occupied (all <InlineMath math="c" /> servers
+              busy), i.e. <InlineMath math="q(c)" />.
+            </p>
+          </div>
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
+            <p className="text-sm font-semibold text-slate-700">
+              Outside observer: call congestion
+            </p>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Stands outside and counts arrivals: <InlineMath math="B" /> is the{" "}
+              <em>fraction of calls</em> that were lost because they found the
+              system full.
+            </p>
+          </div>
+        </div>
+        <p className="text-slate-600 leading-relaxed text-sm">
+          In general these two do not agree: an inside observer tracking elapsed
+          time and an outside observer tallying lost calls are measuring
+          genuinely different things, and for an arbitrary arrival process they
+          can land on different values of <InlineMath math="B" />. Poisson
+          arrivals are the special case where they don&apos;t diverge: because
+          arrivals occur independently of the system&apos;s current state, an
+          arriving call is exactly as likely to see the system full as a random
+          point in time is to fall while the system is full. So for Poisson
+          arrivals, the inside observer and the outside observer measure the{" "}
+          <em>same</em> <InlineMath math="B" />. This is the{" "}
+          <strong>PASTA property</strong> (Poisson Arrivals See Time Averages).
+        </p>
+        <p className="text-slate-600 leading-relaxed text-sm">
+          For Erlang-B specifically, PASTA means <strong>call blocking</strong>{" "}
+          (the outside observer&apos;s measurement, from counting arrivals) and{" "}
+          <InlineMath math="q(c)" /> (the inside observer&apos;s measurement,
+          from tracking elapsed time) should come out equal, even though the
+          simulation computes them from completely independent bookkeeping.
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-separate border-spacing-y-1">
