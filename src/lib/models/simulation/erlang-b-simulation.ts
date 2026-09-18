@@ -41,6 +41,9 @@ export interface ErlangBSimulationResult {
   callBlocking: number;
   // Average fraction of servers busy (a time-average quantity).
   utilization: number;
+  // Total simulated time (post-warm-up), in the same time unit as the rate
+  // parameters - e.g. minutes, if arrivalRate/serviceRate are per minute.
+  totalTime: number;
 }
 
 const DEFAULT_WARMUP_FRACTION = 0.05;
@@ -142,7 +145,7 @@ export function runErlangBSimulation(
   const avgBusy = q.reduce((sum, qj, j) => sum + j * qj, 0);
   const utilization = avgBusy / capacity;
 
-  return { q, callBlocking, utilization };
+  return { q, callBlocking, utilization, totalTime };
 }
 
 export interface ReplicationSummary {
@@ -154,6 +157,9 @@ export interface ReplicationSummary {
   utilization: number;
   blockingMean: number;
   blockingStdev: number;
+  // Total simulated time (post-warm-up), summed across all seeds - same
+  // time unit as the rate parameters.
+  totalTimeSum: number;
   n: number;
 }
 
@@ -183,6 +189,8 @@ export function aggregateErlangBRuns(
   const utilization =
     runs.reduce((sum, r) => sum + r.utilization, 0) / runs.length;
 
+  const totalTimeSum = runs.reduce((sum, r) => sum + r.totalTime, 0);
+
   const { mean: blockingMean, stdev: blockingStdev } = meanAndStdev(
     runs.map((r) => r.callBlocking),
   );
@@ -193,6 +201,7 @@ export function aggregateErlangBRuns(
     utilization,
     blockingMean,
     blockingStdev,
+    totalTimeSum,
     n: runs.length,
   };
 }
