@@ -60,11 +60,17 @@ function buildResultsCsv(
   const lines: string[] = [];
 
   lines.push("Per-seed results");
-  lines.push(["seed", "callBlocking", "utilization", ...qColumns].join(","));
+  lines.push(
+    ["seed", "callBlocking", "utilization", "totalTime", ...qColumns].join(
+      ",",
+    ),
+  );
   seeds.forEach((seed, i) => {
     const run = runs[i];
     lines.push(
-      [seed, run.callBlocking, run.utilization, ...run.q].join(","),
+      [seed, run.callBlocking, run.utilization, run.totalTime, ...run.q].join(
+        ",",
+      ),
     );
   });
 
@@ -75,6 +81,7 @@ function buildResultsCsv(
   lines.push(`blockingMean,${summary.blockingMean}`);
   lines.push(`blockingStdev,${summary.blockingStdev}`);
   lines.push(`utilization,${summary.utilization}`);
+  lines.push(`totalTimeSum,${summary.totalTimeSum}`);
   lines.push(`analyticalBlocking,${analyticalBlocking}`);
 
   lines.push("");
@@ -381,17 +388,6 @@ export default function Calculator() {
             <p className="text-xs text-slate-400">
               Seeds used:{" "}
               <span className="font-mono">{usedSeeds.join(", ")}</span>
-              {elapsedMs !== null && (
-                <>
-                  {", "}
-                  ran in{" "}
-                  <span className="font-mono">
-                    {elapsedMs < 1000
-                      ? `${elapsedMs.toFixed(0)} ms`
-                      : `${(elapsedMs / 1000).toFixed(2)} s`}
-                  </span>
-                </>
-              )}
             </p>
             <div className="flex gap-3">
               <button
@@ -428,7 +424,7 @@ export default function Calculator() {
               analyticalQ={analyticalQ}
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
               <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Simulated blocking
@@ -454,6 +450,20 @@ export default function Calculator() {
               </p>
               <p className="text-lg font-bold text-slate-600 font-mono">
                 {result.utilization.toFixed(7)}
+              </p>
+            </div>
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Wall-clock time (this run)
+              </p>
+              <p className="text-lg font-bold text-slate-600 font-mono">
+                {elapsedMs !== null
+                  ? `${(elapsedMs / 1000).toFixed(3)}s`
+                  : "—"}
+              </p>
+              <p className="text-xs text-slate-400">
+                real time your browser took to run all {result.n} seeds in
+                parallel
               </p>
             </div>
           </div>
