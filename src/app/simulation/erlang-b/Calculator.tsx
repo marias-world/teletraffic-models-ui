@@ -61,9 +61,7 @@ function buildResultsCsv(
 
   lines.push("Per-seed results");
   lines.push(
-    ["seed", "callBlocking", "utilization", "totalTime", ...qColumns].join(
-      ",",
-    ),
+    ["seed", "callBlocking", "utilization", "totalTime", ...qColumns].join(","),
   );
   seeds.forEach((seed, i) => {
     const run = runs[i];
@@ -205,7 +203,13 @@ export default function Calculator() {
       setError(`Service rate must be a positive number, up to ${MAX_RATE}.`);
       return;
     }
-    if (!capacity || isNaN(c) || c <= 0 || !Number.isInteger(c) || c > MAX_CAPACITY) {
+    if (
+      !capacity ||
+      isNaN(c) ||
+      c <= 0 ||
+      !Number.isInteger(c) ||
+      c > MAX_CAPACITY
+    ) {
       setError(
         `Capacity must be a positive whole number, up to ${MAX_CAPACITY}.`,
       );
@@ -222,8 +226,16 @@ export default function Calculator() {
       );
       return;
     }
-    if (!numSeeds || isNaN(seeds) || seeds < 2 || !Number.isInteger(seeds) || seeds > MAX_SEEDS) {
-      setError(`Number of seeds must be a whole number between 2 and ${MAX_SEEDS}.`);
+    if (
+      !numSeeds ||
+      isNaN(seeds) ||
+      seeds < 2 ||
+      !Number.isInteger(seeds) ||
+      seeds > MAX_SEEDS
+    ) {
+      setError(
+        `Number of seeds must be a whole number between 2 and ${MAX_SEEDS}.`,
+      );
       return;
     }
 
@@ -276,9 +288,8 @@ export default function Calculator() {
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
         This runs the exact same discrete-event simulation described above,
-        right in your browser. Pick a system and see how closely the
-        simulated blocking probability lands to the analytical Erlang-B
-        value.
+        right in your browser. Pick a system and see how closely the simulated
+        blocking probability lands to the analytical Erlang-B value.
       </p>
 
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -358,10 +369,10 @@ export default function Calculator() {
 
       <p className="text-xs text-slate-400">
         Capacity ≤ {MAX_CAPACITY}, calls/seed ≤{" "}
-        {MAX_CALLS_PER_SEED.toLocaleString()}, seeds between 2 and{" "}
-        {MAX_SEEDS} (more calls/seeds means a more precise but slower run;{" "}
-        {MAX_CALLS_PER_SEED.toLocaleString()} calls with several seeds can
-        take several seconds and briefly freeze the page while it runs).
+        {MAX_CALLS_PER_SEED.toLocaleString()}, seeds between 2 and {MAX_SEEDS}{" "}
+        (more calls/seeds means a more precise but slower run;{" "}
+        {MAX_CALLS_PER_SEED.toLocaleString()} calls with several seeds can take
+        several seconds and briefly freeze the page while it runs).
       </p>
 
       {error && (
@@ -383,132 +394,132 @@ export default function Calculator() {
         analyticalBlocking !== null &&
         usedSeeds &&
         perSeedRuns && (
-        <div className="space-y-4 pt-2 border-t border-slate-100">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="space-y-4 pt-2 border-t border-slate-100">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs text-slate-400">
+                Seeds used:{" "}
+                <span className="font-mono">{usedSeeds.join(", ")}</span>
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() =>
+                    downloadBlob(
+                      "erlang-b-simulation-results.csv",
+                      buildResultsCsv(
+                        usedSeeds,
+                        perSeedRuns,
+                        result,
+                        analyticalQ,
+                        analyticalBlocking,
+                      ),
+                      "text/csv;charset=utf-8;",
+                    )
+                  }
+                  className="text-xs font-medium text-sky-600 hover:text-sky-700 hover:underline"
+                >
+                  Download results as CSV
+                </button>
+                <button
+                  onClick={downloadChartAsPng}
+                  className="text-xs font-medium text-sky-600 hover:text-sky-700 hover:underline"
+                >
+                  Download chart as PNG
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
+              <QComparisonChart
+                ref={chartRef}
+                qMean={result.qMean}
+                analyticalQ={analyticalQ}
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  Simulated blocking
+                </p>
+                <p className="text-lg font-bold text-sky-600 font-mono">
+                  {result.blockingMean.toFixed(7)}
+                </p>
+                <p className="text-xs text-slate-400">
+                  ± {result.blockingStdev.toFixed(7)} ({result.n} seeds)
+                </p>
+              </div>
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  Analytical Erlang-B
+                </p>
+                <p className="text-lg font-bold text-slate-600 font-mono">
+                  {analyticalBlocking.toFixed(7)}
+                </p>
+              </div>
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  Utilization
+                </p>
+                <p className="text-lg font-bold text-slate-600 font-mono">
+                  {result.utilization.toFixed(7)}
+                </p>
+              </div>
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  Wall-clock time (this run)
+                </p>
+                <p className="text-lg font-bold text-slate-600 font-mono">
+                  {elapsedMs !== null
+                    ? `${(elapsedMs / 1000).toFixed(3)}s`
+                    : "—"}
+                </p>
+                <p className="text-xs text-slate-400">
+                  real time the browser took to run all {result.n} seeds in
+                  parallel
+                </p>
+              </div>
+            </div>
+
             <p className="text-xs text-slate-400">
-              Seeds used:{" "}
-              <span className="font-mono">{usedSeeds.join(", ")}</span>
+              The &ldquo;±&rdquo; next to each simulated q(j) is that
+              state&apos;s spread across the seeds used: e.g. &ldquo;0.0110827
+              (± 0.0005159)&rdquo; means across the independent seed runs, the
+              fraction-of-time-with-0-busy-servers estimate varied by about
+              ±0.0005 from run to run, centered on a mean of 0.0110827. Same
+              idea as the overall &ldquo;± stdev (N seeds)&rdquo; shown for the
+              blocking probability above, just per state instead of for that one
+              aggregate figure.
             </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() =>
-                  downloadBlob(
-                    "erlang-b-simulation-results.csv",
-                    buildResultsCsv(
-                      usedSeeds,
-                      perSeedRuns,
-                      result,
-                      analyticalQ,
-                      analyticalBlocking,
-                    ),
-                    "text/csv;charset=utf-8;",
-                  )
-                }
-                className="text-xs font-medium text-sky-600 hover:text-sky-700 hover:underline"
-              >
-                Download results as CSV
-              </button>
-              <button
-                onClick={downloadChartAsPng}
-                className="text-xs font-medium text-sky-600 hover:text-sky-700 hover:underline"
-              >
-                Download chart as PNG
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
-            <QComparisonChart
-              ref={chartRef}
-              qMean={result.qMean}
-              analyticalQ={analyticalQ}
-            />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Simulated blocking
-              </p>
-              <p className="text-lg font-bold text-sky-600 font-mono">
-                {result.blockingMean.toFixed(7)}
-              </p>
-              <p className="text-xs text-slate-400">
-                ± {result.blockingStdev.toFixed(7)} ({result.n} seeds)
-              </p>
-            </div>
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Analytical Erlang-B
-              </p>
-              <p className="text-lg font-bold text-slate-600 font-mono">
-                {analyticalBlocking.toFixed(7)}
-              </p>
-            </div>
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Utilization
-              </p>
-              <p className="text-lg font-bold text-slate-600 font-mono">
-                {result.utilization.toFixed(7)}
-              </p>
-            </div>
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Wall-clock time (this run)
-              </p>
-              <p className="text-lg font-bold text-slate-600 font-mono">
-                {elapsedMs !== null
-                  ? `${(elapsedMs / 1000).toFixed(3)}s`
-                  : "—"}
-              </p>
-              <p className="text-xs text-slate-400">
-                real time your browser took to run all {result.n} seeds in
-                parallel
-              </p>
-            </div>
-          </div>
-
-          <p className="text-xs text-slate-400">
-            The &ldquo;±&rdquo; next to each simulated q(j) is that
-            state&apos;s spread across the seeds used: e.g. &ldquo;0.0110827
-            (± 0.0005159)&rdquo; means across the independent seed runs, the
-            fraction-of-time-with-0-busy-servers estimate varied by about
-            ±0.0005 from run to run, centered on a mean of 0.0110827. Same
-            idea as the overall &ldquo;± stdev (N seeds)&rdquo; shown for the
-            blocking probability above, just per state instead of for that
-            one aggregate figure.
-          </p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border-separate border-spacing-y-1">
-              <thead>
-                <tr className="text-xs font-semibold text-slate-400 tracking-wider">
-                  <th className="text-left px-2">State j</th>
-                  <th className="text-left px-2">Simulated q(j)</th>
-                  <th className="text-left px-2">Analytical q(j)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {result.qMean.map((qj, j) => (
-                  <tr key={j} className="bg-white">
-                    <td className="px-2 py-1.5 font-semibold text-slate-500">
-                      {j}
-                    </td>
-                    <td className="px-2 py-1.5 font-mono text-slate-700">
-                      {qj.toFixed(7)}{" "}
-                      <span className="text-slate-400">
-                        (± {result.qStdev[j].toFixed(7)})
-                      </span>
-                    </td>
-                    <td className="px-2 py-1.5 font-mono text-slate-500">
-                      {analyticalQ[j].toFixed(7)}
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-separate border-spacing-y-1">
+                <thead>
+                  <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+                    <th className="text-left px-2">State j</th>
+                    <th className="text-left px-2">Simulated q(j)</th>
+                    <th className="text-left px-2">Analytical q(j)</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {result.qMean.map((qj, j) => (
+                    <tr key={j} className="bg-white">
+                      <td className="px-2 py-1.5 font-semibold text-slate-500">
+                        {j}
+                      </td>
+                      <td className="px-2 py-1.5 font-mono text-slate-700">
+                        {qj.toFixed(7)}{" "}
+                        <span className="text-slate-400">
+                          (± {result.qStdev[j].toFixed(7)})
+                        </span>
+                      </td>
+                      <td className="px-2 py-1.5 font-mono text-slate-500">
+                        {analyticalQ[j].toFixed(7)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </section>
   );
 }
