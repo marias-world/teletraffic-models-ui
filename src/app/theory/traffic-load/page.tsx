@@ -30,8 +30,6 @@ function toX(min: number) {
   return LABEL_W + (min / PERIOD) * TRACK_W;
 }
 
-const totalDuration = CALLS.reduce((s, c) => s + c.duration, 0); // 69 min
-
 // ─── page ─────────────────────────────────────────────────────────────────────
 export default function TrafficLoadPage() {
   return (
