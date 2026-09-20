@@ -119,6 +119,11 @@ export default function Calculator() {
   const [error, setError] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const [usedSeeds, setUsedSeeds] = useState<number[] | null>(null);
+  const [usedParams, setUsedParams] = useState<{
+    lambda: number;
+    mu: number;
+    capacity: number;
+  } | null>(null);
   const [elapsedMs, setElapsedMs] = useState<number | null>(null);
   const [perSeedRuns, setPerSeedRuns] = useState<
     ErlangBSimulationResult[] | null
@@ -272,6 +277,7 @@ export default function Calculator() {
       );
       setAnalyticalBlocking(recursiveErlangB(c, offeredLoad).result);
       setUsedSeeds(seedList);
+      setUsedParams({ lambda, mu, capacity: c });
       setPerSeedRuns(runs);
       setResult(summary);
     } catch (e) {
@@ -478,6 +484,49 @@ export default function Calculator() {
                 </p>
               </div>
             </div>
+
+            {(() => {
+              if (!usedParams || usedParams.capacity < 3) return null;
+              // Find the interior state (0 < j < capacity) with the most
+              // probability mass, i.e. the mode of q(j) excluding the empty
+              // and fully-occupied endpoints - whichever state that is
+              // (not always j=2: it shifts with the offered load), the
+              // point below only applies when that mode outweighs blocking.
+              let modeJ = 1;
+              for (let j = 2; j < usedParams.capacity; j++) {
+                if (analyticalQ[j] > analyticalQ[modeJ]) modeJ = j;
+              }
+              if (analyticalQ[modeJ] <= analyticalBlocking) return null;
+
+              return (
+                <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                  <span className="text-amber-500 flex-shrink-0">💡</span>
+                  <p className="text-amber-900 text-sm leading-relaxed">
+                    <strong>
+                      Notice q({modeJ}) ({analyticalQ[modeJ].toFixed(4)}) is
+                      higher than blocking, q({usedParams.capacity}) (
+                      {analyticalBlocking.toFixed(4)})?
+                    </strong>{" "}
+                    That&apos;s because <InlineMath math="\mu" /> is relatively
+                    high here (offered load{" "}
+                    <InlineMath
+                      math={`α = \\lambda/\\mu = ${(usedParams.lambda / usedParams.mu).toFixed(2)}`}
+                    />
+                    ). Increasing <InlineMath math="\mu" /> shortens the mean
+                    service time <InlineMath math="h = 1/\mu" />, so calls leave
+                    the system faster and it rarely builds all the way up to the
+                    high-occupancy states near{" "}
+                    <InlineMath math={`j = ${usedParams.capacity}`} />. Instead,
+                    that probability mass piles up in a middle state like{" "}
+                    <InlineMath math={`j = ${modeJ}`} /> on its way down towards{" "}
+                    <InlineMath math="j = 0" />, even as blocking keeps
+                    dropping. Try lowering <InlineMath math="\mu" /> (or raising{" "}
+                    <InlineMath math="\lambda" />) and re-running to see this
+                    flip.
+                  </p>
+                </div>
+              );
+            })()}
 
             <p className="text-xs text-slate-400">
               The &ldquo;±&rdquo; next to each simulated q(j) is that
