@@ -16,7 +16,7 @@ const PUBLICATIONS: Publication[] = [
       "Performance evaluation of the limited availability group model for multirate batched Poisson traffic",
     venue:
       "AEU – International Journal of Electronics and Communications, 2026",
-    status: "Under minor revision",
+    doi: "10.1016/j.aeue.2026.156619",
   },
   {
     authors:
@@ -39,7 +39,8 @@ const PUBLICATIONS: Publication[] = [
   {
     authors:
       "M. Vlasakis, M. Kourtesi, I.-A. Chousainov, I. Keramidi, D. Uzunidis, O. Zestas, I. D. Moscholios and M. Logothetis",
-    title: "On the limited-availability group model for multirate Poisson traffic",
+    title:
+      "On the limited-availability group model for multirate Poisson traffic",
     venue: "Panhellenic Conf. Electronics and Telecommunications (PACET)",
     doi: "10.1109/PACET68758.2026.11498249",
   },
@@ -49,14 +50,16 @@ const PRESENTATIONS = [
   {
     title:
       "On the Analysis and Validation of a Multiparameter Analytical Loss Model for an IaaS Cloud Physical Infrastructure",
-    detail: "Accepted for presentation at IEEE CSNDSP 2026, Edinburgh, July 2026",
+    detail:
+      "Accepted for presentation at IEEE CSNDSP 2026, Edinburgh, July 2026",
     posterUrl:
       "https://drive.google.com/file/d/1RGBJV2bkQqRitWvKoZbzMLzyx1Rtc9vZ/view?usp=drive_link",
   },
   {
     title:
       "An Analytical Study of the Limited Availability Group Model for Multirate Poisson Traffic",
-    detail: "Accepted for presentation at IEEE CSNDSP 2026, Edinburgh, July 2026",
+    detail:
+      "Accepted for presentation at IEEE CSNDSP 2026, Edinburgh, July 2026",
     posterUrl:
       "https://drive.google.com/file/d/1Ol44buGwWKJY0Tv29OXvPo8c3CxKk1de/view?usp=drive_link",
   },
