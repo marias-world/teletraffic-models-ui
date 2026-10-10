@@ -50,7 +50,10 @@ describe("runErlangBSimulation", () => {
 
   it("matches the analytical Erlang-B blocking probability within tolerance", () => {
     const offeredLoad = baseParams.arrivalRate / baseParams.serviceRate;
-    const analytical = recursiveErlangB(baseParams.capacity, offeredLoad).result;
+    const analytical = recursiveErlangB(
+      baseParams.capacity,
+      offeredLoad,
+    ).result;
 
     const { blockingMean } = replicateErlangBSimulation(
       [1, 2, 3, 4, 5],
@@ -114,9 +117,7 @@ describe("replicateErlangBSimulation", () => {
       numCallsToSimulate: 20_000,
     };
     const seeds = [1, 2, 3];
-    const runs = seeds.map((seed) =>
-      runErlangBSimulation({ ...params, seed }),
-    );
+    const runs = seeds.map((seed) => runErlangBSimulation({ ...params, seed }));
     expect(aggregateErlangBRuns(runs)).toEqual(
       replicateErlangBSimulation(seeds, params),
     );
