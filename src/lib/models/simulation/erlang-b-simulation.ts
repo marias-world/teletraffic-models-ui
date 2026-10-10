@@ -6,22 +6,8 @@
 // plus one pending departure per busy server), so a fixed-size array of
 // departure times stands in for the heap without changing the dynamics.
 
-// Deterministic seeded PRNG (mulberry32) so a given seed always reproduces
-// the same run - JS's Math.random() cannot be seeded.
-function mulberry32(seed: number): () => number {
-  let a = seed >>> 0;
-  return function () {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-// Inverse-CDF sampling for an exponential(rate) random variable.
-function exponential(rng: () => number, rate: number): number {
-  return -Math.log(1 - rng()) / rate;
-}
+import { exponential, mulberry32 } from "./random";
+import { meanAndStdev } from "./stats";
 
 export interface ErlangBSimulationParams {
   arrivalRate: number;
@@ -161,18 +147,6 @@ export interface ReplicationSummary {
   // time unit as the rate parameters.
   totalTimeSum: number;
   n: number;
-}
-
-// Mean and sample standard deviation of a set of independent observations
-// (Bessel-corrected: divide by n-1, undefined for a single observation).
-function meanAndStdev(values: number[]): { mean: number; stdev: number } {
-  const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
-  const variance =
-    values.length > 1
-      ? values.reduce((sum, v) => sum + (v - mean) ** 2, 0) /
-        (values.length - 1)
-      : 0;
-  return { mean, stdev: Math.sqrt(variance) };
 }
 
 // Combines independent replication runs into a mean/stdev summary. Shared

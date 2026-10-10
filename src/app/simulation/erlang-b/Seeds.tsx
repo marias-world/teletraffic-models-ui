@@ -1,3 +1,5 @@
+import { DEFAULT_SEEDS } from "@/lib/models/simulation/seeds";
+
 const SEED_RESULTS = [
   { seed: 42, blocking: "0.2850026" },
   { seed: 50, blocking: "0.2852821" },
@@ -104,9 +106,9 @@ export default function Seeds() {
       </p>
 
       <p className="text-slate-600 leading-relaxed text-sm">
-        The seeds used throughout this page (42, 50, 58, 59, 57, 38, 39, 68,
-        28, 80) are arbitrary, they were simply picked and then kept fixed
-        so every run shown here is reproducible.
+        The seeds used throughout this page ({DEFAULT_SEEDS.join(", ")}) are
+        arbitrary, they were simply picked and then kept fixed so every run
+        shown here is reproducible.
       </p>
     </section>
   );
