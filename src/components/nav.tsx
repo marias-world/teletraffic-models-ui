@@ -22,7 +22,7 @@ const modelLinks = [
 
 const simulationLinks = [
   { href: "/simulation/erlang-b", label: "Erlang-B" },
-  { href: "/simulation/emlm", label: "EMLM (multirate)" },
+  { href: "/simulation/emlm", label: "EMLM" },
 ];
 
 const theoryLinks = [
