@@ -11,6 +11,10 @@ import {
 import { recursiveErlangB } from "@/lib/models/erlang-b";
 import { kaufmanRoberts } from "@/lib/models/kaufman-roberts/kaufman-roberts-formula";
 import { DEFAULT_SEEDS } from "@/lib/models/simulation/seeds";
+import {
+  SERVICE_DISTRIBUTIONS,
+  ServiceDistribution,
+} from "@/lib/models/simulation/service-time-distributions";
 import { downloadBlob, downloadSvgAsPng } from "@/lib/download";
 import QComparisonChart from "@/components/QComparisonChart";
 
@@ -53,6 +57,7 @@ function buildResultsCsv(
   summary: ReplicationSummary,
   analyticalQ: number[],
   analyticalBlocking: number,
+  serviceDist: ServiceDistribution,
 ): string {
   const capacity = analyticalQ.length - 1;
   const qColumns = Array.from({ length: capacity + 1 }, (_, j) => `q(${j})`);
@@ -75,6 +80,7 @@ function buildResultsCsv(
   lines.push("Summary across seeds");
   lines.push("metric,value");
   lines.push(`n,${summary.n}`);
+  lines.push(`serviceDistribution,${serviceDist}`);
   lines.push(`blockingMean,${summary.blockingMean}`);
   lines.push(`blockingStdev,${summary.blockingStdev}`);
   lines.push(`utilization,${summary.utilization}`);
@@ -99,6 +105,8 @@ export default function Calculator() {
   const [capacity, setCapacity] = useState("5");
   const [callsPerSeed, setCallsPerSeed] = useState("100000");
   const [numSeeds, setNumSeeds] = useState(String(MAX_SEEDS));
+  const [serviceDist, setServiceDist] =
+    useState<ServiceDistribution>("exponential");
 
   const [result, setResult] = useState<ReplicationSummary | null>(null);
   const [analyticalQ, setAnalyticalQ] = useState<number[] | null>(null);
@@ -112,6 +120,7 @@ export default function Calculator() {
     lambda: number;
     mu: number;
     capacity: number;
+    serviceDist: ServiceDistribution;
   } | null>(null);
   const [elapsedMs, setElapsedMs] = useState<number | null>(null);
   const [perSeedRuns, setPerSeedRuns] = useState<
@@ -203,6 +212,7 @@ export default function Calculator() {
             capacity: c,
             numCallsToSimulate: calls,
             seed,
+            serviceDist,
           }),
         ),
       );
@@ -220,7 +230,7 @@ export default function Calculator() {
       );
       setAnalyticalBlocking(recursiveErlangB(c, offeredLoad).result);
       setUsedSeeds(seedList);
-      setUsedParams({ lambda, mu, capacity: c });
+      setUsedParams({ lambda, mu, capacity: c, serviceDist });
       setPerSeedRuns(runs);
       setResult(summary);
     } catch (e) {
@@ -306,6 +316,31 @@ export default function Calculator() {
         </div>
       </div>
 
+      <div>
+        <label className="block text-xs font-medium text-slate-600 mb-1">
+          Holding-time distribution
+        </label>
+        <select
+          value={serviceDist}
+          onChange={(e) =>
+            setServiceDist(e.target.value as ServiceDistribution)
+          }
+          className="w-full border border-slate-300 rounded-lg px-2 py-1.5 text-sm"
+        >
+          {SERVICE_DISTRIBUTIONS.map(({ value, label }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <p className="text-xs text-slate-400 mt-1">
+          Every option keeps the mean holding time at{" "}
+          <InlineMath math="1/\mu" />, so the offered load is unchanged; only
+          the shape of the distribution differs. Blocking should barely move
+          (the insensitivity property).
+        </p>
+      </div>
+
       <p className="text-xs text-slate-400">
         Seeds aren&apos;t random each run, they&apos;re a fixed list (the same
         one the reference Python implementation defaults to): with{" "}
@@ -342,6 +377,7 @@ export default function Calculator() {
         analyticalQ &&
         analyticalBlocking !== null &&
         usedSeeds &&
+        usedParams &&
         perSeedRuns && (
           <div className="space-y-4 pt-2 border-t border-slate-100">
             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -360,6 +396,7 @@ export default function Calculator() {
                         result,
                         analyticalQ,
                         analyticalBlocking,
+                        usedParams.serviceDist,
                       ),
                       "text/csv;charset=utf-8;",
                     )

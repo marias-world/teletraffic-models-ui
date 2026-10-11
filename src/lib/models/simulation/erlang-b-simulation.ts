@@ -8,6 +8,10 @@
 
 import { exponential, mulberry32 } from "./random";
 import { meanAndStdev } from "./stats";
+import {
+  makeServiceSampler,
+  ServiceDistribution,
+} from "./service-time-distributions";
 
 export interface ErlangBSimulationParams {
   arrivalRate: number;
@@ -18,6 +22,9 @@ export interface ErlangBSimulationParams {
   // Fraction of arrivals used to warm up the system before counting starts,
   // so the empty-at-t=0 initial condition doesn't bias the statistics.
   warmupFraction?: number;
+  // Shape of the call holding-time distribution; its mean is always
+  // 1 / serviceRate, so the offered load is unchanged.
+  serviceDist?: ServiceDistribution;
 }
 
 export interface ErlangBSimulationResult {
@@ -44,6 +51,7 @@ export function runErlangBSimulation(
     numCallsToSimulate,
     seed,
     warmupFraction = DEFAULT_WARMUP_FRACTION,
+    serviceDist = "exponential",
   } = params;
 
   if (capacity <= 0 || numCallsToSimulate <= 0) {
@@ -51,6 +59,7 @@ export function runErlangBSimulation(
   }
 
   const rng = mulberry32(seed);
+  const holdingTime = makeServiceSampler(serviceDist, rng, serviceRate);
 
   const warmupCalls = Math.floor(warmupFraction * numCallsToSimulate);
   const totalArrivalsNeeded = numCallsToSimulate + warmupCalls;
@@ -101,7 +110,7 @@ export function runErlangBSimulation(
     const accepted = busyServers < capacity;
     if (accepted) {
       const freeServer = departureTimes.indexOf(Infinity);
-      departureTimes[freeServer] = now + exponential(rng, serviceRate);
+      departureTimes[freeServer] = now + holdingTime();
       busyServers += 1;
     }
 
