@@ -342,8 +342,7 @@ export default function Calculator() {
       </div>
 
       <p className="text-xs text-slate-400">
-        Seeds aren&apos;t random each run, they&apos;re a fixed list (the same
-        one the reference Python implementation defaults to): with{" "}
+        Seeds aren&apos;t random each run, they&apos;re a fixed list
         {numSeeds || "N"} seeds, this uses{" "}
         <span className="font-mono">
           {seedsPreview ? seedsPreview.join(", ") : "…"}
