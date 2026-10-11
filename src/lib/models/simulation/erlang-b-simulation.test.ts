@@ -5,6 +5,7 @@ import {
   aggregateErlangBRuns,
 } from "./erlang-b-simulation";
 import { recursiveErlangB } from "../erlang-b";
+import { SERVICE_DISTRIBUTIONS } from "./service-time-distributions";
 
 describe("runErlangBSimulation", () => {
   const baseParams = {
@@ -65,6 +66,32 @@ describe("runErlangBSimulation", () => {
     // genuinely broken implementation (which would be off by a lot more).
     expect(Math.abs(blockingMean - analytical)).toBeLessThan(0.02);
   });
+
+  it("treats exponential holding times as the default", () => {
+    const implicit = runErlangBSimulation({ ...baseParams, seed: 42 });
+    const explicit = runErlangBSimulation({
+      ...baseParams,
+      seed: 42,
+      serviceDist: "exponential",
+    });
+    expect(explicit).toEqual(implicit);
+  });
+
+  it.each(SERVICE_DISTRIBUTIONS.map((d) => d.value))(
+    "stays close to analytical Erlang-B with %s holding times (insensitivity)",
+    (serviceDist) => {
+      const offeredLoad = baseParams.arrivalRate / baseParams.serviceRate;
+      const analytical = recursiveErlangB(
+        baseParams.capacity,
+        offeredLoad,
+      ).result;
+      const { blockingMean } = replicateErlangBSimulation([1, 2, 3, 4], {
+        ...baseParams,
+        serviceDist,
+      });
+      expect(Math.abs(blockingMean - analytical)).toBeLessThan(0.015);
+    },
+  );
 
   it("throws on non-positive capacity or call count", () => {
     expect(() =>
