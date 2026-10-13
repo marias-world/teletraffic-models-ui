@@ -13,17 +13,11 @@ import {
   WORKED_EXAMPLE_MEAN,
 } from "@/lib/models/simulation/service-time-distributions";
 
-// When `params` is omitted the table describes the default parameters (the
-// ones the Python reference implementation uses) and says so; the calculators
-// pass their current settings instead, so the table always matches what will
-// actually be simulated.
 export function HoldingTimeDistributionsTable({
   params,
   reference = "erlang",
 }: {
   params?: ServiceDistributionParams;
-  // Which model the insensitivity reference should be about: the single-class
-  // Erlang formula, the multirate loss model, or both (the theory page).
   reference?: "erlang" | "multirate" | "both";
 }) {
   const shown = params ?? DEFAULT_SERVICE_DIST_PARAMS;
@@ -171,9 +165,6 @@ export function HoldingTimeDistributionsTable({
 
 const LINK = "text-sky-600 hover:underline";
 
-// A source for the insensitivity claim, matched to the model the page is
-// actually about (the Erlang formula is the single-class special case, so its
-// paper doesn't back a statement about the multirate model on its own).
 function InsensitivityReference() {
   return (
     <p className="text-xs text-slate-500 leading-relaxed">
@@ -193,9 +184,6 @@ function InsensitivityReference() {
   );
 }
 
-// One line describing whichever distribution is currently selected (with the
-// current parameters), so the dropdown explains itself without opening the
-// full table.
 export function SelectedDistributionNote({
   value,
   params,
@@ -217,9 +205,6 @@ export function SelectedDistributionNote({
 const INPUT = "w-full border border-slate-300 rounded-lg px-2 py-1.5 text-sm";
 const LABEL = "block text-xs font-medium text-slate-600 mb-1";
 
-// Editable shape parameters for the selected distribution. Whatever is typed
-// here, the mean call duration stays exactly h = 1/mu; the controls only
-// change how spread out the call lengths are.
 export function ServiceDistributionParamControls({
   dist,
   inputs,
