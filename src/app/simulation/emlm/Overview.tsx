@@ -17,11 +17,10 @@ export default function Overview() {
           Erlang-B simulation
         </Link>{" "}
         models one link with a limited capacity available where every call
-        requires the same amount of resources. The{" "}
-        <strong>Erlang Multirate Loss Model (EMLM)</strong> lifts that
-        restriction: a single link of capacity <InlineMath math="C" /> bandwidth
-        units (b.u.) is shared by several <strong>service classes</strong>, and
-        a call of class <InlineMath math="k" /> occupies{" "}
+        requires the same amount of resources. The Erlang Multirate Loss Model
+        (EMLM) lifts that restriction: a single link of capacity{" "}
+        <InlineMath math="C" /> bandwidth units (b.u.) is shared by several{" "}
+        service classes, and a call of class <InlineMath math="k" /> occupies{" "}
         <InlineMath math="b_k" /> b.u. for as long as it lasts, for example
         voice calls needing 1 b.u. next to video calls needing 4.
       </p>

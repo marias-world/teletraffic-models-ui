@@ -22,10 +22,9 @@ export default function WorkedExample() {
         event is credited to whichever state the system was in; dividing each
         state&apos;s accumulated time by the total time gives{" "}
         <InlineMath math="q(j)" />, the fraction of time the system spends with
-        exactly <InlineMath math="j" /> servers busy. From that, the{" "}
-        <strong>utilization</strong> (average fraction of servers busy) is a
-        weighted average of the state counts, weighted by how much time was
-        spent in each.
+        exactly <InlineMath math="j" /> servers busy. From that, the utilisation
+        (average fraction of servers busy) is a weighted average of the state
+        counts, weighted by how much time was spent in each.
       </p>
 
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -130,12 +129,12 @@ export default function WorkedExample() {
           arriving call is exactly as likely to see the system full as a random
           point in time is to fall while the system is full. So for Poisson
           arrivals, the inside observer and the outside observer measure the{" "}
-          <em>same</em> <InlineMath math="B" />. This is the{" "}
-          <strong>PASTA property</strong> (Poisson Arrivals See Time Averages).
+          <em>same</em> <InlineMath math="B" />. This is the PASTA property
+          (Poisson Arrivals See Time Averages).
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
-          For Erlang-B specifically, PASTA means <strong>call blocking</strong>{" "}
-          (the outside observer&apos;s measurement, from counting arrivals) and{" "}
+          For Erlang-B specifically, PASTA means call blocking (the outside
+          observer&apos;s measurement, from counting arrivals) and{" "}
           <InlineMath math="q(c)" /> (the inside observer&apos;s measurement,
           from tracking elapsed time) should come out equal, even though the
           simulation computes them from completely independent bookkeeping.

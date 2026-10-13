@@ -18,11 +18,10 @@ export default function Overview() {
         </Link>{" "}
         gives the blocking probability of a loss system in closed form, but a
         closed-form answer is still just an answer someone derived on paper. A{" "}
-        <strong>discrete-event simulation (DES)</strong> builds the same system
-        from scratch, call by call, and lets the blocking probability{" "}
-        <em>emerge</em> from that behaviour instead of from an equation, so it
-        can be used to check whether the formula (and the assumptions behind it)
-        actually holds.
+        discrete-event simulation (DES) builds the same system from scratch,
+        call by call, and lets the blocking probability <em>emerge</em> from
+        that behaviour instead of from an equation, so it can be used to check
+        whether the formula (and the assumptions behind it) actually holds.
       </p>
 
       <p className="text-slate-600 leading-relaxed">
