@@ -37,6 +37,7 @@ const theoryLinks = [
   { href: "/theory/traffic-load", label: "Traffic Load" },
   { href: "/theory/poisson-traffic", label: "Poisson Traffic" },
   { href: "/theory/markov-chains", label: "Markov Chains & Birth-Death" },
+  { href: "/theory/insensitivity", label: "Insensitivity Property" },
   {
     href: "/theory/classification-of-loss-models",
     label: "Classification of Loss Models",
