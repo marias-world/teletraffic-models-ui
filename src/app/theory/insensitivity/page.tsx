@@ -35,11 +35,11 @@ export default function InsensitivityPage() {
           <h2 className="text-xl font-semibold text-slate-700">What it says</h2>
           <p className="text-slate-600 leading-relaxed">
             In the{" "}
-            <Link href="simulation/erlang-b" className={LINK}>
+            <Link href="/simulation/erlang-b" className={LINK}>
               Erlang-B
             </Link>{" "}
             and{" "}
-            <Link href="simulation/emlm" className={LINK}>
+            <Link href="/simulation/emlm" className={LINK}>
               EMLM
             </Link>{" "}
             DES simulations, the blocking probability depends on the call

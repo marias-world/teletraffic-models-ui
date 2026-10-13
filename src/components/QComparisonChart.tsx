@@ -34,10 +34,10 @@ const QComparisonChart = forwardRef<SVGSVGElement, QComparisonChartProps>(
   ) {
     const capacity = analyticalQ.length - 1;
     const width = 700;
-    const height = 340;
+    const height = 356;
     const marginLeft = 55;
     const marginRight = 20;
-    const marginTop = 40;
+    const marginTop = 56;
     const marginBottom = 40;
     const plotWidth = width - marginLeft - marginRight;
     const plotHeight = height - marginTop - marginBottom;
