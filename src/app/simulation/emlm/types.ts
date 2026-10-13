@@ -3,7 +3,10 @@ import type {
   EmlmServiceClassParams,
   EmlmSimulationResult,
 } from "@/lib/models/simulation/emlm-simulation";
-import type { ServiceDistribution } from "@/lib/models/simulation/service-time-distributions";
+import type {
+  ServiceDistribution,
+  ServiceDistributionParams,
+} from "@/lib/models/simulation/service-time-distributions";
 
 export interface EmlmOutput {
   summary: EmlmReplicationSummary;
@@ -12,6 +15,7 @@ export interface EmlmOutput {
   capacity: number;
   callsPerSeed: number;
   serviceDist: ServiceDistribution;
+  serviceDistParams: ServiceDistributionParams;
   classes: EmlmServiceClassParams[];
   analyticalQ: number[];
   analyticalBlocking: number[];

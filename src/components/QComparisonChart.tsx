@@ -7,6 +7,7 @@ const ANALYTICAL_COLOR = "#f97316";
 const AXIS_COLOR = "#334155";
 const GRID_COLOR = "#e2e8f0";
 const TEXT_COLOR = "#334155";
+const CI_COLOR = "#075985";
 
 interface QComparisonChartProps {
   qMean: number[];
@@ -15,6 +16,9 @@ interface QComparisonChartProps {
   // Printing 7 decimals above every point only stays readable for a handful
   // of states; callers with large capacities can turn it off.
   showValueLabels?: boolean;
+  // Half-widths of the 95% confidence intervals of the simulated means;
+  // drawn as error bars when given.
+  qCi95?: number[];
 }
 
 const QComparisonChart = forwardRef<SVGSVGElement, QComparisonChartProps>(
@@ -24,6 +28,7 @@ const QComparisonChart = forwardRef<SVGSVGElement, QComparisonChartProps>(
       analyticalQ,
       xAxisLabel = "state j (busy servers)",
       showValueLabels = true,
+      qCi95,
     },
     ref,
   ) {
@@ -37,7 +42,11 @@ const QComparisonChart = forwardRef<SVGSVGElement, QComparisonChartProps>(
     const plotWidth = width - marginLeft - marginRight;
     const plotHeight = height - marginTop - marginBottom;
 
-    const maxValue = Math.max(...qMean, ...analyticalQ);
+    const upperSimulated = qMean.map((v, j) => {
+      const ci = qCi95?.[j];
+      return v + (ci !== undefined && Number.isFinite(ci) ? ci : 0);
+    });
+    const maxValue = Math.max(...upperSimulated, ...analyticalQ);
     const yMax = maxValue > 0 ? maxValue * 1.15 : 1;
 
     const states = Array.from({ length: capacity + 1 }, (_, j) => j);
@@ -175,6 +184,21 @@ const QComparisonChart = forwardRef<SVGSVGElement, QComparisonChartProps>(
           stroke={SIMULATED_COLOR}
           strokeWidth={3}
         />
+        {qCi95 &&
+          states.map((j) => {
+            const ci = qCi95[j];
+            if (!Number.isFinite(ci) || ci <= 0) return null;
+            const x = xFor(j);
+            const top = yFor(qMean[j] + ci);
+            const bottom = yFor(Math.max(qMean[j] - ci, 0));
+            return (
+              <g key={`e${j}`} stroke={CI_COLOR} strokeWidth={1.5}>
+                <line x1={x} x2={x} y1={top} y2={bottom} />
+                <line x1={x - 4} x2={x + 4} y1={top} y2={top} />
+                <line x1={x - 4} x2={x + 4} y1={bottom} y2={bottom} />
+              </g>
+            );
+          })}
         {states.map((j) => (
           <g key={`s${j}`}>
             <circle
@@ -230,6 +254,38 @@ const QComparisonChart = forwardRef<SVGSVGElement, QComparisonChartProps>(
         >
           analytical
         </text>
+        {qCi95 && (
+          <g>
+            <g stroke={CI_COLOR} strokeWidth={1.5}>
+              <line
+                x1={width - marginRight - 262}
+                x2={width - marginRight - 262}
+                y1={marginTop - 27}
+                y2={marginTop - 13}
+              />
+              <line
+                x1={width - marginRight - 266}
+                x2={width - marginRight - 258}
+                y1={marginTop - 27}
+                y2={marginTop - 27}
+              />
+              <line
+                x1={width - marginRight - 266}
+                x2={width - marginRight - 258}
+                y1={marginTop - 13}
+                y2={marginTop - 13}
+              />
+            </g>
+            <text
+              x={width - marginRight - 252}
+              y={marginTop - 16}
+              fontSize={11}
+              fill={TEXT_COLOR}
+            >
+              95% CI
+            </text>
+          </g>
+        )}
       </svg>
     );
   },

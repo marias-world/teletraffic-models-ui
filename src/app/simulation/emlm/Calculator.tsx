@@ -9,12 +9,21 @@ import {
   EmlmSimulationResult,
 } from "@/lib/models/simulation/emlm-simulation";
 import {
+  DEFAULT_SERVICE_DIST_PARAM_INPUTS,
+  DEFAULT_SERVICE_DIST_PARAMS,
+  parseServiceDistParams,
   SERVICE_DISTRIBUTIONS,
   ServiceDistribution,
+  ServiceDistributionParamInputs,
+  ServiceDistributionParams,
 } from "@/lib/models/simulation/service-time-distributions";
 import { DEFAULT_SEEDS } from "@/lib/models/simulation/seeds";
 import { kaufmanRoberts } from "@/lib/models/kaufman-roberts/kaufman-roberts-formula";
 import { callBlockingProbability } from "@/lib/models/kaufman-roberts/call-blocking-probability";
+import {
+  SelectedDistributionNote,
+  ServiceDistributionParamControls,
+} from "@/components/HoldingTimeDistributions";
 import CalculatorResults from "./CalculatorResults";
 import type { EmlmOutput } from "./types";
 
@@ -76,6 +85,19 @@ export default function Calculator() {
   const [numSeeds, setNumSeeds] = useState(String(MAX_SEEDS));
   const [serviceDist, setServiceDist] =
     useState<ServiceDistribution>("exponential");
+  const [distInputs, setDistInputs] = useState<ServiceDistributionParamInputs>(
+    DEFAULT_SERVICE_DIST_PARAM_INPUTS,
+  );
+  const distParsed = parseServiceDistParams(distInputs, serviceDist);
+  // While a field is mid-edit (empty, out of range) the description keeps
+  // showing the defaults instead of NaN; running is blocked until it's valid.
+  const shownDistParams = distParsed.error
+    ? DEFAULT_SERVICE_DIST_PARAMS
+    : distParsed.params;
+  const updateDistParam = (
+    field: keyof ServiceDistributionParams,
+    value: string,
+  ) => setDistInputs((current) => ({ ...current, [field]: value }));
 
   const [output, setOutput] = useState<EmlmOutput | null>(null);
   const [error, setError] = useState("");
@@ -108,10 +130,9 @@ export default function Calculator() {
     return DEFAULT_SEEDS.slice(0, Math.min(n, MAX_SEEDS));
   })();
 
-  const runModel = async () => {
-    setError("");
-    setOutput(null);
-
+  // Parses and validates the inputs shared by every run, reporting the first
+  // problem; null means something was invalid.
+  const validateInputs = () => {
     const c = Number(capacity);
     const calls = Number(callsPerSeed);
     const seeds = Number(numSeeds);
@@ -126,7 +147,7 @@ export default function Calculator() {
       setError(
         `Capacity must be a positive whole number, up to ${MAX_CAPACITY} b.u.`,
       );
-      return;
+      return null;
     }
 
     const classes: EmlmServiceClassParams[] = [];
@@ -141,19 +162,19 @@ export default function Calculator() {
         setError(
           `${label}: bandwidth per call must be a whole number between 1 and the capacity (${c}).`,
         );
-        return;
+        return null;
       }
       if (!row.load || isNaN(load) || load <= 0 || load > MAX_OFFERED_LOAD) {
         setError(
           `${label}: offered load must be a positive number, up to ${MAX_OFFERED_LOAD}.`,
         );
-        return;
+        return null;
       }
       if (!row.rate || isNaN(rate) || rate <= 0 || rate > MAX_SERVICE_RATE) {
         setError(
           `${label}: service rate must be a positive number, up to ${MAX_SERVICE_RATE}.`,
         );
-        return;
+        return null;
       }
       classes.push({ bu, offeredLoad: load, serviceRate: rate });
     }
@@ -167,7 +188,7 @@ export default function Calculator() {
       setError(
         `Calls per seed must be a positive number, up to ${MAX_CALLS_PER_SEED.toLocaleString()}.`,
       );
-      return;
+      return null;
     }
     if (
       !numSeeds ||
@@ -179,6 +200,22 @@ export default function Calculator() {
       setError(
         `Number of seeds must be a whole number between 2 and ${MAX_SEEDS}.`,
       );
+      return null;
+    }
+
+    return { c, classes, calls, seeds };
+  };
+
+  const runModel = async () => {
+    setError("");
+    setOutput(null);
+
+    const inputs = validateInputs();
+    if (!inputs) return;
+    const { c, classes, calls, seeds } = inputs;
+
+    if (distParsed.error) {
+      setError(distParsed.error);
       return;
     }
 
@@ -198,6 +235,7 @@ export default function Calculator() {
             numCallsToSimulate: calls,
             seed,
             serviceDist,
+            serviceDistParams: distParsed.params,
           }),
         ),
       );
@@ -220,6 +258,7 @@ export default function Calculator() {
         capacity: c,
         callsPerSeed: calls,
         serviceDist,
+        serviceDistParams: distParsed.params,
         classes,
         analyticalQ: Array.from(
           { length: c + 1 },
@@ -297,6 +336,17 @@ export default function Calculator() {
             </option>
           ))}
         </select>
+        <div className="mt-2 space-y-2">
+          <ServiceDistributionParamControls
+            dist={serviceDist}
+            inputs={distInputs}
+            onChange={updateDistParam}
+          />
+        </div>
+        <SelectedDistributionNote
+          value={serviceDist}
+          params={shownDistParams}
+        />
         <p className="text-xs text-slate-400 mt-1">
           Every option keeps the mean holding time at{" "}
           <InlineMath math="1/\mu_k" />, so each class&apos;s offered load is

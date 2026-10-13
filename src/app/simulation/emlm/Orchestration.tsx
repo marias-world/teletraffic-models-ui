@@ -1,4 +1,5 @@
 import { InlineMath } from "react-katex";
+import Link from "next/link";
 
 const POINTS: { title: string; body: React.ReactNode }[] = [
   {
@@ -63,31 +64,17 @@ const POINTS: { title: string; body: React.ReactNode }[] = [
         <InlineMath math="1/\mu_k" />, not its shape. If we swap the exponential
         for a deterministic, Erlang-2, hyperexponential or lognormal
         distribution with the same mean, then the results should barely change.
-        <ul className="list-disc pl-5 space-y-1 mt-2">
-          <li>
-            <strong>Exponential</strong>: the baseline, call length is
-            unpredictable (e.g. an ordinary phone call, mostly short, sometimes
-            long).
-          </li>
-          <li>
-            <strong>Deterministic</strong>: every call lasts exactly the same
-            time (e.g. a fixed 30-second recorded announcement).
-          </li>
-          <li>
-            <strong>Erlang-2</strong>: more regular than exponential, lengths
-            cluster near the average (e.g. a call with two steps, verify your
-            identity, then do the task).
-          </li>
-          <li>
-            <strong>Hyperexponential</strong>: more irregular than exponential,
-            two kinds of calls mixed together (e.g. quick balance checks and
-            long support calls).
-          </li>
-          <li>
-            <strong>Lognormal</strong>: skewed, most calls are short but a few
-            run very long (e.g. video views, mostly clips and a few hours-long).
-          </li>
-        </ul>
+        <div className="mt-2">
+          The five distributions, their parameters and worked examples are
+          explained on the{" "}
+          <Link
+            href="/theory/insensitivity"
+            className="text-sky-600 hover:underline font-medium"
+          >
+            Insensitivity Property
+          </Link>{" "}
+          theory page; you can try them in the calculator below.
+        </div>
       </>
     ),
   },
