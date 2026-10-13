@@ -7,10 +7,11 @@
 // departure times stands in for the heap without changing the dynamics.
 
 import { exponential, mulberry32 } from "./random";
-import { meanAndStdev } from "./stats";
+import { confidenceHalfWidth95, meanAndStdev } from "./stats";
 import {
   makeServiceSampler,
   ServiceDistribution,
+  ServiceDistributionParams,
 } from "./service-time-distributions";
 
 export interface ErlangBSimulationParams {
@@ -25,6 +26,9 @@ export interface ErlangBSimulationParams {
   // Shape of the call holding-time distribution; its mean is always
   // 1 / serviceRate, so the offered load is unchanged.
   serviceDist?: ServiceDistribution;
+  // Shape parameters of that distribution (defaults match the Python
+  // reference implementation); they never change the mean.
+  serviceDistParams?: ServiceDistributionParams;
 }
 
 export interface ErlangBSimulationResult {
@@ -52,6 +56,7 @@ export function runErlangBSimulation(
     seed,
     warmupFraction = DEFAULT_WARMUP_FRACTION,
     serviceDist = "exponential",
+    serviceDistParams,
   } = params;
 
   if (capacity <= 0 || numCallsToSimulate <= 0) {
@@ -59,7 +64,12 @@ export function runErlangBSimulation(
   }
 
   const rng = mulberry32(seed);
-  const holdingTime = makeServiceSampler(serviceDist, rng, serviceRate);
+  const holdingTime = makeServiceSampler(
+    serviceDist,
+    rng,
+    serviceRate,
+    serviceDistParams,
+  );
 
   const warmupCalls = Math.floor(warmupFraction * numCallsToSimulate);
   const totalArrivalsNeeded = numCallsToSimulate + warmupCalls;
@@ -149,9 +159,13 @@ export interface ReplicationSummary {
   // how much that state's estimate varies from run to run, same idea as
   // blockingStdev but per state instead of for the single blocking figure.
   qStdev: number[];
+  // Half-widths of the 95% confidence intervals of the means across seeds
+  // (Student's t), as opposed to the seed-to-seed spread in the Stdev fields.
+  qCi95: number[];
   utilization: number;
   blockingMean: number;
   blockingStdev: number;
+  blockingCi95: number;
   // Total simulated time (post-warm-up), summed across all seeds - same
   // time unit as the rate parameters.
   totalTimeSum: number;
@@ -168,6 +182,7 @@ export function aggregateErlangBRuns(
   const qStats = runs[0].q.map((_, j) => meanAndStdev(runs.map((r) => r.q[j])));
   const qMean = qStats.map((s) => s.mean);
   const qStdev = qStats.map((s) => s.stdev);
+  const qCi95 = qStats.map((s) => confidenceHalfWidth95(s.stdev, runs.length));
 
   const utilization =
     runs.reduce((sum, r) => sum + r.utilization, 0) / runs.length;
@@ -181,9 +196,11 @@ export function aggregateErlangBRuns(
   return {
     qMean,
     qStdev,
+    qCi95,
     utilization,
     blockingMean,
     blockingStdev,
+    blockingCi95: confidenceHalfWidth95(blockingStdev, runs.length),
     totalTimeSum,
     n: runs.length,
   };

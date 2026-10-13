@@ -1,8 +1,9 @@
 import { exponential, mulberry32 } from "./random";
-import { meanAndStdev } from "./stats";
+import { confidenceHalfWidth95, meanAndStdev } from "./stats";
 import {
   makeServiceSampler,
   ServiceDistribution,
+  ServiceDistributionParams,
 } from "./service-time-distributions";
 
 export interface EmlmServiceClassParams {
@@ -18,6 +19,9 @@ export interface EmlmSimulationParams {
   seed: number;
   warmupFraction?: number;
   serviceDist?: ServiceDistribution;
+  // Shape parameters of that distribution (defaults match the Python
+  // reference implementation); they never change the mean.
+  serviceDistParams?: ServiceDistributionParams;
 }
 
 export interface EmlmSimulationResult {
@@ -41,6 +45,7 @@ export function runEmlmSimulation(
     seed,
     warmupFraction = DEFAULT_WARMUP_FRACTION,
     serviceDist = "exponential",
+    serviceDistParams,
   } = params;
 
   if (!Number.isInteger(capacity) || capacity <= 0 || numCallsToSimulate <= 0) {
@@ -71,7 +76,7 @@ export function runEmlmSimulation(
   );
   // The holding-time strategy is picked once per class, up front.
   const holdingTime = serviceClasses.map((sc) =>
-    makeServiceSampler(serviceDist, rng, sc.serviceRate),
+    makeServiceSampler(serviceDist, rng, sc.serviceRate, serviceDistParams),
   );
 
   const warmupCalls = Math.floor(warmupFraction * numCallsToSimulate);
@@ -193,10 +198,14 @@ export interface EmlmReplicationSummary {
   qMean: number[];
   // Sample standard deviation of q(j) across seeds, one entry per state.
   qStdev: number[];
+  // Half-widths of the 95% confidence intervals of the means across seeds
+  // (Student's t), as opposed to the seed-to-seed spread in the Stdev fields.
+  qCi95: number[];
   utilization: number;
   // Per class, across seeds.
   classBlockingMean: number[];
   classBlockingStdev: number[];
+  classBlockingCi95: number[];
   // Per class, summed across every seed: calls counted (after warm-up),
   // split into offered / accepted / blocked.
   classOfferedTotal: number[];
@@ -222,9 +231,13 @@ export function aggregateEmlmRuns(
   return {
     qMean: qStats.map((s) => s.mean),
     qStdev: qStats.map((s) => s.stdev),
+    qCi95: qStats.map((s) => confidenceHalfWidth95(s.stdev, runs.length)),
     utilization: runs.reduce((sum, r) => sum + r.utilization, 0) / runs.length,
     classBlockingMean: blockingStats.map((s) => s.mean),
     classBlockingStdev: blockingStats.map((s) => s.stdev),
+    classBlockingCi95: blockingStats.map((s) =>
+      confidenceHalfWidth95(s.stdev, runs.length),
+    ),
     classOfferedTotal: totalFor((r) => r.classOffered),
     classAcceptedTotal: totalFor((r) => r.classAccepted),
     classBlockedTotal: totalFor((r) => r.classBlocked),

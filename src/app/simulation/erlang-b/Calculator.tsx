@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { InlineMath } from "react-katex";
 import {
@@ -12,11 +13,21 @@ import { recursiveErlangB } from "@/lib/models/erlang-b";
 import { kaufmanRoberts } from "@/lib/models/kaufman-roberts/kaufman-roberts-formula";
 import { DEFAULT_SEEDS } from "@/lib/models/simulation/seeds";
 import {
+  DEFAULT_SERVICE_DIST_PARAM_INPUTS,
+  DEFAULT_SERVICE_DIST_PARAMS,
+  describeServiceDistParams,
+  parseServiceDistParams,
   SERVICE_DISTRIBUTIONS,
   ServiceDistribution,
+  ServiceDistributionParamInputs,
+  ServiceDistributionParams,
 } from "@/lib/models/simulation/service-time-distributions";
 import { downloadBlob, downloadSvgAsPng } from "@/lib/download";
 import QComparisonChart from "@/components/QComparisonChart";
+import {
+  SelectedDistributionNote,
+  ServiceDistributionParamControls,
+} from "@/components/HoldingTimeDistributions";
 
 // Runs one seed's simulation in its own Web Worker, so replications across
 // several seeds run in parallel across CPU cores instead of one after
@@ -58,6 +69,7 @@ function buildResultsCsv(
   analyticalQ: number[],
   analyticalBlocking: number,
   serviceDist: ServiceDistribution,
+  serviceDistParams: ServiceDistributionParams,
 ): string {
   const capacity = analyticalQ.length - 1;
   const qColumns = Array.from({ length: capacity + 1 }, (_, j) => `q(${j})`);
@@ -81,18 +93,33 @@ function buildResultsCsv(
   lines.push("metric,value");
   lines.push(`n,${summary.n}`);
   lines.push(`serviceDistribution,${serviceDist}`);
+  for (const { name, value } of describeServiceDistParams(
+    serviceDist,
+    serviceDistParams,
+  )) {
+    lines.push(`${name},${value}`);
+  }
   lines.push(`blockingMean,${summary.blockingMean}`);
   lines.push(`blockingStdev,${summary.blockingStdev}`);
+  lines.push(`blockingCi95HalfWidth,${summary.blockingCi95}`);
   lines.push(`utilization,${summary.utilization}`);
   lines.push(`totalTimeSum,${summary.totalTimeSum}`);
   lines.push(`analyticalBlocking,${analyticalBlocking}`);
 
   lines.push("");
-  lines.push("q(j): simulated (mean, stdev) vs analytical");
-  lines.push("state,simulatedMean,simulatedStdev,analytical");
+  lines.push("q(j): simulated (mean, stdev, 95% CI half-width) vs analytical");
+  lines.push(
+    "state,simulatedMean,simulatedStdev,simulatedCi95HalfWidth,analytical",
+  );
   for (let j = 0; j <= capacity; j++) {
     lines.push(
-      [j, summary.qMean[j], summary.qStdev[j], analyticalQ[j]].join(","),
+      [
+        j,
+        summary.qMean[j],
+        summary.qStdev[j],
+        summary.qCi95[j],
+        analyticalQ[j],
+      ].join(","),
     );
   }
 
@@ -107,6 +134,19 @@ export default function Calculator() {
   const [numSeeds, setNumSeeds] = useState(String(MAX_SEEDS));
   const [serviceDist, setServiceDist] =
     useState<ServiceDistribution>("exponential");
+  const [distInputs, setDistInputs] = useState<ServiceDistributionParamInputs>(
+    DEFAULT_SERVICE_DIST_PARAM_INPUTS,
+  );
+  const distParsed = parseServiceDistParams(distInputs, serviceDist);
+  // While a field is mid-edit (empty, out of range) the descriptions keep
+  // showing the defaults instead of NaN; running is blocked until it's valid.
+  const shownDistParams = distParsed.error
+    ? DEFAULT_SERVICE_DIST_PARAMS
+    : distParsed.params;
+  const updateDistParam = (
+    field: keyof ServiceDistributionParams,
+    value: string,
+  ) => setDistInputs((current) => ({ ...current, [field]: value }));
 
   const [result, setResult] = useState<ReplicationSummary | null>(null);
   const [analyticalQ, setAnalyticalQ] = useState<number[] | null>(null);
@@ -121,6 +161,7 @@ export default function Calculator() {
     mu: number;
     capacity: number;
     serviceDist: ServiceDistribution;
+    serviceDistParams: ServiceDistributionParams;
   } | null>(null);
   const [elapsedMs, setElapsedMs] = useState<number | null>(null);
   const [perSeedRuns, setPerSeedRuns] = useState<
@@ -142,10 +183,7 @@ export default function Calculator() {
     return DEFAULT_SEEDS.slice(0, Math.min(n, MAX_SEEDS));
   })();
 
-  const runModel = async () => {
-    setError("");
-    setResult(null);
-
+  const validateInputs = () => {
     const lambda = Number(arrivalRate);
     const mu = Number(serviceRate);
     const c = Number(capacity);
@@ -154,11 +192,11 @@ export default function Calculator() {
 
     if (!arrivalRate || isNaN(lambda) || lambda <= 0 || lambda > MAX_RATE) {
       setError(`Arrival rate must be a positive number, up to ${MAX_RATE}.`);
-      return;
+      return null;
     }
     if (!serviceRate || isNaN(mu) || mu <= 0 || mu > MAX_RATE) {
       setError(`Service rate must be a positive number, up to ${MAX_RATE}.`);
-      return;
+      return null;
     }
     if (
       !capacity ||
@@ -170,7 +208,7 @@ export default function Calculator() {
       setError(
         `Capacity must be a positive whole number, up to ${MAX_CAPACITY}.`,
       );
-      return;
+      return null;
     }
     if (
       !callsPerSeed ||
@@ -181,7 +219,7 @@ export default function Calculator() {
       setError(
         `Calls per seed must be a positive number, up to ${MAX_CALLS_PER_SEED.toLocaleString()}.`,
       );
-      return;
+      return null;
     }
     if (
       !numSeeds ||
@@ -193,6 +231,22 @@ export default function Calculator() {
       setError(
         `Number of seeds must be a whole number between 2 and ${MAX_SEEDS}.`,
       );
+      return null;
+    }
+
+    return { lambda, mu, c, calls, seeds };
+  };
+
+  const runModel = async () => {
+    setError("");
+    setResult(null);
+
+    const inputs = validateInputs();
+    if (!inputs) return;
+    const { lambda, mu, c, calls, seeds } = inputs;
+
+    if (distParsed.error) {
+      setError(distParsed.error);
       return;
     }
 
@@ -213,6 +267,7 @@ export default function Calculator() {
             numCallsToSimulate: calls,
             seed,
             serviceDist,
+            serviceDistParams: distParsed.params,
           }),
         ),
       );
@@ -230,7 +285,13 @@ export default function Calculator() {
       );
       setAnalyticalBlocking(recursiveErlangB(c, offeredLoad).result);
       setUsedSeeds(seedList);
-      setUsedParams({ lambda, mu, capacity: c, serviceDist });
+      setUsedParams({
+        lambda,
+        mu,
+        capacity: c,
+        serviceDist,
+        serviceDistParams: distParsed.params,
+      });
       setPerSeedRuns(runs);
       setResult(summary);
     } catch (e) {
@@ -333,11 +394,31 @@ export default function Calculator() {
             </option>
           ))}
         </select>
+        <div className="mt-2 space-y-2">
+          <ServiceDistributionParamControls
+            dist={serviceDist}
+            inputs={distInputs}
+            onChange={updateDistParam}
+          />
+        </div>
+        <SelectedDistributionNote
+          value={serviceDist}
+          params={shownDistParams}
+        />
         <p className="text-xs text-slate-400 mt-1">
           Every option keeps the mean holding time at{" "}
           <InlineMath math="1/\mu" />, so the offered load is unchanged; only
           the shape of the distribution differs. Blocking should barely move
           (the insensitivity property).
+        </p>
+        <p className="text-xs text-slate-500 mt-2">
+          How does each distribution work?{" "}
+          <Link
+            href="/theory/insensitivity"
+            className="text-sky-600 hover:underline font-medium"
+          >
+            See the Insensitivity Property theory page.
+          </Link>
         </p>
       </div>
 
@@ -396,6 +477,7 @@ export default function Calculator() {
                         analyticalQ,
                         analyticalBlocking,
                         usedParams.serviceDist,
+                        usedParams.serviceDistParams,
                       ),
                       "text/csv;charset=utf-8;",
                     )
@@ -418,6 +500,7 @@ export default function Calculator() {
                 ref={chartRef}
                 qMean={result.qMean}
                 analyticalQ={analyticalQ}
+                qCi95={result.qCi95}
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
@@ -430,6 +513,11 @@ export default function Calculator() {
                 </p>
                 <p className="text-xs text-slate-400">
                   ± {result.blockingStdev.toFixed(7)} ({result.n} seeds)
+                </p>
+                <p className="text-xs text-slate-400">
+                  95% CI [
+                  {(result.blockingMean - result.blockingCi95).toFixed(7)},{" "}
+                  {(result.blockingMean + result.blockingCi95).toFixed(7)}]
                 </p>
               </div>
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">

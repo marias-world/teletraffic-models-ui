@@ -1,3 +1,4 @@
+import { describeServiceDistParams } from "@/lib/models/simulation/service-time-distributions";
 import { timeAverageBlocking } from "./blockingStates";
 import type { EmlmOutput } from "./types";
 
@@ -13,6 +14,7 @@ export function buildEmlmResultsCsv(output: EmlmOutput): string {
     capacity,
     callsPerSeed,
     serviceDist,
+    serviceDistParams,
     classes,
     analyticalQ,
     analyticalBlocking,
@@ -26,6 +28,12 @@ export function buildEmlmResultsCsv(output: EmlmOutput): string {
   lines.push(`capacity,${capacity}`);
   lines.push(`callsPerSeed,${callsPerSeed}`);
   lines.push(`serviceDistribution,${serviceDist}`);
+  for (const { name, value } of describeServiceDistParams(
+    serviceDist,
+    serviceDistParams,
+  )) {
+    lines.push(`${name},${value}`);
+  }
   lines.push("");
   lines.push("class,bu,offeredLoad,serviceRate,arrivalRate");
   classes.forEach((c, k) => {
@@ -60,7 +68,7 @@ export function buildEmlmResultsCsv(output: EmlmOutput): string {
   lines.push("");
   lines.push("Per-class summary across seeds");
   lines.push(
-    "class,bu,offeredLoad,blockingMean,blockingStdev,analyticalBlocking,timeAverageBlockedStates,offered,accepted,blocked",
+    "class,bu,offeredLoad,blockingMean,blockingStdev,blockingCi95HalfWidth,analyticalBlocking,timeAverageBlockedStates,offered,accepted,blocked",
   );
   classes.forEach((c, k) => {
     lines.push(
@@ -70,6 +78,7 @@ export function buildEmlmResultsCsv(output: EmlmOutput): string {
         c.offeredLoad,
         summary.classBlockingMean[k],
         summary.classBlockingStdev[k],
+        summary.classBlockingCi95[k],
         analyticalBlocking[k],
         timeAverageBlocking(summary.qMean, capacity, c.bu),
         summary.classOfferedTotal[k],
@@ -87,11 +96,19 @@ export function buildEmlmResultsCsv(output: EmlmOutput): string {
   lines.push(`wallClockSeconds,${elapsedMs / 1000}`);
 
   lines.push("");
-  lines.push("q(j): simulated (mean, stdev) vs analytical");
-  lines.push("state,simulatedMean,simulatedStdev,analytical");
+  lines.push("q(j): simulated (mean, stdev, 95% CI half-width) vs analytical");
+  lines.push(
+    "state,simulatedMean,simulatedStdev,simulatedCi95HalfWidth,analytical",
+  );
   for (let j = 0; j <= capacity; j++) {
     lines.push(
-      [j, summary.qMean[j], summary.qStdev[j], analyticalQ[j]].join(","),
+      [
+        j,
+        summary.qMean[j],
+        summary.qStdev[j],
+        summary.qCi95[j],
+        analyticalQ[j],
+      ].join(","),
     );
   }
 

@@ -85,6 +85,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
             ref={chartRef}
             qMean={summary.qMean}
             analyticalQ={analyticalQ}
+            qCi95={summary.qCi95}
             xAxisLabel="state j (occupied b.u.)"
             showValueLabels={showChartLabels}
           />
@@ -137,6 +138,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
               <tr className={HEAD}>
                 <th className="text-left px-2">Class</th>
                 <th className="text-left px-2">Simulated</th>
+                <th className="text-left px-2">95% CI</th>
                 <th className="text-left px-2">Analytical</th>
                 <th className="text-right px-2">Offered</th>
                 <th className="text-right px-2">Accepted</th>
@@ -154,6 +156,19 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
                     <span className="text-slate-400">
                       (± {summary.classBlockingStdev[k].toFixed(7)})
                     </span>
+                  </td>
+                  <td className="px-2 py-1.5 font-mono text-slate-500 whitespace-nowrap">
+                    [
+                    {(
+                      summary.classBlockingMean[k] -
+                      summary.classBlockingCi95[k]
+                    ).toFixed(7)}
+                    ,{" "}
+                    {(
+                      summary.classBlockingMean[k] +
+                      summary.classBlockingCi95[k]
+                    ).toFixed(7)}
+                    ]
                   </td>
                   <td className="px-2 py-1.5 font-mono text-slate-500">
                     {analyticalBlocking[k].toFixed(7)}
@@ -173,6 +188,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
                 <td className="px-2 py-1.5 font-semibold text-slate-500">
                   total
                 </td>
+                <td />
                 <td />
                 <td />
                 <td className="px-2 py-1.5 font-mono text-slate-500 text-right">

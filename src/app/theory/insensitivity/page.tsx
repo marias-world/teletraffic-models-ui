@@ -72,11 +72,10 @@ export default function InsensitivityPage() {
           </h2>
           <p className="text-slate-600 leading-relaxed text-sm">
             Both simulation calculators have a holding-time distribution
-            dropdown, with editable parameters, and a "Compare all
-            distributions" button. It runs the same system under all five
-            distributions and plots the blocking probability of each with its
-            95% confidence interval next to the analytical value. If the dashed
-            analytical line crosses every bar, the property holds.
+            dropdown, with editable parameters. Run the same system with each
+            distribution in turn and compare the simulated blocking probability
+            with the analytical value. If the shape changes and the blocking
+            does not, the property holds.
           </p>
           <ul className="list-disc pl-5 space-y-1 text-sm text-slate-600">
             <li>
