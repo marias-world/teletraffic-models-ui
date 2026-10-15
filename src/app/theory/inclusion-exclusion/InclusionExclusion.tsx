@@ -12,9 +12,7 @@ export default function InclusionExclusion() {
       </p>
       {/* Two groups */}
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-600">
-          🍎🍌 Example: apples or bananas
-        </p>
+        <p className="text-sm text-slate-600">Example: apples or bananas</p>
         <p className="text-slate-600 leading-relaxed text-sm">
           Knowing the <InlineMath math="P(A)" /> probability that a person likes
           🍎 apples and the <InlineMath math="P(B)" /> probability that they
@@ -27,12 +25,11 @@ export default function InclusionExclusion() {
         </div>
 
         <p className="text-slate-600 leading-relaxed text-sm">
-          These two events can happen together, so they are{" "}
-          <strong>not incompatible</strong>: a person could like apples but not
-          bananas, bananas but not apples, or both. We also assume they are{" "}
-          <strong>independent</strong>: liking apples does not make a person
-          more or less likely to like bananas. Graphically, we want to calculate
-          the area outlined in bold below, the region covered by{" "}
+          These two events can happen together, so they are not incompatible: a
+          person could like apples but not bananas, bananas but not apples, or
+          both. We also assume they are independent: liking apples does not make
+          a person more or less likely to like bananas. Graphically, we want to
+          calculate the area outlined in bold below, the region covered by{" "}
           <InlineMath math="A" /> or <InlineMath math="B" /> (or both):
         </p>
 
@@ -80,7 +77,7 @@ export default function InclusionExclusion() {
             x="90"
             y="30"
             textAnchor="middle"
-            className="fill-rose-700 text-xs font-semibold"
+            className="fill-rose-700 text-xs"
           >
             🍎 apples
           </text>
@@ -88,7 +85,7 @@ export default function InclusionExclusion() {
             x="230"
             y="30"
             textAnchor="middle"
-            className="fill-amber-700 text-xs font-semibold"
+            className="fill-amber-700 text-xs"
           >
             🍌 bananas
           </text>
@@ -122,10 +119,9 @@ export default function InclusionExclusion() {
           Say <InlineMath math="P(A) = 0.5" /> and{" "}
           <InlineMath math="P(B) = 0.4" />. If we just add{" "}
           <InlineMath math="0.5 + 0.4 = 0.9" />, the 0.2 probability in the
-          middle (people who like both fruits) gets counted{" "}
-          <strong>twice</strong>: once as part of <InlineMath math="P(A)" /> and
-          once as part of <InlineMath math="P(B)" />. To fix this, we subtract
-          the overlap once:
+          middle (people who like both fruits) gets counted twice: once as part
+          of <InlineMath math="P(A)" /> and once as part of{" "}
+          <InlineMath math="P(B)" />. To fix this, we subtract the overlap once:
         </p>
 
         <div className="overflow-x-auto py-1">
@@ -133,14 +129,11 @@ export default function InclusionExclusion() {
         </div>
 
         <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-          <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
-            💡
-          </span>
           <p className="text-sm text-emerald-900 leading-relaxed">
             Why <InlineMath math="P(A \cap B) = P(A) \cdot P(B)" />? Because{" "}
-            <InlineMath math="A" /> and <InlineMath math="B" /> are{" "}
-            <strong>independent</strong>: liking apples doesn&apos;t change the
-            chance of also liking bananas, so the overlap is just the product{" "}
+            <InlineMath math="A" /> and <InlineMath math="B" /> are independent:
+            liking apples doesn&apos;t change the chance of also liking bananas,
+            so the overlap is just the product{" "}
             <InlineMath math="0.5 \times 0.4 = 0.2" />, matching the middle area
             above.
           </p>
@@ -157,16 +150,13 @@ export default function InclusionExclusion() {
       </div>
       {/* Three groups */}
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-600">
-          🍎🍌🍊 Example: three fruits
-        </p>
+        <p className="text-sm text-slate-600">Example: three fruits</p>
         <p className="text-slate-600 leading-relaxed text-sm">
           Now add a third event: <InlineMath math="C" />, the probability that a
           person likes 🍊 oranges, alongside <InlineMath math="A" /> (🍎 apples)
           and <InlineMath math="B" /> (🍌 bananas). As before, these events are{" "}
-          <strong>not incompatible</strong> and we assume they are{" "}
-          <strong>independent</strong>: they can happen alone or together, and
-          none of them conditions the others.
+          not incompatible and we assume they are independent: they can happen
+          alone or together, and none of them conditions the others.
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
           Knowing <InlineMath math="P(A)" />, <InlineMath math="P(B)" /> and{" "}
@@ -235,7 +225,7 @@ export default function InclusionExclusion() {
             x="75"
             y="55"
             textAnchor="middle"
-            className="fill-rose-700 text-xs font-semibold"
+            className="fill-rose-700 text-xs"
           >
             🍎
           </text>
@@ -243,7 +233,7 @@ export default function InclusionExclusion() {
             x="235"
             y="55"
             textAnchor="middle"
-            className="fill-amber-700 text-xs font-semibold"
+            className="fill-amber-700 text-xs"
           >
             🍌
           </text>
@@ -251,7 +241,7 @@ export default function InclusionExclusion() {
             x="155"
             y="240"
             textAnchor="middle"
-            className="fill-orange-700 text-xs font-semibold"
+            className="fill-orange-700 text-xs"
           >
             🍊
           </text>
@@ -315,19 +305,14 @@ export default function InclusionExclusion() {
 
         <p className="text-slate-600 leading-relaxed text-sm">
           When we naively add <InlineMath math="P(A) + P(B) + P(C)" />, the
-          areas where two circles overlap get counted <strong>twice</strong>,
-          and the area where all three overlap gets counted{" "}
-          <strong>three times</strong>. Subtracting every pairwise overlap{" "}
-          <InlineMath math="P(A \cap B) + P(A \cap C) + P(B \cap C)" /> fixes
-          the pairwise areas, but it subtracts the middle area{" "}
-          <strong>three times</strong> too (once for each pair it belongs to),
-          removing it entirely.
+          areas where two circles overlap get counted twice, and the area where
+          all three overlap gets counted three times. Subtracting every pairwise
+          overlap <InlineMath math="P(A \cap B) + P(A \cap C) + P(B \cap C)" />{" "}
+          fixes the pairwise areas, but it subtracts the middle area three times
+          too (once for each pair it belongs to), removing it entirely.
         </p>
 
         <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-          <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
-            💡
-          </span>
           <p className="text-sm text-emerald-900 leading-relaxed">
             So we add the triple overlap{" "}
             <InlineMath math="P(A \cap B \cap C)" /> back once, restoring it to
@@ -339,7 +324,7 @@ export default function InclusionExclusion() {
           <BlockMath math="P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - P(B \cap C) + P(A \cap B \cap C)" />
         </div>
 
-        <p className="text-slate-600 leading-relaxed text-sm font-semibold">
+        <p className="text-slate-600 leading-relaxed text-sm">
           Putting in numbers
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
@@ -359,15 +344,12 @@ export default function InclusionExclusion() {
       </div>
       {/* Setup for general formula */}
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-600">
-          🎯 The general case: n events
-        </p>
+        <p className="text-sm text-slate-600">🎯 The general case: n events</p>
         <p className="text-slate-600 leading-relaxed text-sm">
           Now suppose we have <InlineMath math="n" /> events{" "}
-          <InlineMath math="E_1, \dots, E_n" /> that are{" "}
-          <strong>non-incompatible</strong> (every pair can happen together) and{" "}
-          <strong>independent</strong> (one happening doesn&apos;t change the
-          probability of another):
+          <InlineMath math="E_1, \dots, E_n" /> that are non-incompatible (every
+          pair can happen together) and independent (one happening doesn&apos;t
+          change the probability of another):
         </p>
         <div className="overflow-x-auto py-1">
           <BlockMath math="P(E_i \cap E_j) > 0 \quad \text{and} \quad P(E_i \cap E_j) = P(E_i)P(E_j), \quad \forall\, i,j \in [1 \dots n],\ i \neq j" />
@@ -383,24 +365,21 @@ export default function InclusionExclusion() {
       <p className="text-slate-600 leading-relaxed text-sm">
         A first guess might be to just add up{" "}
         <InlineMath math="P(E_1) + \dots + P(E_n)" />, but as we saw above this
-        over-counts the overlaps. To fix it we follow an{" "}
-        <strong>include, exclude</strong> chain: <strong>include</strong> all
-        single events, <strong>exclude</strong> all pairwise intersections,{" "}
-        <strong>include</strong> all triple intersections,{" "}
-        <strong>exclude</strong> all quadruple intersections, and so on, until
-        we reach the last intersection of all <InlineMath math="n" /> events
-        together.
+        over-counts the overlaps. To fix it we follow an include, exclude chain:
+        include all single events, exclude all pairwise intersections, include
+        all triple intersections, exclude all quadruple intersections, and so
+        on, until we reach the last intersection of all <InlineMath math="n" />{" "}
+        events together.
       </p>
       <p className="text-slate-600 leading-relaxed text-sm">
-        These intersections are <strong>combinations without repetition</strong>{" "}
-        of the <InlineMath math="n" /> events, taken <InlineMath math="k" /> at
-        a time, for <InlineMath math="k = 1, 2, 3, \dots, n" />, exactly the{" "}
+        These intersections are combinations without repetition of the{" "}
+        <InlineMath math="n" /> events, taken <InlineMath math="k" /> at a time,
+        for <InlineMath math="k = 1, 2, 3, \dots, n" />, exactly the{" "}
         <InlineMath math="\binom{n}{k}" /> combinations from earlier on this
         page.
       </p>
       {/* General formula */}
       <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">📖</span>
         <p className="text-sm text-violet-900 leading-relaxed">
           In general, for any number <InlineMath math="n" /> of events, the
           pattern keeps alternating: add the probabilities of all single events,
@@ -413,9 +392,8 @@ export default function InclusionExclusion() {
         On the left-hand side, <InlineMath math="\bigcup_{i=1}^{n} E_i" /> means
         &quot;event <InlineMath math="E_1" /> or event <InlineMath math="E_2" />{" "}
         or ... or event <InlineMath math="E_n" />
-        &quot;, i.e. <strong>at least one</strong> of the{" "}
-        <InlineMath math="n" /> events happens. So{" "}
-        <InlineMath math="P\left(\bigcup_{i=1}^{n} E_i\right)" /> is just the
+        &quot;, i.e. at least one of the <InlineMath math="n" /> events happens.
+        So <InlineMath math="P\left(\bigcup_{i=1}^{n} E_i\right)" /> is just the
         probability that at least one of our <InlineMath math="n" /> events
         happens, which is exactly what we want to compute. The right-hand side
         is how we compute it:
@@ -429,7 +407,7 @@ export default function InclusionExclusion() {
         earlier on this page. For example, with <InlineMath math="n=3" /> events
         🍎, 🍌, 🍊:
       </p>
-      <ul className="text-sm text-slate-600 list-disc list-inside space-y-0.5">
+      <ul className="text-sm text-slate-600 space-y-0.5">
         <li>
           <InlineMath math="k=1" />: <InlineMath math="\binom{3}{1}=3" /> single
           events
@@ -442,9 +420,9 @@ export default function InclusionExclusion() {
         </li>
       </ul>
       <p className="text-slate-600 leading-relaxed text-sm">
-        Since our <InlineMath math="n" /> events are{" "}
-        <strong>independent</strong>, the probability of an intersection is just
-        the product of the individual probabilities:{" "}
+        Since our <InlineMath math="n" /> events are independent, the
+        probability of an intersection is just the product of the individual
+        probabilities:{" "}
         <InlineMath math="P(E_{i_1} \cap \dots \cap E_{i_k}) = P(E_{i_1}) \cdots P(E_{i_k})" />
         . So for each <InlineMath math="k" />, we generate every subset{" "}
         <InlineMath math="S" /> of <InlineMath math="k" /> events from{" "}
@@ -455,14 +433,10 @@ export default function InclusionExclusion() {
         <BlockMath math="\left(\sum_{i_1 < \dots < i_k} P(E_{i_1} \cap \dots \cap E_{i_k})\right) = \sum_{S \in \binom{E}{k}} \prod_{E_j \in S} P(E_j)" />
       </div>{" "}
       <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-        <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
-          💡
-        </span>
         <p className="text-sm text-emerald-900 leading-relaxed">
-          These two sums are actually <strong>the same sum</strong>, just
-          written two ways. A choice of indices{" "}
-          <InlineMath math="i_1 < \dots < i_k" /> is exactly a choice of a{" "}
-          <InlineMath math="k" />
+          These two sums are actually the same sum, just written two ways. A
+          choice of indices <InlineMath math="i_1 < \dots < i_k" /> is exactly a
+          choice of a <InlineMath math="k" />
           -element subset{" "}
           <InlineMath math="S = \{E_{i_1}, \dots, E_{i_k}\} \in \binom{E}{k}" />
           , so the two sums run over the same set of terms, one term per subset.
@@ -495,9 +469,7 @@ export default function InclusionExclusion() {
         <BlockMath math="P\left(\bigcup_{i=1}^{n} E_i\right) = \sum_{i=1}^{n} (-1)^{i-1} \left(\sum_{S \in \binom{E}{i}} \prod_{E_j \in S} P(E_j)\right)" />
       </div>
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-600">
-          🍎🍌 Checking the formula for n = 2
-        </p>
+        <p className="text-sm text-slate-600">Checking the formula for n = 2</p>
         <p className="text-slate-600 leading-relaxed text-sm">
           Take <InlineMath math="E = \{A, B\}" /> with{" "}
           <InlineMath math="P(A) = 0.5" /> and <InlineMath math="P(B) = 0.4" />,
@@ -547,7 +519,7 @@ export default function InclusionExclusion() {
             x="90"
             y="30"
             textAnchor="middle"
-            className="fill-rose-700 text-xs font-semibold"
+            className="fill-rose-700 text-xs"
           >
             A
           </text>
@@ -555,7 +527,7 @@ export default function InclusionExclusion() {
             x="230"
             y="30"
             textAnchor="middle"
-            className="fill-amber-700 text-xs font-semibold"
+            className="fill-amber-700 text-xs"
           >
             B
           </text>
@@ -629,13 +601,13 @@ export default function InclusionExclusion() {
           <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">ℹ️</span>
           <p className="text-sm text-sky-900 leading-relaxed">
             Unlike <InlineMath math="i = 1" />, where{" "}
-            <InlineMath math="\binom{E}{1}" /> has <strong>two</strong> subsets{" "}
+            <InlineMath math="\binom{E}{1}" /> has two subsets{" "}
             <InlineMath math="\{A\}" /> and <InlineMath math="\{B\}" /> (so that
             sum has two terms, <InlineMath math="P(A) + P(B)" />
-            ), here <InlineMath math="\binom{E}{2}" /> has only{" "}
-            <strong>one</strong> subset, <InlineMath math="\{A, B\}" />. So the
-            inner sum <InlineMath math="\sum_{S \in \binom{E}{2}}" /> has just
-            this single term,{" "}
+            ), here <InlineMath math="\binom{E}{2}" /> has only one subset,{" "}
+            <InlineMath math="\{A, B\}" />. So the inner sum{" "}
+            <InlineMath math="\sum_{S \in \binom{E}{2}}" /> has just this single
+            term,{" "}
             <InlineMath math="\prod_{E_j \in \{A,B\}} P(E_j) = P(A) \cdot P(B)" />
             , and <InlineMath math="(-1)^{2-1} = -1" /> simply multiplies that
             one term, giving <InlineMath math="-P(A) \cdot P(B)" />, not an
@@ -652,9 +624,7 @@ export default function InclusionExclusion() {
         </div>
       </div>
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-600">
-          🍎🍌🍊 Checking the formula for n = 3
-        </p>
+        <p className="text-sm text-slate-600">Checking the formula for n = 3</p>
         <p className="text-slate-600 leading-relaxed text-sm">
           Take <InlineMath math="E = \{A, B, C\}" /> with{" "}
           <InlineMath math="P(A) = 0.5" />, <InlineMath math="P(B) = 0.4" /> and{" "}

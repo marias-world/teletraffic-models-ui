@@ -32,7 +32,7 @@ export default function InsensitivityPage() {
 
         {/* What it says */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-slate-700">What it says</h2>
+          <h2 className="text-xl text-slate-700">What it says</h2>
           <p className="text-slate-600 leading-relaxed">
             In the{" "}
             <Link href="/simulation/erlang-b" className={LINK}>
@@ -53,9 +53,7 @@ export default function InsensitivityPage() {
 
         {/* The distributions */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-slate-700">
-            Same mean, different shape
-          </h2>
+          <h2 className="text-xl text-slate-700">Same mean, different shape</h2>
           <p className="text-slate-600 leading-relaxed text-sm">
             The Erlang-B and EMLM simulations on this site let you swap the
             holding-time distribution while keeping its mean fixed. Below there
@@ -67,9 +65,7 @@ export default function InsensitivityPage() {
 
         {/* Try it */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-slate-700">
-            See it for yourself
-          </h2>
+          <h2 className="text-xl text-slate-700">See it for yourself</h2>
           <p className="text-slate-600 leading-relaxed text-sm">
             Both simulation calculators have a holding-time distribution
             dropdown, with editable parameters. Run the same system with each
@@ -77,7 +73,7 @@ export default function InsensitivityPage() {
             with the analytical value. If the shape changes and the blocking
             does not, the property holds.
           </p>
-          <ul className="list-disc pl-5 space-y-1 text-sm text-slate-600">
+          <ul className="space-y-1 text-sm text-slate-600">
             <li>
               <Link href="/simulation/erlang-b" className={LINK}>
                 Erlang-B simulation

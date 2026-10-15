@@ -3,9 +3,7 @@ import { BlockMath, InlineMath } from "react-katex";
 export default function Pasta() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
-        3. PASTA with Several Classes
-      </h2>
+      <h2 className="text-xl text-slate-700">3. PASTA with Several Classes</h2>
       <p className="text-slate-600 leading-relaxed text-sm">
         In Erlang-B a call is blocked exactly when the system is in state{" "}
         <InlineMath math="j = c" />, so call blocking (counted over arrivals)

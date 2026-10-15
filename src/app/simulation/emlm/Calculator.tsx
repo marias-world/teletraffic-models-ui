@@ -276,7 +276,7 @@ export default function Calculator() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         4. Try It: Run the Simulation Yourself
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -355,16 +355,14 @@ export default function Calculator() {
       </div>
 
       <div className="space-y-3">
-        <p className="text-sm font-semibold text-slate-700">Service classes</p>
+        <p className="text-sm text-slate-700">Service classes</p>
         {rows.map((row, i) => (
           <div
             key={row.id}
             className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2"
           >
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-slate-700">
-                Class {i + 1}
-              </p>
+              <p className="text-sm text-slate-700">Class {i + 1}</p>
               {rows.length > 1 && (
                 <button
                   onClick={() => removeRow(row.id)}
@@ -461,7 +459,7 @@ export default function Calculator() {
       <button
         onClick={runModel}
         disabled={isRunning}
-        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2 rounded-lg transition-colors duration-150"
+        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white py-2 rounded-lg transition-colors duration-150"
       >
         {isRunning ? "Simulating…" : "Run Simulation"}
       </button>

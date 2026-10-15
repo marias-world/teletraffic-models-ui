@@ -16,43 +16,40 @@ const SEED_RESULTS = [
 export default function Seeds() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">4. Seeds</h2>
+      <h2 className="text-xl text-slate-700">4. Seeds</h2>
 
       <p className="text-slate-600 leading-relaxed">
-        Running the simulation multiple times gave noticeably different
-        results each time, which is a problem: a simulation whose answer
-        changes every time you run it isn&apos;t trustworthy. The fix is a{" "}
-        <strong>seed</strong>: a starting number that initialises the random
-        number generator so it produces the exact same sequence of
-        &ldquo;random&rdquo; numbers every time. Since the simulation&apos;s
-        entire outcome depends only on that sequence, the same seed always
-        reproduces the same result, computer-generated randomness is really
-        just a deterministic sequence that <em>looks</em> random.
+        Running the simulation multiple times gave noticeably different results
+        each time, which is a problem: a simulation whose answer changes every
+        time you run it isn&apos;t trustworthy. The fix is a seed: a starting
+        number that initialises the random number generator so it produces the
+        exact same sequence of &ldquo;random&rdquo; numbers every time. Since
+        the simulation&apos;s entire outcome depends only on that sequence, the
+        same seed always reproduces the same result, computer-generated
+        randomness is really just a deterministic sequence that <em>looks</em>{" "}
+        random.
       </p>
 
-      <h3 className="text-lg font-semibold text-slate-700">
-        Why run many seeds, not one
-      </h3>
+      <h3 className="text-lg text-slate-700">Why run many seeds, not one</h3>
       <p className="text-slate-600 leading-relaxed">
-        A single seed gives just one sample. Because the underlying process
-        is random, that one result carries noise: it lands near the
-        analytical value but rarely exactly on it. Picking whichever seed
-        happens to land closest would be misleading, that&apos;s selecting a
-        result <em>because</em> it matches the answer already known, which
-        makes the simulation look more accurate than it honestly is.
+        A single seed gives just one sample. Because the underlying process is
+        random, that one result carries noise: it lands near the analytical
+        value but rarely exactly on it. Picking whichever seed happens to land
+        closest would be misleading, that&apos;s selecting a result{" "}
+        <em>because</em> it matches the answer already known, which makes the
+        simulation look more accurate than it honestly is.
       </p>
       <p className="text-slate-600 leading-relaxed">
-        The right approach is to run several independent seeds and report
-        the <strong>mean</strong> and <strong>standard deviation</strong>.
-        Averaging cancels out run-to-run noise, so the mean lands closer to
-        the true value than any single run, and the standard deviation shows
-        how much the runs actually varied.
+        The right approach is to run several independent seeds and report the
+        mean and standard deviation. Averaging cancels out run-to-run noise, so
+        the mean lands closer to the true value than any single run, and the
+        standard deviation shows how much the runs actually varied.
       </p>
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm border-separate border-spacing-y-1">
           <thead>
-            <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+            <tr className="text-xs text-slate-400 tracking-wider">
               <th className="text-left px-2">Seed</th>
               <th className="text-left px-2">
                 Simulated blocking (2,000,000 calls, 5% warm-up)
@@ -62,7 +59,7 @@ export default function Seeds() {
           <tbody>
             {SEED_RESULTS.map(({ seed, blocking }) => (
               <tr key={seed} className="bg-slate-50">
-                <td className="px-2 py-1.5 rounded-l-lg font-semibold text-slate-500">
+                <td className="px-2 py-1.5 rounded-l-lg text-slate-500">
                   {seed}
                 </td>
                 <td className="px-2 py-1.5 rounded-r-lg font-mono text-slate-700">
@@ -71,18 +68,18 @@ export default function Seeds() {
               </tr>
             ))}
             <tr className="bg-emerald-50 border-t border-slate-200">
-              <td className="px-2 py-1.5 rounded-l-lg font-semibold text-emerald-700">
+              <td className="px-2 py-1.5 rounded-l-lg text-emerald-700">
                 Mean
               </td>
-              <td className="px-2 py-1.5 rounded-r-lg font-mono font-semibold text-emerald-700">
+              <td className="px-2 py-1.5 rounded-r-lg font-mono text-emerald-700">
                 0.2850529
               </td>
             </tr>
             <tr className="bg-emerald-50">
-              <td className="px-2 py-1.5 rounded-l-lg font-semibold text-emerald-700">
+              <td className="px-2 py-1.5 rounded-l-lg text-emerald-700">
                 Standard deviation
               </td>
-              <td className="px-2 py-1.5 rounded-r-lg font-mono font-semibold text-emerald-700">
+              <td className="px-2 py-1.5 rounded-r-lg font-mono text-emerald-700">
                 0.0003595
               </td>
             </tr>
@@ -101,8 +98,8 @@ export default function Seeds() {
       <p className="text-xs text-slate-400 leading-relaxed">
         Every individual seed lands within about ±0.0005 of the analytical
         value, and the mean across all ten is closer still. The result worth
-        reporting is this average with its standard deviation, not any
-        single hand-picked run.
+        reporting is this average with its standard deviation, not any single
+        hand-picked run.
       </p>
 
       <p className="text-slate-600 leading-relaxed text-sm">

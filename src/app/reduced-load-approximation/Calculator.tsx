@@ -143,9 +143,7 @@ export default function Calculator() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
-        Try it: RLA Calculator
-      </h2>
+      <h2 className="text-xl text-slate-700">Try it: RLA Calculator</h2>
       <p className="text-slate-600 leading-relaxed text-sm">
         Define the links and their capacities, then specify which links each
         service class traverses and its bandwidth demand on each. Leave a demand
@@ -169,7 +167,7 @@ export default function Calculator() {
             + Add link
           </button>
         </div>
-        <div className="grid gap-2 text-xs font-semibold text-slate-400 tracking-wider px-1 grid-cols-[48px_1fr_32px]">
+        <div className="grid gap-2 text-xs text-slate-400 tracking-wider px-1 grid-cols-[48px_1fr_32px]">
           <span>Link</span>
           <span>Capacity (b.u.)</span>
           <span />
@@ -179,9 +177,7 @@ export default function Calculator() {
             key={l.id}
             className="grid gap-2 items-center grid-cols-[48px_1fr_32px]"
           >
-            <span className="text-xs font-semibold text-slate-500">
-              L{l.id}
-            </span>
+            <span className="text-xs text-slate-500">L{l.id}</span>
             <input
               type="number"
               min={1}
@@ -225,7 +221,7 @@ export default function Calculator() {
             style={{ minWidth: `${160 + links.length * 100}px` }}
           >
             <thead>
-              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+              <tr className="text-xs text-slate-400 tracking-wider">
                 <th className="text-left w-8 px-1" />
                 <th className="text-left px-1 w-24">aₖ (erl)</th>
                 {links.map((l) => (
@@ -240,9 +236,7 @@ export default function Calculator() {
               {rows.map((row, ri) => (
                 <tr key={row.id}>
                   <td className="px-1">
-                    <span className="text-xs font-semibold text-slate-500">
-                      k{ri + 1}
-                    </span>
+                    <span className="text-xs text-slate-500">k{ri + 1}</span>
                   </td>
                   <td className="px-1">
                     <input
@@ -312,7 +306,7 @@ export default function Calculator() {
 
       <button
         onClick={runModel}
-        className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 rounded-lg transition"
+        className="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded-lg transition"
       >
         Run Model
       </button>
@@ -320,9 +314,7 @@ export default function Calculator() {
       {/* Results */}
       {results && (
         <div className="space-y-4">
-          <p className="text-sm font-semibold text-slate-700">
-            Call Blocking Probabilities
-          </p>
+          <p className="text-sm text-slate-700">Call Blocking Probabilities</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {Object.entries(results).map(([key, val]) => {
               const classNum = key.replace("B", "");
@@ -331,7 +323,7 @@ export default function Calculator() {
                   key={key}
                   className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1"
                 >
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  <p className="text-xs text-slate-400 uppercase tracking-wider">
                     Class {classNum}
                   </p>
                   <p className="text-2xl font-bold text-sky-600">
@@ -347,9 +339,7 @@ export default function Calculator() {
 
           {utilization && (
             <>
-              <p className="text-sm font-semibold text-slate-700">
-                Link Utilization
-              </p>
+              <p className="text-sm text-slate-700">Link Utilization</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {Object.entries(utilization).map(([key, val]) => {
                   const linkNum = key.replace("link_", "");
@@ -358,7 +348,7 @@ export default function Calculator() {
                       key={key}
                       className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1"
                     >
-                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      <p className="text-xs text-slate-400 uppercase tracking-wider">
                         Link {linkNum}
                       </p>
                       <p className="text-2xl font-bold text-violet-600">

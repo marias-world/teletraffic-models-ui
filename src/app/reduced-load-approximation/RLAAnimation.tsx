@@ -51,7 +51,12 @@ const THEORETICAL_CBP = callBlockingProbabilityinRLA(
 
 // ─── state ────────────────────────────────────────────────────────────────────
 // routeIdx = which hop in the class's route this slot currently represents
-type Slot = { callId: number; classId: number; ticksLeft: number; routeIdx: number } | null;
+type Slot = {
+  callId: number;
+  classId: number;
+  ticksLeft: number;
+  routeIdx: number;
+} | null;
 
 type LinkState = { id: number; slots: Slot[] };
 
@@ -88,7 +93,9 @@ const makeInit = (): State => ({
     offered: 0,
     carried: 0,
     blocked: 0,
-    perClass: Object.fromEntries(CLASSES.map((c) => [c.id, { offered: 0, blocked: 0 }])),
+    perClass: Object.fromEntries(
+      CLASSES.map((c) => [c.id, { offered: 0, blocked: 0 }]),
+    ),
     ticks: 0,
   },
 });
@@ -110,12 +117,22 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
 
   // ── Step 1: advance calls whose ticksLeft hits 0 ──────────────────────────
   // Collect expiring slots: {callId, classId, routeIdx, linkId}
-  type Expiring = { callId: number; classId: number; routeIdx: number; linkId: number };
+  type Expiring = {
+    callId: number;
+    classId: number;
+    routeIdx: number;
+    linkId: number;
+  };
   const expiring: Expiring[] = [];
   for (const ls of state.linkStates) {
     for (const s of ls.slots) {
       if (s && s.ticksLeft <= 1) {
-        expiring.push({ callId: s.callId, classId: s.classId, routeIdx: s.routeIdx, linkId: ls.id });
+        expiring.push({
+          callId: s.callId,
+          classId: s.classId,
+          routeIdx: s.routeIdx,
+          linkId: ls.id,
+        });
       }
     }
   }
@@ -125,7 +142,8 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
     ...ls,
     slots: ls.slots.map((s): Slot => {
       if (!s) return null;
-      if (expiring.some((e) => e.callId === s.callId && e.linkId === ls.id)) return null;
+      if (expiring.some((e) => e.callId === s.callId && e.linkId === ls.id))
+        return null;
       return { ...s, ticksLeft: s.ticksLeft - 1 };
     }),
   }));
@@ -149,25 +167,44 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
             slots: ls.slots.map((s): Slot => {
               if (!s && assigned < nextHop.bu) {
                 assigned++;
-                return { callId: exp.callId, classId: exp.classId, ticksLeft: hold, routeIdx: nextHopIdx };
+                return {
+                  callId: exp.callId,
+                  classId: exp.classId,
+                  ticksLeft: hold,
+                  routeIdx: nextHopIdx,
+                };
               }
               return s;
             }),
           };
         });
         const nextLabel = LINKS.find((l) => l.id === nextHop.linkId)?.label;
-        log.unshift({ id: _lid++, msg: `#${exp.callId} Class ${exp.classId} moved to ${nextLabel}`, type: "ok" });
+        log.unshift({
+          id: _lid++,
+          msg: `#${exp.callId} Class ${exp.classId} moved to ${nextLabel}`,
+          type: "ok",
+        });
       } else {
         // Mid-route block — call dropped
         const nextLabel = LINKS.find((l) => l.id === nextHop.linkId)?.label;
-        log.unshift({ id: _lid++, msg: `#${exp.callId} Class ${exp.classId} dropped — ${nextLabel} full`, type: "blocked" });
+        log.unshift({
+          id: _lid++,
+          msg: `#${exp.callId} Class ${exp.classId} dropped, ${nextLabel} full`,
+          type: "blocked",
+        });
         stats.blocked++;
         stats.perClass[exp.classId].blocked++;
       }
     } else {
       // Last hop done — call completed
-      const routeLabel = cls.route.map((r) => LINKS.find((l) => l.id === r.linkId)?.label).join(" → ");
-      log.unshift({ id: _lid++, msg: `#${exp.callId} Class ${exp.classId} completed ${routeLabel}`, type: "done" });
+      const routeLabel = cls.route
+        .map((r) => LINKS.find((l) => l.id === r.linkId)?.label)
+        .join(" → ");
+      log.unshift({
+        id: _lid++,
+        msg: `#${exp.callId} Class ${exp.classId} completed ${routeLabel}`,
+        type: "done",
+      });
       stats.carried++;
     }
   }
@@ -199,18 +236,33 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
         slots: ls.slots.map((s): Slot => {
           if (!s && assigned < firstHop.bu) {
             assigned++;
-            return { callId: cid, classId: cls.id, ticksLeft: hold, routeIdx: 0 };
+            return {
+              callId: cid,
+              classId: cls.id,
+              ticksLeft: hold,
+              routeIdx: 0,
+            };
           }
           return s;
         }),
       };
     });
     const firstLabel = LINKS.find((l) => l.id === firstHop.linkId)?.label;
-    log.unshift({ id: _lid++, msg: `#${cid} Class ${cls.id} entered ${firstLabel}`, type: "ok" });
+    log.unshift({
+      id: _lid++,
+      msg: `#${cid} Class ${cls.id} entered ${firstLabel}`,
+      type: "ok",
+    });
     lastEvent = "accepted";
   } else {
-    const blockLabel = blockingLinkIds.map((id) => LINKS.find((l) => l.id === id)?.label).join(", ");
-    log.unshift({ id: _lid++, msg: `Class ${cls.id} blocked — no room on ${blockLabel}`, type: "blocked" });
+    const blockLabel = blockingLinkIds
+      .map((id) => LINKS.find((l) => l.id === id)?.label)
+      .join(", ");
+    log.unshift({
+      id: _lid++,
+      msg: `Class ${cls.id} blocked, no room on ${blockLabel}`,
+      type: "blocked",
+    });
     lastEvent = "blocked";
     stats.blocked++;
     stats.perClass[cls.id].blocked++;
@@ -249,7 +301,8 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
     };
   }, [status]);
 
-  const { linkStates, incoming, lastEvent, blockingLinkIds, log, stats } = state;
+  const { linkStates, incoming, lastEvent, blockingLinkIds, log, stats } =
+    state;
 
   return (
     <div className="space-y-5">
@@ -260,8 +313,17 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
             key={cls.id}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium ${cls.light} ${cls.border} ${cls.text}`}
           >
-            <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${cls.bg}`} />
-            {cls.label} · {cls.route.map((r) => `${r.bu} b.u. on ${LINKS.find((l) => l.id === r.linkId)?.label}`).join(", ")} · {cls.desc}
+            <span
+              className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${cls.bg}`}
+            />
+            {cls.label} ·{" "}
+            {cls.route
+              .map(
+                (r) =>
+                  `${r.bu} b.u. on ${LINKS.find((l) => l.id === r.linkId)?.label}`,
+              )
+              .join(", ")}{" "}
+            · {cls.desc}
           </div>
         ))}
       </div>
@@ -270,29 +332,41 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
       <div className="flex flex-col sm:flex-row items-stretch gap-3">
         {/* Incoming call */}
         <div className="w-full sm:w-32 flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center gap-2 text-center min-h-[100px]">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">
             Incoming
           </p>
-          {incoming ? (() => {
-            const cls = CLASSES.find((c) => c.id === incoming.id)!;
-            return (
-              <>
-                <div className={`w-12 h-12 rounded-lg flex flex-col items-center justify-center border ${cls.light} ${cls.border}`}>
-                  <span className={`text-sm font-bold ${cls.text}`}>k{cls.id}</span>
-                  <span className={`text-[10px] ${cls.text}`}>{cls.desc}</span>
-                </div>
-                <p className={`text-[10px] font-medium ${cls.text}`}>
-                  {cls.route.map((r) => LINKS.find((l) => l.id === r.linkId)?.label).join(" → ")}
-                </p>
-              </>
-            );
-          })() : (
+          {incoming ? (
+            (() => {
+              const cls = CLASSES.find((c) => c.id === incoming.id)!;
+              return (
+                <>
+                  <div
+                    className={`w-12 h-12 rounded-lg flex flex-col items-center justify-center border ${cls.light} ${cls.border}`}
+                  >
+                    <span className={`text-sm font-bold ${cls.text}`}>
+                      k{cls.id}
+                    </span>
+                    <span className={`text-[10px] ${cls.text}`}>
+                      {cls.desc}
+                    </span>
+                  </div>
+                  <p className={`text-[10px] font-medium ${cls.text}`}>
+                    {cls.route
+                      .map((r) => LINKS.find((l) => l.id === r.linkId)?.label)
+                      .join(" → ")}
+                  </p>
+                </>
+              );
+            })()
+          ) : (
             <p className="text-xs text-slate-300">waiting…</p>
           )}
         </div>
 
         {/* Arrow */}
-        <div className="flex items-center justify-center text-slate-300 text-xl select-none rotate-90 sm:rotate-0">→</div>
+        <div className="flex items-center justify-center text-slate-300 text-xl select-none rotate-90 sm:rotate-0">
+          →
+        </div>
 
         {/* Links */}
         <div className="flex-1 flex flex-col sm:flex-row gap-3">
@@ -304,7 +378,9 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
             const pct = (occ / link.capacity) * 100;
 
             // which classes use this link?
-            const classesHere = CLASSES.filter((c) => c.route.some((r) => r.linkId === ls.id));
+            const classesHere = CLASSES.filter((c) =>
+              c.route.some((r) => r.linkId === ls.id),
+            );
 
             return (
               <div
@@ -316,7 +392,9 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <p className={`text-xs font-semibold ${isBlocking ? "text-red-600" : "text-slate-600"}`}>
+                  <p
+                    className={`text-xs ${isBlocking ? "text-red-600" : "text-slate-600"}`}
+                  >
                     {link.label} · C = {link.capacity} b.u.
                   </p>
                   {isBlocking && (
@@ -329,7 +407,9 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
                 {/* Slot tiles */}
                 <div className="flex gap-1 flex-wrap">
                   {ls.slots.map((slot, i) => {
-                    const slotCls = slot ? CLASSES.find((c) => c.id === slot.classId) : null;
+                    const slotCls = slot
+                      ? CLASSES.find((c) => c.id === slot.classId)
+                      : null;
                     return (
                       <div
                         key={i}
@@ -337,8 +417,8 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
                           slotCls
                             ? `${slotCls.light} ${slotCls.border} ${slotCls.text}`
                             : isBlocking
-                            ? "bg-red-100 border-red-200 text-red-300"
-                            : "bg-white border-slate-200 text-slate-200"
+                              ? "bg-red-100 border-red-200 text-red-300"
+                              : "bg-white border-slate-200 text-slate-200"
                         }`}
                       >
                         {slot ? `k${slot.classId}` : "·"}
@@ -355,7 +435,8 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
                   />
                 </div>
                 <p className="text-[10px] text-slate-400">
-                  {occ}/{link.capacity} b.u. used · {classesHere.map((c) => `k${c.id}`).join(", ")} use this link
+                  {occ}/{link.capacity} b.u. used ·{" "}
+                  {classesHere.map((c) => `k${c.id}`).join(", ")} use this link
                 </p>
               </div>
             );
@@ -363,20 +444,26 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
         </div>
 
         {/* Arrow */}
-        <div className="flex items-center justify-center text-slate-300 text-xl select-none rotate-90 sm:rotate-0">→</div>
+        <div className="flex items-center justify-center text-slate-300 text-xl select-none rotate-90 sm:rotate-0">
+          →
+        </div>
 
         {/* Outcome */}
         <div className="w-full sm:w-28 flex-shrink-0 rounded-xl border flex items-center justify-center min-h-[80px] transition-all duration-300">
           {lastEvent === "accepted" && (
             <div className="w-full h-full rounded-xl bg-emerald-50 border-emerald-300 border flex flex-col items-center justify-center gap-1 p-2">
               <span className="text-2xl">✓</span>
-              <p className="text-xs font-bold text-emerald-700 text-center">Accepted</p>
+              <p className="text-xs font-bold text-emerald-700 text-center">
+                Accepted
+              </p>
             </div>
           )}
           {lastEvent === "blocked" && (
             <div className="w-full h-full rounded-xl bg-red-50 border-red-300 border flex flex-col items-center justify-center gap-1 p-2">
               <span className="text-2xl">✗</span>
-              <p className="text-xs font-bold text-red-600 text-center">Blocked</p>
+              <p className="text-xs font-bold text-red-600 text-center">
+                Blocked
+              </p>
             </div>
           )}
           {lastEvent === null && (
@@ -388,20 +475,28 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
       </div>
 
       {/* RLA key insight callout */}
-      {incoming && lastEvent === "blocked" && blockingLinkIds.length > 0 && (() => {
-        const blockLabel = blockingLinkIds.map((id) => LINKS.find((l) => l.id === id)?.label).join(" and ");
-        return (
-          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-xs text-red-700 space-y-1">
-            <p className="font-semibold">All-or-nothing blocking</p>
-            <p>
-              Class {incoming.id} needs capacity on{" "}
-              {incoming.route.map((r) => LINKS.find((l) => l.id === r.linkId)?.label).join(" and ")}.{" "}
-              {blockLabel} {blockingLinkIds.length > 1 ? "are" : "is"} full, so the call is blocked even if
-              the other links have room. This is the key constraint in the RLA model.
-            </p>
-          </div>
-        );
-      })()}
+      {incoming &&
+        lastEvent === "blocked" &&
+        blockingLinkIds.length > 0 &&
+        (() => {
+          const blockLabel = blockingLinkIds
+            .map((id) => LINKS.find((l) => l.id === id)?.label)
+            .join(" and ");
+          return (
+            <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-xs text-red-700 space-y-1">
+              <p>All-or-nothing blocking</p>
+              <p>
+                Class {incoming.id} needs capacity on{" "}
+                {incoming.route
+                  .map((r) => LINKS.find((l) => l.id === r.linkId)?.label)
+                  .join(" and ")}
+                . {blockLabel} {blockingLinkIds.length > 1 ? "are" : "is"} full,
+                so the call is blocked even if the other links have room. This
+                is the key constraint in the RLA model.
+              </p>
+            </div>
+          );
+        })()}
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -411,11 +506,17 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
           { label: "Blocked", value: stats.blocked, color: "text-red-500" },
           {
             label: "GoS",
-            value: stats.offered > 0 ? `${((stats.blocked / stats.offered) * 100).toFixed(1)}%` : "n/a",
+            value:
+              stats.offered > 0
+                ? `${((stats.blocked / stats.offered) * 100).toFixed(1)}%`
+                : "n/a",
             color: "text-sky-600",
           },
         ].map(({ label, value, color }) => (
-          <div key={label} className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center">
+          <div
+            key={label}
+            className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center"
+          >
             <p className="text-xs text-slate-400">{label}</p>
             <p className={`text-xl font-bold ${color}`}>{value}</p>
           </div>
@@ -429,8 +530,13 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
           const observedB = pc.offered > 0 ? pc.blocked / pc.offered : null;
           const theoretical = THEORETICAL_CBP[`B${cls.id}`] ?? 0;
           return (
-            <div key={cls.id} className={`rounded-xl border p-4 space-y-2 ${cls.light} ${cls.border}`}>
-              <p className={`text-xs font-semibold ${cls.text}`}>{cls.label} · {cls.desc}</p>
+            <div
+              key={cls.id}
+              className={`rounded-xl border p-4 space-y-2 ${cls.light} ${cls.border}`}
+            >
+              <p className={`text-xs ${cls.text}`}>
+                {cls.label} · {cls.desc}
+              </p>
               <div className="flex justify-between text-xs text-slate-500">
                 <span>Offered: {pc.offered}</span>
                 <span>Blocked: {pc.blocked}</span>
@@ -439,7 +545,9 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
                 <div>
                   <p className="text-[10px] text-slate-400">Observed B</p>
                   <p className={`text-lg font-bold ${cls.text}`}>
-                    {observedB != null ? `${(observedB * 100).toFixed(1)}%` : "—"}
+                    {observedB != null
+                      ? `${(observedB * 100).toFixed(1)}%`
+                      : "—"}
                   </p>
                 </div>
                 <div className="text-right">
@@ -462,7 +570,9 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
 
       {/* Event log */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Event log</p>
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
+          Event log
+        </p>
         {log.length === 0 ? (
           <p className="text-xs text-slate-300">No events yet. Press Start.</p>
         ) : (
@@ -474,12 +584,20 @@ export default function RLAAnimation({ status }: { status: AnimStatus }) {
               >
                 <span
                   className={`mt-0.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                    entry.type === "ok" ? "bg-emerald-400" : entry.type === "blocked" ? "bg-red-400" : "bg-slate-300"
+                    entry.type === "ok"
+                      ? "bg-emerald-400"
+                      : entry.type === "blocked"
+                        ? "bg-red-400"
+                        : "bg-slate-300"
                   }`}
                 />
                 <span
                   className={
-                    entry.type === "ok" ? "text-emerald-700" : entry.type === "blocked" ? "text-red-600" : "text-slate-500"
+                    entry.type === "ok"
+                      ? "text-emerald-700"
+                      : entry.type === "blocked"
+                        ? "text-red-600"
+                        : "text-slate-500"
                   }
                 >
                   {entry.msg}

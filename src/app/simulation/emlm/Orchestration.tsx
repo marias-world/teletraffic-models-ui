@@ -87,7 +87,7 @@ const POINTS: { title: string; body: React.ReactNode }[] = [
 export default function Orchestration() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         2. How the Simulation Is Orchestrated
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -102,7 +102,7 @@ export default function Orchestration() {
             key={title}
             className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2"
           >
-            <p className="text-sm font-semibold text-slate-700">{title}</p>
+            <p className="text-sm text-slate-700">{title}</p>
             <div className="text-slate-600 leading-relaxed text-sm">{body}</div>
           </div>
         ))}

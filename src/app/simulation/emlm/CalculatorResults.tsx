@@ -11,7 +11,7 @@ import type { EmlmOutput } from "./types";
 const MAX_CAPACITY_WITH_CHART_LABELS = 12;
 
 const TABLE = "w-full text-sm border-separate border-spacing-y-1";
-const HEAD = "text-xs font-semibold text-slate-400 tracking-wider";
+const HEAD = "text-xs text-slate-400 tracking-wider";
 
 function classLabel(k: number, bu: number, load: number) {
   return `Class ${k + 1} (b=${bu}, a=${load})`;
@@ -101,7 +101,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">
             Utilization
           </p>
           <p className="text-lg font-bold text-slate-600 font-mono">
@@ -112,7 +112,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
           </p>
         </div>
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">
             Wall-clock time (this run)
           </p>
           <p className="text-lg font-bold text-slate-600 font-mono">
@@ -125,7 +125,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
       </div>
 
       <div className="space-y-2">
-        <h3 className="text-sm font-semibold text-slate-700">
+        <h3 className="text-sm text-slate-700">
           Call blocking probability per service class
         </h3>
         <p className="text-xs text-slate-400">
@@ -148,7 +148,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
             <tbody>
               {classes.map((c, k) => (
                 <tr key={k} className="bg-white">
-                  <td className="px-2 py-1.5 font-semibold text-slate-500 whitespace-nowrap">
+                  <td className="px-2 py-1.5 text-slate-500 whitespace-nowrap">
                     {classLabel(k, c.bu, c.offeredLoad)}
                   </td>
                   <td className="px-2 py-1.5 font-mono text-slate-700 whitespace-nowrap">
@@ -185,9 +185,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
                 </tr>
               ))}
               <tr className="bg-white border-t border-slate-200">
-                <td className="px-2 py-1.5 font-semibold text-slate-500">
-                  total
-                </td>
+                <td className="px-2 py-1.5 text-slate-500">total</td>
                 <td />
                 <td />
                 <td />
@@ -207,7 +205,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
       </div>
 
       <div className="space-y-2">
-        <h3 className="text-sm font-semibold text-slate-700">PASTA check</h3>
+        <h3 className="text-sm text-slate-700">PASTA check</h3>
         <p className="text-xs text-slate-400">
           For each class, blocking counted over arrivals should equal the
           fraction of time the link spends in the states where that class cannot
@@ -230,7 +228,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
                 const { first, last } = blockingStateRange(capacity, c.bu);
                 return (
                   <tr key={k} className="bg-white">
-                    <td className="px-2 py-1.5 font-semibold text-slate-500 whitespace-nowrap">
+                    <td className="px-2 py-1.5 text-slate-500 whitespace-nowrap">
                       {classLabel(k, c.bu, c.offeredLoad)}
                     </td>
                     <td className="px-2 py-1.5 font-mono text-slate-500">
@@ -258,7 +256,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
       </div>
 
       <div className="space-y-2">
-        <h3 className="text-sm font-semibold text-slate-700">
+        <h3 className="text-sm text-slate-700">
           q(j): fraction of time with j b.u. occupied
         </h3>
         <p className="text-xs text-slate-400">
@@ -283,9 +281,7 @@ export default function CalculatorResults({ output }: { output: EmlmOutput }) {
             <tbody>
               {summary.qMean.map((qj, j) => (
                 <tr key={j} className="bg-white">
-                  <td className="px-2 py-1.5 font-semibold text-slate-500">
-                    {j}
-                  </td>
+                  <td className="px-2 py-1.5 text-slate-500">{j}</td>
                   <td className="px-2 py-1.5 font-mono text-slate-700 whitespace-nowrap">
                     {qj.toFixed(7)}{" "}
                     <span className="text-slate-400">

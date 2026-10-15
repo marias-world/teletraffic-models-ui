@@ -4,14 +4,14 @@ import { InlineMath } from "react-katex";
 export default function Overview() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">Overview</h2>
+      <h2 className="text-xl text-slate-700">Overview</h2>
 
       <p className="text-slate-600 leading-relaxed">
         <a
           href="https://aws.amazon.com/what-is/iaas/"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-semibold text-slate-700 hover:underline"
+          className="text-slate-700 hover:underline"
         >
           Infrastructure as a Service (IaaS)
         </a>{" "}
@@ -39,7 +39,7 @@ export default function Overview() {
 
       {/* Four resource dimensions */}
       <div className="space-y-3">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider text-center">
+        <p className="text-xs text-slate-400 uppercase tracking-wider text-center">
           Four resources, checked at once
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -74,7 +74,7 @@ export default function Overview() {
               className={`flex flex-col items-center gap-1.5 rounded-xl border p-3 text-center ${classes}`}
             >
               <Image src={src} alt={label} width={32} height={32} />
-              <p className="text-xs font-semibold text-slate-700">{label}</p>
+              <p className="text-xs text-slate-700">{label}</p>
               <p className="text-[11px] font-mono text-slate-400">{symbol}</p>
             </div>
           ))}
@@ -82,7 +82,6 @@ export default function Overview() {
       </div>
 
       <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">💡</span>
         <p className="text-sm text-violet-900 leading-relaxed">
           Requests for a given VM type (class <InlineMath math="k" />) arrive at
           random, at some average rate <InlineMath math="\lambda_k" />. Each

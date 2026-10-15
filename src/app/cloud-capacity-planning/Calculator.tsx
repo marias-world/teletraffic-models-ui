@@ -254,7 +254,7 @@ export default function Calculator() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         Try it: What&apos;s My System&apos;s Blocking Probability?
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -276,7 +276,7 @@ export default function Calculator() {
             <tbody>
               {BU_REFERENCE.map(({ resource, realUnit }) => (
                 <tr key={resource} className="bg-white">
-                  <td className="px-2 py-1.5 font-semibold text-slate-500 rounded-l-lg">
+                  <td className="px-2 py-1.5 text-slate-500 rounded-l-lg">
                     {RESOURCE_LABELS[resource]}
                   </td>
                   <td className="px-2 py-1.5 text-slate-600 rounded-r-lg">
@@ -294,7 +294,7 @@ export default function Calculator() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-separate border-spacing-y-1">
             <thead>
-              <tr className="text-xs font-semibold text-sky-500 tracking-wider">
+              <tr className="text-xs text-sky-500 tracking-wider">
                 <th className="text-left px-2">Instance type</th>
                 <th className="text-left px-2">
                   vCPU (<InlineMath math="b_{k,P}" />)
@@ -403,7 +403,7 @@ export default function Calculator() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-separate border-spacing-y-1">
             <thead>
-              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+              <tr className="text-xs text-slate-400 tracking-wider">
                 <th className="text-left px-1 w-10" />
                 <th className="text-left px-1">aₖ (erl)</th>
                 {RESOURCE_KEYS.map((y) => (
@@ -418,9 +418,7 @@ export default function Calculator() {
               {rows.map((row, i) => (
                 <tr key={row.id}>
                   <td className="px-1">
-                    <span className="text-xs font-semibold text-slate-500">
-                      k{i + 1}
-                    </span>
+                    <span className="text-xs text-slate-500">k{i + 1}</span>
                   </td>
                   <td className="px-1">
                     <input
@@ -491,7 +489,7 @@ export default function Calculator() {
       <button
         onClick={runModel}
         disabled={isCalculating}
-        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2 rounded-lg transition-colors duration-150 flex items-center justify-center gap-2"
+        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white py-2 rounded-lg transition-colors duration-150 flex items-center justify-center gap-2"
       >
         {isCalculating ? "Calculating…" : "Run Model"}
       </button>
@@ -499,14 +497,9 @@ export default function Calculator() {
       {/* Results */}
       {results !== null && (
         <div className="space-y-4 pt-2 border-t border-slate-100">
-          <h3 className="font-semibold text-slate-700">
-            Total Blocking Probabilities
-          </h3>
+          <h3 className="text-slate-700">Total Blocking Probabilities</h3>
 
           <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-3">
-            <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
-              💡
-            </span>
             <p className="text-sm text-violet-900 leading-relaxed">
               A blocking probability doubles as an uptime/SLA figure: since
               blocked requests are effectively "downtime" for that VM type,
@@ -527,7 +520,7 @@ export default function Calculator() {
                   key={key}
                   className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1"
                 >
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  <p className="text-xs text-slate-400 uppercase tracking-wider">
                     Class {i + 1}
                   </p>
                   <p className="text-2xl font-bold text-sky-600">
@@ -537,7 +530,7 @@ export default function Calculator() {
                     B<sub>{i + 1}</sub> = {value.toFixed(7)}
                   </p>
                   <p className="text-xs text-violet-600">
-                    SLA: {sla.uptime} uptime — {sla.credit}
+                    SLA: {sla.uptime} uptime, {sla.credit}
                   </p>
                 </div>
               );
@@ -583,9 +576,7 @@ export default function Calculator() {
                   ] as const
                 ).map(([title, formula, table, symbol]) => (
                   <div key={title} className="space-y-2">
-                    <p className="text-sm font-semibold text-slate-700">
-                      {title}
-                    </p>
+                    <p className="text-sm text-slate-700">{title}</p>
                     {title.startsWith("Step 4") && (
                       <p className="text-xs text-slate-400">
                         Converged after {results.rlaIterations} iteration
@@ -598,7 +589,7 @@ export default function Calculator() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm border-separate border-spacing-y-1">
                         <thead>
-                          <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+                          <tr className="text-xs text-slate-400 tracking-wider">
                             <th className="text-left px-2">Subsystem</th>
                             {rows.map((_, i) => (
                               <th key={i} className="text-left px-2">
@@ -612,7 +603,7 @@ export default function Calculator() {
                             const subsystem = RESOURCE_TO_SUBSYSTEM[y];
                             return (
                               <tr key={y} className="bg-white">
-                                <td className="px-2 py-1.5 font-semibold text-slate-500">
+                                <td className="px-2 py-1.5 text-slate-500">
                                   {RESOURCE_LABELS[y]}
                                 </td>
                                 {rows.map((_, i) => {
@@ -640,7 +631,7 @@ export default function Calculator() {
 
                 {/* Step 5: total blocking probability */}
                 <div className="space-y-2">
-                  <p className="text-sm font-semibold text-slate-700">
+                  <p className="text-sm text-slate-700">
                     Step 5 (Total blocking probability in the CC system)
                   </p>
                   <div className="overflow-x-auto">
@@ -654,7 +645,7 @@ export default function Calculator() {
                           key={i}
                           className="bg-white border border-slate-200 rounded-lg p-3 text-center"
                         >
-                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                          <p className="text-xs text-slate-400 uppercase tracking-wider">
                             Class {i + 1}
                           </p>
                           <p className="text-sm font-mono text-sky-600">

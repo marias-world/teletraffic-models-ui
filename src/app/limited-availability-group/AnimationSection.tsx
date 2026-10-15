@@ -50,7 +50,9 @@ export default function AnimationSection() {
 
   function removeAnimClass(id: number) {
     if (animClasses.length <= 1) return;
-    stopAndApply(() => setAnimClasses((prev) => prev.filter((c) => c.id !== id)));
+    stopAndApply(() =>
+      setAnimClasses((prev) => prev.filter((c) => c.id !== id)),
+    );
   }
 
   const animKey = `${animEll}-${animC}-${animClasses.map((c) => `${c.bu}:${c.incomingLoad_a}`).join(",")}`;
@@ -72,7 +74,7 @@ export default function AnimationSection() {
           {animStatus === "stopped" && (
             <button
               onClick={() => setAnimStatus("running")}
-              className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-emerald-500 text-white hover:bg-emerald-600 transition-colors duration-150"
+              className="px-4 py-1.5 rounded-lg text-sm bg-emerald-500 text-white hover:bg-emerald-600 transition-colors duration-150"
             >
               Start
             </button>
@@ -81,13 +83,13 @@ export default function AnimationSection() {
             <>
               <button
                 onClick={() => setAnimStatus("paused")}
-                className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors duration-150"
+                className="px-4 py-1.5 rounded-lg text-sm bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors duration-150"
               >
                 Pause
               </button>
               <button
                 onClick={() => setAnimStatus("stopped")}
-                className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-red-100 text-red-600 hover:bg-red-200 transition-colors duration-150"
+                className="px-4 py-1.5 rounded-lg text-sm bg-red-100 text-red-600 hover:bg-red-200 transition-colors duration-150"
               >
                 Stop
               </button>
@@ -97,13 +99,13 @@ export default function AnimationSection() {
             <>
               <button
                 onClick={() => setAnimStatus("running")}
-                className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-emerald-500 text-white hover:bg-emerald-600 transition-colors duration-150"
+                className="px-4 py-1.5 rounded-lg text-sm bg-emerald-500 text-white hover:bg-emerald-600 transition-colors duration-150"
               >
                 Resume
               </button>
               <button
                 onClick={() => setAnimStatus("stopped")}
-                className="px-4 py-1.5 rounded-lg text-sm font-semibold bg-red-100 text-red-600 hover:bg-red-200 transition-colors duration-150"
+                className="px-4 py-1.5 rounded-lg text-sm bg-red-100 text-red-600 hover:bg-red-200 transition-colors duration-150"
               >
                 Stop
               </button>
@@ -114,7 +116,7 @@ export default function AnimationSection() {
 
       {/* Config controls */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Configuration (changes reset the simulation)
         </p>
 
@@ -135,7 +137,7 @@ export default function AnimationSection() {
               >
                 −
               </button>
-              <span className="w-8 text-center font-semibold text-slate-700 text-sm">
+              <span className="w-8 text-center text-slate-700 text-sm">
                 {animEll}
               </span>
               <button
@@ -166,7 +168,7 @@ export default function AnimationSection() {
               >
                 −
               </button>
-              <span className="w-8 text-center font-semibold text-slate-700 text-sm">
+              <span className="w-8 text-center text-slate-700 text-sm">
                 {animC}
               </span>
               <button
@@ -196,7 +198,7 @@ export default function AnimationSection() {
               + Add
             </button>
           </div>
-          <div className="grid gap-1 text-[11px] font-semibold text-slate-400 tracking-wider grid-cols-[20px_52px_52px_minmax(0,1fr)_24px] px-1">
+          <div className="grid gap-1 text-[11px] text-slate-400 tracking-wider grid-cols-[20px_52px_52px_minmax(0,1fr)_24px] px-1">
             <span />
             <span>bₖ (b.u.)</span>
             <span>aₖ (erl)</span>
@@ -242,7 +244,9 @@ export default function AnimationSection() {
               <input
                 type="text"
                 value={cls.desc}
-                onChange={(e) => updateAnimClass(cls.id, "desc", e.target.value)}
+                onChange={(e) =>
+                  updateAnimClass(cls.id, "desc", e.target.value)
+                }
                 className="border border-slate-300 rounded-lg px-2 py-1 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none"
               />
               <button

@@ -136,7 +136,8 @@ export default function LimitedAvailabilityGroupAnimation({
     );
 
     // 2. Random arrival
-    const cls = serviceClasses[Math.floor(Math.random() * serviceClasses.length)];
+    const cls =
+      serviceClasses[Math.floor(Math.random() * serviceClasses.length)];
     stats.offered++;
 
     // 3. Find first subgroup with enough free slots
@@ -253,7 +254,7 @@ export default function LimitedAvailabilityGroupAnimation({
       <div className="flex flex-col sm:flex-row items-stretch gap-4">
         {/* Incoming */}
         <div className="w-full sm:w-32 flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center gap-2 text-center min-h-[100px]">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">
             Incoming
           </p>
           {incomingCls ? (
@@ -287,7 +288,7 @@ export default function LimitedAvailabilityGroupAnimation({
         {/* Subgroups */}
         <div className="flex-1 rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3 min-w-0">
           <div className="flex items-center justify-between flex-wrap gap-1">
-            <p className="text-xs font-semibold text-slate-500">
+            <p className="text-xs text-slate-500">
               ℓ = {ell}, C = {cPerGroup} b.u., V = {V}
             </p>
             <p className="text-xs text-slate-400">
@@ -311,7 +312,7 @@ export default function LimitedAvailabilityGroupAnimation({
                   style={{ minWidth: "64px" }}
                 >
                   <p
-                    className={`text-xs font-semibold text-center ${
+                    className={`text-xs text-center ${
                       isActive ? "text-emerald-600" : "text-slate-500"
                     }`}
                   >
@@ -428,16 +429,15 @@ export default function LimitedAvailabilityGroupAnimation({
       {/* Blocking condition note */}
       {incomingCls && lastEvent === "blocked" && (
         <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-xs text-red-700 space-y-1">
-          <p className="font-semibold">
-            Blocking condition for Class {incomingCls.id} (b ={" "}
-            {incomingCls.bu} b.u.)
+          <p>
+            Blocking condition for Class {incomingCls.id} (b = {incomingCls.bu}{" "}
+            b.u.)
           </p>
           <p>
-            Needs {incomingCls.bu} free b.u. in one subgroup. LAG threshold: n
-            = ℓ(C &minus; b + 1) = {ell}&times;({cPerGroup} &minus;{" "}
-            {incomingCls.bu} + 1) ={" "}
-            {ell * (cPerGroup - incomingCls.bu + 1)}. Currently j ={" "}
-            {totalOccupied}.
+            Needs {incomingCls.bu} free b.u. in one subgroup. LAG threshold: n =
+            ℓ(C &minus; b + 1) = {ell}&times;({cPerGroup} &minus;{" "}
+            {incomingCls.bu} + 1) = {ell * (cPerGroup - incomingCls.bu + 1)}.
+            Currently j = {totalOccupied}.
           </p>
         </div>
       )}
@@ -445,7 +445,7 @@ export default function LimitedAvailabilityGroupAnimation({
       {/* Analytical CBP */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <p className="text-xs text-slate-500 uppercase tracking-wider">
             LAG model · analytical B<sub>k</sub>
           </p>
           <p className="text-xs text-slate-400">
@@ -462,9 +462,7 @@ export default function LimitedAvailabilityGroupAnimation({
                 key={cls.id}
                 className={`rounded-lg border p-3 space-y-1 ${col.light} ${col.border}`}
               >
-                <p className={`text-xs font-semibold ${col.textColor}`}>
-                  Class {cls.id}
-                </p>
+                <p className={`text-xs ${col.textColor}`}>Class {cls.id}</p>
                 <p className={`text-xs font-mono ${col.textColor}`}>
                   a = {cls.incomingLoad_a} erl · b = {cls.bu} b.u.
                 </p>
@@ -483,14 +481,12 @@ export default function LimitedAvailabilityGroupAnimation({
 
       {/* Utilization */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <p className="text-xs text-slate-500 uppercase tracking-wider">
           Resource utilization
         </p>
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
-            <p className="text-xs font-semibold text-slate-500">
-              Analytical (model)
-            </p>
+            <p className="text-xs text-slate-500">Analytical (model)</p>
             <div className="flex items-end justify-between">
               <div>
                 <p className="text-[11px] text-slate-400">U</p>
@@ -517,7 +513,7 @@ export default function LimitedAvailabilityGroupAnimation({
           </div>
 
           <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
-            <p className="text-xs font-semibold text-slate-500">
+            <p className="text-xs text-slate-500">
               Observed ({stats.ticks} ticks)
             </p>
             <div className="flex items-end justify-between">
@@ -551,7 +547,7 @@ export default function LimitedAvailabilityGroupAnimation({
 
       {/* Event log */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Event log
         </p>
         {log.length === 0 ? (

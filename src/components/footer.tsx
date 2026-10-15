@@ -4,9 +4,7 @@ export default function Footer() {
       <div className="max-w-4xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8">
         {/* About */}
         <div className="space-y-3">
-          <h3 className="text-white text-sm font-semibold uppercase tracking-wider">
-            About
-          </h3>
+          <h3 className="text-white text-sm uppercase tracking-wider">About</h3>
           <p className="text-sm leading-relaxed">
             An interactive reference for teletraffic loss models, built as a
             companion to academic study.
@@ -29,7 +27,7 @@ export default function Footer() {
 
         {/* Research */}
         <div className="space-y-3">
-          <h3 className="text-white text-sm font-semibold uppercase tracking-wider">
+          <h3 className="text-white text-sm uppercase tracking-wider">
             Research
           </h3>
           <p className="text-xs text-slate-500">Master&apos;s Thesis</p>
@@ -51,7 +49,7 @@ export default function Footer() {
 
         {/* Source Code */}
         <div className="space-y-3">
-          <h3 className="text-white text-sm font-semibold uppercase tracking-wider">
+          <h3 className="text-white text-sm uppercase tracking-wider">
             Source Code
           </h3>
           <p className="text-sm leading-relaxed">
@@ -88,12 +86,12 @@ export default function Footer() {
       {/* Publications */}
       <div className="border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-6 py-8 space-y-3">
-          <h3 className="text-white text-sm font-semibold uppercase tracking-wider">
+          <h3 className="text-white text-sm uppercase tracking-wider">
             Publications
           </h3>
           <p className="text-sm text-slate-400 leading-relaxed">
-            Journal papers, conference papers, and presentations related to
-            the models on this site.
+            Journal papers, conference papers, and presentations related to the
+            models on this site.
           </p>
           <a
             href="/publications"

@@ -12,7 +12,7 @@ const Q_TABLE = [
 export default function WorkedExample() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         5. State Distribution, Utilization, and the PASTA Property
       </h2>
       <p className="text-slate-600 leading-relaxed">
@@ -36,13 +36,13 @@ export default function WorkedExample() {
 
       {/* q(j) table */}
       <div className="space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           q(j): fraction of time with j servers busy
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-separate border-spacing-y-1">
             <thead>
-              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+              <tr className="text-xs text-slate-400 tracking-wider">
                 <th className="text-left px-2">State j</th>
                 <th className="text-left px-2">Simulated</th>
                 <th className="text-left px-2">Analytical</th>
@@ -51,7 +51,7 @@ export default function WorkedExample() {
             <tbody>
               {Q_TABLE.map(({ j, simulated, analytical }) => (
                 <tr key={j} className="bg-slate-50">
-                  <td className="px-2 py-1.5 rounded-l-lg font-semibold text-slate-500">
+                  <td className="px-2 py-1.5 rounded-l-lg text-slate-500">
                     {j}
                   </td>
                   <td className="px-2 py-1.5 font-mono text-slate-700">
@@ -63,9 +63,7 @@ export default function WorkedExample() {
                 </tr>
               ))}
               <tr className="bg-white border-t border-slate-200">
-                <td className="px-2 py-1.5 font-semibold text-slate-500">
-                  sum
-                </td>
+                <td className="px-2 py-1.5 text-slate-500">sum</td>
                 <td className="px-2 py-1.5 font-mono text-slate-700">
                   1.0000000
                 </td>
@@ -78,16 +76,13 @@ export default function WorkedExample() {
         </div>
         <p className="text-xs text-slate-400">
           Utilization (average fraction of servers busy) for this run:{" "}
-          <span className="font-mono font-semibold text-slate-500">
-            0.7150612
-          </span>
-          .
+          <span className="font-mono text-slate-500">0.7150612</span>.
         </p>
       </div>
 
       {/* PASTA */}
       <div className="space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           PASTA: why two ways of counting blocking agree
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
@@ -98,7 +93,7 @@ export default function WorkedExample() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
-            <p className="text-sm font-semibold text-slate-700">
+            <p className="text-sm text-slate-700">
               Inside observer: time congestion
             </p>
             <p className="text-sm text-slate-600 leading-relaxed">
@@ -109,7 +104,7 @@ export default function WorkedExample() {
             </p>
           </div>
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
-            <p className="text-sm font-semibold text-slate-700">
+            <p className="text-sm text-slate-700">
               Outside observer: call congestion
             </p>
             <p className="text-sm text-slate-600 leading-relaxed">
@@ -146,7 +141,7 @@ export default function WorkedExample() {
                 <td className="px-2 py-1.5 rounded-l-lg text-slate-600">
                   Call blocking (fraction of arrivals)
                 </td>
-                <td className="px-2 py-1.5 rounded-r-lg font-mono font-semibold text-emerald-700 text-right">
+                <td className="px-2 py-1.5 rounded-r-lg font-mono text-emerald-700 text-right">
                   0.2847075
                 </td>
               </tr>
@@ -154,7 +149,7 @@ export default function WorkedExample() {
                 <td className="px-2 py-1.5 rounded-l-lg text-slate-600">
                   q(5) (fraction of time system is full)
                 </td>
-                <td className="px-2 py-1.5 rounded-r-lg font-mono font-semibold text-emerald-700 text-right">
+                <td className="px-2 py-1.5 rounded-r-lg font-mono text-emerald-700 text-right">
                   0.2847830
                 </td>
               </tr>

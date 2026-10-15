@@ -170,7 +170,7 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-4xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8">
           {/* Column 1 — About */}
           <div className="space-y-3">
-            <h3 className="text-white text-sm font-semibold uppercase tracking-wider">
+            <h3 className="text-white text-sm uppercase tracking-wider">
               About
             </h3>
             <p className="text-sm leading-relaxed">
@@ -199,7 +199,7 @@ export default function Layout({ children }: LayoutProps) {
 
           {/* Column 2 — Research */}
           <div className="space-y-3">
-            <h3 className="text-white text-sm font-semibold uppercase tracking-wider">
+            <h3 className="text-white text-sm uppercase tracking-wider">
               Research
             </h3>
             <p className="text-xs text-slate-500">Master&apos;s Thesis</p>
@@ -222,7 +222,7 @@ export default function Layout({ children }: LayoutProps) {
 
           {/* Column 3 — Source */}
           <div className="space-y-3">
-            <h3 className="text-white text-sm font-semibold uppercase tracking-wider">
+            <h3 className="text-white text-sm uppercase tracking-wider">
               Source Code
             </h3>
             <p className="text-sm leading-relaxed">
@@ -268,7 +268,7 @@ export default function Layout({ children }: LayoutProps) {
         {/* Publications band */}
         <div className="border-t border-slate-800">
           <div className="max-w-4xl mx-auto px-6 py-8 space-y-4">
-            <h3 className="text-white text-sm font-semibold uppercase tracking-wider">
+            <h3 className="text-white text-sm uppercase tracking-wider">
               Publications
             </h3>
             <ul className="space-y-4">

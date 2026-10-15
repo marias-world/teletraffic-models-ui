@@ -41,10 +41,10 @@ const STEPS: { title: string; body: React.ReactNode }[] = [
         <p>
           Scanning the whole list every time to find the earliest event gets
           slow as it grows, which is why a real implementation keeps it in a{" "}
-          <strong>heap</strong> (a data structure built to always hand back the
-          smallest item quickly, without a full re-sort each time). Since the
-          pairs are compared by time first, the heap doesn&apos;t need to know
-          or care whether an event is an arrival or a departure, retrieving
+          heap (a data structure built to always hand back the smallest item
+          quickly, without a full re-sort each time). Since the pairs are
+          compared by time first, the heap doesn&apos;t need to know or care
+          whether an event is an arrival or a departure, retrieving
           &ldquo;whichever happens next&rdquo; already resolves that question.
         </p>
       </>
@@ -68,8 +68,8 @@ const STEPS: { title: string; body: React.ReactNode }[] = [
         If <InlineMath math="n < c" />, the call is accepted: a server becomes
         busy and a departure time is drawn and scheduled for it. If{" "}
         <InlineMath math="n = c" />, every server is busy, so the call is{" "}
-        <strong>blocked</strong>, lost immediately, never queued or retried.
-        Either way, the next arrival is drawn and scheduled right away.
+        blocked, lost immediately, never queued or retried. Either way, the next
+        arrival is drawn and scheduled right away.
       </>
     ),
   },
@@ -83,7 +83,6 @@ const STEPS: { title: string; body: React.ReactNode }[] = [
           the freed server just waits for its next arrival to claim it.
         </p>
         <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
-          <span className="text-amber-500 flex-shrink-0">💡</span>
           <p className="text-amber-900">
             A departure carries no identity: the model never tracks{" "}
             <em>which</em> call is occupying which server, only{" "}
@@ -110,28 +109,25 @@ const STEPS: { title: string; body: React.ReactNode }[] = [
           <BlockMath math="q(j) = \frac{\text{total time spent with } j \text{ busy servers}}{\text{total simulated time}}" />
         </div>
         <p>
-          Blocking is the special case <InlineMath math="j = c" />: the
-          fraction of time the system is completely full,{" "}
-          <InlineMath math="q(c)" />, is the <strong>time-congestion</strong>{" "}
-          estimate of <InlineMath math="B" />.
+          Blocking is the special case <InlineMath math="j = c" />: the fraction
+          of time the system is completely full, <InlineMath math="q(c)" />, is
+          the time-congestion estimate of <InlineMath math="B" />.
         </p>
         <p>
           Separately, every time an arrival is blocked (Step 5), a counter is
           incremented. Dividing that counter by the total number of offered
-          calls gives the <strong>call-congestion</strong> estimate of{" "}
-          <InlineMath math="B" />:
+          calls gives the call-congestion estimate of <InlineMath math="B" />:
         </p>
         <div className="overflow-x-auto py-1">
           <BlockMath math="B = \frac{\text{total calls blocked}}{\text{total calls offered}}" />
         </div>
         <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
-          <span className="text-amber-500 flex-shrink-0">💡</span>
           <p className="text-amber-900">
-            These are two independent measurements, one from elapsed time,
-            one from a call count. If <InlineMath math="q(c)" /> and the
-            call-based <InlineMath math="B" /> come out equal, that&apos;s the
-            PASTA property showing up: for Poisson arrivals, what an arrival
-            sees matches what a random instant in time sees.
+            These are two independent measurements, one from elapsed time, one
+            from a call count. If <InlineMath math="q(c)" /> and the call-based{" "}
+            <InlineMath math="B" /> come out equal, that&apos;s the PASTA
+            property showing up: for Poisson arrivals, what an arrival sees
+            matches what a random instant in time sees.
           </p>
         </div>
       </>
@@ -155,7 +151,7 @@ const STEPS: { title: string; body: React.ReactNode }[] = [
 export default function Algorithm() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         3. Building the Simulation, Step by Step
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -168,7 +164,7 @@ export default function Algorithm() {
             key={title}
             className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2"
           >
-            <p className="text-sm font-semibold text-slate-700">{title}</p>
+            <p className="text-sm text-slate-700">{title}</p>
             <div className="text-slate-600 leading-relaxed text-sm space-y-2">
               {body}
             </div>

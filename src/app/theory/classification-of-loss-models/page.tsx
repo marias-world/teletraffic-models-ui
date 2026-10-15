@@ -3,7 +3,7 @@ import MoscholiosBookReference from "@/components/MoscholiosBookReference";
 
 // ─── small reusable pieces ────────────────────────────────────────────────────
 function SectionHeading({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-xl font-semibold text-slate-700">{children}</h2>;
+  return <h2 className="text-xl text-slate-700">{children}</h2>;
 }
 
 function Tag({
@@ -21,7 +21,7 @@ function Tag({
   };
   return (
     <span
-      className={`inline-block border rounded-full px-3 py-0.5 text-xs font-semibold ${styles[color]}`}
+      className={`inline-block border rounded-full px-3 py-0.5 text-xs ${styles[color]}`}
     >
       {children}
     </span>
@@ -54,13 +54,13 @@ export default function TeletrafficLossModelsPage() {
           <p className="text-slate-600 leading-relaxed">
             Not all telephone or data calls behave the same way. A video stream,
             a voice call and a file download each place different demands on a
-            network. <strong>Teletraffic loss models</strong> classify these
-            differences so we can predict how often a new call will find no
-            resources available and be blocked, and design for it.
+            network. Teletraffic loss models classify these differences so we
+            can predict how often a new call will find no resources available
+            and be blocked, and design for it.
           </p>
           <p className="text-slate-600 leading-relaxed">
-            There are <strong>three key dimensions</strong> along which any call
-            (or connection) can be characterised:
+            There are three key dimensions along which any call (or connection)
+            can be characterised:
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-sm">
             {[
@@ -236,7 +236,7 @@ export default function TeletrafficLossModelsPage() {
                 key={num}
                 className={`rounded-xl border p-4 space-y-1 ${color}`}
               >
-                <p className="text-sm font-semibold text-slate-700">
+                <p className="text-sm text-slate-700">
                   ({num}) {title}{" "}
                   <span className="font-normal text-slate-500">({sub})</span>
                 </p>
@@ -329,10 +329,10 @@ export default function TeletrafficLossModelsPage() {
           </div>
 
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-slate-700">
-            A call may also have{" "}
-            <strong>several alternative fixed bandwidth requirements</strong>:
-            it tries to get its preferred rate, and falls back to a lower one if
-            needed. This sits between fully fixed and fully elastic.
+            A call may also have several alternative fixed bandwidth
+            requirements: it tries to get its preferred rate, and falls back to
+            a lower one if needed. This sits between fully fixed and fully
+            elastic.
           </div>
         </section>
 
@@ -538,7 +538,7 @@ export default function TeletrafficLossModelsPage() {
                 className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2"
               >
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-sm font-semibold text-slate-700">
+                  <span className="text-sm text-slate-700">
                     ({num}) {title}
                   </span>
                   {badge}
@@ -562,10 +562,10 @@ export default function TeletrafficLossModelsPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-2">
-              <p className="font-semibold text-emerald-700 text-sm">
+              <p className="text-emerald-700 text-sm">
                 → ON period (active transmission)
               </p>
-              <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
+              <ul className="text-sm text-slate-600 space-y-1">
                 <li>The player downloads one video segment at a time.</li>
                 <li>
                   The connection is active and data flows at a fixed rate set by
@@ -578,10 +578,10 @@ export default function TeletrafficLossModelsPage() {
               </ul>
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-              <p className="font-semibold text-slate-500 text-sm">
+              <p className="text-slate-500 text-sm">
                 → OFF period (no transmission)
               </p>
-              <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
+              <ul className="text-sm text-slate-600 space-y-1">
                 <li>
                   The segment is being played back. No more data is needed until
                   the next segment starts.
@@ -613,10 +613,9 @@ export default function TeletrafficLossModelsPage() {
               <div className="flex items-center gap-2">
                 <Tag color="amber">Video streams (ON-OFF)</Tag>
               </div>
-              <ul className="text-sm text-slate-600 mt-2 space-y-1 list-disc list-inside">
+              <ul className="text-sm text-slate-600 mt-2 space-y-1">
                 <li>
-                  Each stream requires a fixed <strong>5 Mbps</strong> during
-                  its ON bursts.
+                  Each stream requires a fixed 5 Mbps during its ON bursts.
                 </li>
                 <li>
                   The exact moment a user starts a stream is unpredictable
@@ -630,7 +629,7 @@ export default function TeletrafficLossModelsPage() {
               <div className="flex items-center gap-2">
                 <Tag color="emerald">File downloads (elastic)</Tag>
               </div>
-              <ul className="text-sm text-slate-600 mt-2 space-y-1 list-disc list-inside">
+              <ul className="text-sm text-slate-600 mt-2 space-y-1">
                 <li>
                   Downloads expand to use whatever spare bandwidth is available.
                 </li>
@@ -642,7 +641,7 @@ export default function TeletrafficLossModelsPage() {
             </div>
 
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-slate-700 space-y-1">
-              <p className="font-semibold">→ Network management</p>
+              <p>→ Network management</p>
               <p>
                 The provider allocates bandwidth to each stream or download
                 based on its requirements. Once a video session is allocated its

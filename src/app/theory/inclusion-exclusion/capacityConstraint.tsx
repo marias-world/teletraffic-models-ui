@@ -65,11 +65,7 @@ function ArrangementChip({
         return (
           <span key={i} className="inline-flex items-center gap-0.5">
             {i > 0 && <span className="text-slate-300 text-xs">·</span>}
-            <span
-              className={`text-xs rounded px-1 font-mono font-semibold ${box}`}
-            >
-              {v}
-            </span>
+            <span className={`text-xs rounded px-1 font-mono ${box}`}>{v}</span>
           </span>
         );
       })}
@@ -81,7 +77,7 @@ export default function InclusionExclusion() {
   return (
     <section className="space-y-4">
       <div id="stars-and-bars-example" className="space-y-4 pt-2">
-        <h2 className="text-xl font-semibold text-slate-700">
+        <h2 className="text-xl text-slate-700">
           Counting arrangements in subgroups
         </h2>
 
@@ -90,8 +86,8 @@ export default function InclusionExclusion() {
           <InlineMath math="x" /> b.u. into <InlineMath math="k" /> labeled
           subgroups, where the order of units within each subgroup does not
           matter and subgroup capacities can vary between 0 and{" "}
-          <InlineMath math="\infty" />, we can apply the{" "}
-          <strong>Stars and Bars</strong> method from combinatorial theory.
+          <InlineMath math="\infty" />, we can apply the Stars and Bars method
+          from combinatorial theory.
         </p>
 
         <p className="text-slate-600 leading-relaxed text-sm">
@@ -113,9 +109,7 @@ export default function InclusionExclusion() {
         </div>
 
         <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 space-y-2">
-          <p className="text-sm font-semibold text-sky-800">
-            Parameter notation
-          </p>
+          <p className="text-sm text-sky-800">Parameter notation</p>
           <ul className="text-sm text-sky-900 space-y-1 leading-relaxed">
             <li>
               <InlineMath math="x" />: free (unoccupied) bandwidth units to
@@ -150,9 +144,6 @@ export default function InclusionExclusion() {
         </p>
 
         <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-          <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
-            💡
-          </span>
           <p className="text-sm text-emerald-900 leading-relaxed">
             We need <InlineMath math="k - 1" /> | bars to separate{" "}
             <InlineMath math="x" /> ⭐ stars into subgroups.
@@ -171,7 +162,7 @@ export default function InclusionExclusion() {
 
         {/* Figure A.1:5 ways to split 4 b.u. into 2 groups */}
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
+          <p className="text-xs text-slate-500 uppercase tracking-wider text-center">
             5 Possible arrangements of 4 b.u. into two groups of unlimited
             capacity (
             <InlineMath math="C = \infty" />)
@@ -216,9 +207,6 @@ export default function InclusionExclusion() {
           restrictions.
         </p>
         <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-          <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
-            💡
-          </span>
           <div className="text-sm text-emerald-900 leading-relaxed">
             <p>
               If <InlineMath math="F(4,\,2,\,0,\,0)=0" />, we cannot allocate{" "}
@@ -229,7 +217,7 @@ export default function InclusionExclusion() {
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-4">
-          <p className="text-sm font-semibold text-slate-600">
+          <p className="text-sm text-slate-600">
             Example: <InlineMath math="F(4,\,2,\,C,\,0)" />
           </p>
           <p className="text-slate-600 leading-relaxed text-sm">
@@ -245,7 +233,7 @@ export default function InclusionExclusion() {
             distributions first and then adjust for overcounting by excluding
             cases where one or more subgroups exceed their allowed capacity.
           </p>
-          <h5 className="text-m font-semibold text-slate-700">
+          <h5 className="text-m text-slate-700">
             Step 1: Calculate the total number of ways to disctribute{" "}
             <InlineMath math="x" /> b.u. into <InlineMath math="k" /> subgroups
             without the limitations in the capacity <InlineMath math=" C" />
@@ -268,7 +256,7 @@ export default function InclusionExclusion() {
           </p>
 
           <div className="rounded-xl border border-slate-200 bg-white p-4 space-y-3">
-            <p className="text-xs font-semibold text-slate-500 tracking-wider">
+            <p className="text-xs text-slate-500 tracking-wider">
               Visual breakdown: each box shows [C₁ · C₂ · C₃] b.u.
             </p>
 
@@ -349,7 +337,7 @@ export default function InclusionExclusion() {
               constraints at once (that would require ≥ 6 b.u., but x = 5).
             </p>
           </div>
-          <h5 className="text-m font-semibold text-slate-700">
+          <h5 className="text-m text-slate-700">
             Step 1: Calculate the total number of ways to disctribute{" "}
             <InlineMath math="x" /> b.u. into <InlineMath math="k" /> subgroups
             without the limitations in the capacity <InlineMath math=" C" />
@@ -358,15 +346,12 @@ export default function InclusionExclusion() {
             In this step we need to exclude the overcounts of step 1 (i.e. we
             should take into account the limitation <InlineMath math=" C" />)
           </p>
-          <h6 className="text-m font-semibold text-slate-600">
+          <h6 className="text-m text-slate-600">
             a) Substract those cases where one subgroup exceeds{" "}
             <InlineMath math=" C" />
           </h6>
 
           <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-            <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
-              💡
-            </span>
             <p className="text-sm text-emerald-900 leading-relaxed">
               If one group includes <InlineMath math="C + 1" /> b.u., then we
               need to distribute <InlineMath math="x - (C + 1)" /> b.u. into{" "}
@@ -398,7 +383,7 @@ export default function InclusionExclusion() {
           <div className="overflow-x-auto py-1">
             <BlockMath math="3 \times 6 = 18 \text{ invalid ways}" />
           </div>
-          <h6 className="text-m font-semibold text-slate-600">
+          <h6 className="text-m text-slate-600">
             b) Substract those cases where two subgroup exceed{" "}
             <InlineMath math="C" />
           </h6>
@@ -434,9 +419,6 @@ export default function InclusionExclusion() {
             Which is impossible!
           </p>
           <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-            <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
-              💡
-            </span>
             <p className="text-sm text-emerald-900 leading-relaxed">
               So the final results is:
             </p>
@@ -451,7 +433,7 @@ export default function InclusionExclusion() {
         </div>
 
         <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 space-y-2">
-          <p className="text-sm font-semibold text-sky-800">
+          <p className="text-sm text-sky-800">
             This inclusion-exclusion process continues for all possible number
             of subgroups that can exceed <InlineMath math="C" />.
           </p>
@@ -471,7 +453,7 @@ export default function InclusionExclusion() {
             </div>
           </div>
 
-          <ul className="list-disc list-inside space-y-1 text-sm text-sky-900 leading-relaxed">
+          <ul className="space-y-1 text-sm text-sky-900 leading-relaxed">
             <li>
               <InlineMath math="i" /> is the number of subgroups that exceed the
               capacity <InlineMath math="C" />.
@@ -487,7 +469,7 @@ export default function InclusionExclusion() {
             </li>
           </ul>
 
-          <p className="text-base font-semibold text-slate-700 leading-relaxed">
+          <p className="text-base text-slate-700 leading-relaxed">
             The total number of valid distributions of <InlineMath math="x" />{" "}
             free b.u. across <InlineMath math="k" /> separate resources is
             therefore:
@@ -502,7 +484,7 @@ export default function InclusionExclusion() {
 
         {/* Conditional transition probability */}
         <div className="space-y-4 pt-2">
-          <h2 className="text-xl font-semibold text-slate-700">
+          <h2 className="text-xl text-slate-700">
             Conditional transition probability <InlineMath math="\sigma_i(n)" />
           </h2>
 
@@ -514,8 +496,8 @@ export default function InclusionExclusion() {
           </p>
 
           <p className="text-slate-600 leading-relaxed text-sm">
-            Start by finding the number of <strong>favourable</strong>{" "}
-            allocations (the numerator):
+            Start by finding the number of favourable allocations (the
+            numerator):
           </p>
 
           <div className="overflow-x-auto py-1">
@@ -533,10 +515,8 @@ export default function InclusionExclusion() {
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-            <p className="text-sm font-semibold text-slate-600">
-              What each term means
-            </p>
-            <ul className="list-disc list-inside space-y-2 text-sm text-slate-700 leading-relaxed">
+            <p className="text-sm text-slate-600">What each term means</p>
+            <ul className="space-y-2 text-sm text-slate-700 leading-relaxed">
               <li>
                 <InlineMath math="F(k \cdot C - n,\; k,\; C,\; 0)" />: the
                 number of possible allocations of{" "}
@@ -548,9 +528,8 @@ export default function InclusionExclusion() {
               <li>
                 <InlineMath math="F(k \cdot C - n,\; k,\; C_i - 1,\; 0)" />: the
                 number of allocations where every subgroup holds at most{" "}
-                <InlineMath math="C_i - 1" /> b.u.. These are the{" "}
-                <strong>unfavourable</strong> allocations: states in which a
-                class-
+                <InlineMath math="C_i - 1" /> b.u.. These are the unfavourable
+                allocations: states in which a class-
                 <InlineMath math="i" /> call cannot be serviced because no
                 subgroup has room for even one more b.u. of class{" "}
                 <InlineMath math="i" />.
@@ -559,8 +538,8 @@ export default function InclusionExclusion() {
             <p className="text-sm text-slate-600 leading-relaxed">
               The numerator{" "}
               <InlineMath math="F(\cdots,C,0) - F(\cdots,C_i-1,0)" /> therefore
-              counts the <strong>favourable</strong> allocations, i.e. those in
-              which at least one subgroup can accommodate a class-
+              counts the favourable allocations, i.e. those in which at least
+              one subgroup can accommodate a class-
               <InlineMath math="i" /> call. Dividing by the total gives the
               probability <InlineMath math="\sigma_i(n)" />.
             </p>
@@ -569,7 +548,7 @@ export default function InclusionExclusion() {
 
         {/* ── Worked example ─────────────────────────────────────────── */}
         <div className="space-y-4 pt-4">
-          <h2 className="text-xl font-semibold text-slate-700">
+          <h2 className="text-xl text-slate-700">
             Step-by-step example: Determining{" "}
             <InlineMath math="F(12,\,3,\,5,\,0)" />
           </h2>
@@ -583,7 +562,7 @@ export default function InclusionExclusion() {
 
           {/* Step 1 */}
           <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 space-y-2">
-            <p className="text-sm font-semibold text-sky-800">
+            <p className="text-sm text-sky-800">
               Step 1: Unconstrained count (Stars and Bars)
             </p>
             <p className="text-sm text-sky-900 leading-relaxed">
@@ -597,7 +576,7 @@ export default function InclusionExclusion() {
 
           {/* Step 2a */}
           <div className="rounded-xl border border-red-200 bg-red-50 p-4 space-y-3">
-            <p className="text-sm font-semibold text-red-800">
+            <p className="text-sm text-red-800">
               Step 2a: Subtract: one subgroup exceeds{" "}
               <InlineMath math="C = 5" />
             </p>
@@ -608,7 +587,7 @@ export default function InclusionExclusion() {
 
             {/* Substitution visualisation */}
             <div className="rounded-lg border border-red-200 bg-white p-4 space-y-4">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
+              <p className="text-xs text-slate-500 uppercase tracking-wider text-center">
                 Example arrangement: A=8, B=3, C=1 (total=12, A exceeds 5)
               </p>
 
@@ -712,7 +691,7 @@ export default function InclusionExclusion() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-[11px] text-emerald-700 font-semibold">
+                  <p className="text-[11px] text-emerald-700">
                     2 + 3 + 1 = 6 ✓
                   </p>
                 </div>
@@ -726,8 +705,7 @@ export default function InclusionExclusion() {
             </div>
 
             <p className="text-sm text-red-900 leading-relaxed">
-              Distributing 6 b.u. across 3 resources gives{" "}
-              <strong>28 ways</strong>:
+              Distributing 6 b.u. across 3 resources gives 28 ways:
             </p>
             <div className="overflow-x-auto py-1">
               <BlockMath math="\binom{x - (C+1) + l-1}{l-1} = \binom{6+3-1}{3-1} = \binom{8}{2} = 28 \text{ ways}" />
@@ -743,7 +721,7 @@ export default function InclusionExclusion() {
 
           {/* Step 2b */}
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-3">
-            <p className="text-sm font-semibold text-amber-800">
+            <p className="text-sm text-amber-800">
               Step 2b: Add back: two subgroups exceed{" "}
               <InlineMath math="C = 5" />
             </p>
@@ -751,13 +729,13 @@ export default function InclusionExclusion() {
               In Step 2a we subtracted every arrangement where A ≥ 6, every
               arrangement where B ≥ 6, and every arrangement where C ≥ 6. But an
               arrangement where <em>both</em> A ≥ 6 and B ≥ 6 got subtracted{" "}
-              <strong>twice</strong>: once in the "A over" group and once in the
-              "B over" group. We need to add those back once.
+              twice: once in the "A over" group and once in the "B over" group.
+              We need to add those back once.
             </p>
 
             {/* Visual: the 3 double-counted arrangements */}
             <div className="rounded-lg border border-amber-200 bg-white p-3 space-y-2">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
+              <p className="text-xs text-slate-500 uppercase tracking-wider text-center">
                 The 3 arrangements that were subtracted twice
               </p>
               <div className="flex flex-wrap justify-center gap-4">
@@ -834,7 +812,7 @@ export default function InclusionExclusion() {
 
           {/* Step 2c */}
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-2">
-            <p className="text-sm font-semibold text-slate-600">
+            <p className="text-sm text-slate-600">
               Step 2c: Three subgroups exceed <InlineMath math="C = 5" />:
               impossible
             </p>
@@ -861,7 +839,7 @@ export default function InclusionExclusion() {
 
           {/* Verification with the general formula */}
           <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3">
-            <p className="text-sm font-semibold text-violet-800">
+            <p className="text-sm text-violet-800">
               Verification using the general formula
             </p>
             <p className="text-sm text-violet-900 leading-relaxed">
@@ -913,7 +891,7 @@ export default function InclusionExclusion() {
                       <td className="border border-violet-200 px-2 py-1 font-mono">
                         {binom}
                       </td>
-                      <td className="border border-violet-200 px-2 py-1 font-mono font-semibold">
+                      <td className="border border-violet-200 px-2 py-1 font-mono">
                         {term}
                       </td>
                     </tr>
@@ -928,7 +906,7 @@ export default function InclusionExclusion() {
 
           {/* Visualisation of the 10 arrangements */}
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
+            <p className="text-xs text-slate-500 uppercase tracking-wider text-center">
               All 10 valid arrangements of 12 b.u. across 3 subgroups (C = 5)
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -976,7 +954,7 @@ export default function InclusionExclusion() {
 
           {/* Connection to sigma */}
           <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3">
-            <p className="text-sm font-semibold text-violet-800">
+            <p className="text-sm text-violet-800">
               How this connects to <InlineMath math="\sigma_k(n)" /> in the{" "}
               <Link
                 href="/limited-availability-group"
@@ -1001,7 +979,7 @@ export default function InclusionExclusion() {
               For a class requiring <InlineMath math="b_k = 5" /> b.u. (so{" "}
               <InlineMath math="b_k - 1 = 4" />
               ), unfavourable arrangements are those where every subgroup holds
-              ≤ 4 free b.u. Only <strong>(4, 4, 4)</strong> qualifies, so{" "}
+              ≤ 4 free b.u. Only (4, 4, 4) qualifies, so{" "}
               <InlineMath math="F(12,3,4,0) = 1" />:
             </p>
             <div className="overflow-x-auto py-1">

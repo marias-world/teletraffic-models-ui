@@ -126,30 +126,24 @@ export default function Calculator() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
-        Try it: LAG Calculator
-      </h2>
+      <h2 className="text-xl text-slate-700">Try it: LAG Calculator</h2>
       <p className="text-slate-600 leading-relaxed">
-        Enter the number of subgroups <InlineMath math="\ell" />, the
-        capacity <InlineMath math="C" /> per subgroup, and the offered
-        traffic per service class under a <strong>Complete Sharing (CS)</strong>{" "}
-        policy.
+        Enter the number of subgroups <InlineMath math="\ell" />, the capacity{" "}
+        <InlineMath math="C" /> per subgroup, and the offered traffic per
+        service class under a Complete Sharing (CS) policy.
       </p>
 
       <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
-        <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">🚧</span>
         <p className="text-sm text-amber-900 leading-relaxed">
-          <strong>Bandwidth reservation</strong> policy support is coming
-          soon.
+          Bandwidth reservation policy support is coming soon.
         </p>
       </div>
 
       <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-3">
-        <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">💡</span>
         <p className="text-sm text-sky-900 leading-relaxed">
           Step-by-step calculations are shown when{" "}
-          <InlineMath math="\ell \leq 5" /> and <InlineMath math="C \leq 5" />
-          . For larger inputs, only the final results are displayed.
+          <InlineMath math="\ell \leq 5" /> and <InlineMath math="C \leq 5" />.
+          For larger inputs, only the final results are displayed.
         </p>
       </div>
 
@@ -192,9 +186,7 @@ export default function Calculator() {
       {/* Service classes */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-slate-600">
-            Service Classes
-          </p>
+          <p className="text-sm font-medium text-slate-600">Service Classes</p>
           <button
             onClick={addRow}
             className="text-xs text-sky-600 hover:text-sky-700 font-medium border border-sky-300 rounded-md px-2 py-1 hover:bg-sky-50 transition"
@@ -204,7 +196,7 @@ export default function Calculator() {
         </div>
 
         {/* Column headers */}
-        <div className="grid gap-2 text-xs font-semibold text-slate-400 tracking-wider px-1 grid-cols-[24px_1fr_1fr_32px]">
+        <div className="grid gap-2 text-xs text-slate-400 tracking-wider px-1 grid-cols-[24px_1fr_1fr_32px]">
           <span />
           <span>bₖ (b.u.)</span>
           <span>aₖ (erl)</span>
@@ -262,7 +254,7 @@ export default function Calculator() {
       <button
         onClick={runModel}
         disabled={isCalculating}
-        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2 rounded-lg transition-colors duration-150 flex items-center justify-center gap-2"
+        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white py-2 rounded-lg transition-colors duration-150 flex items-center justify-center gap-2"
       >
         {isCalculating ? (
           <>
@@ -296,9 +288,7 @@ export default function Calculator() {
       {/* Results */}
       {results !== null && (
         <div className="space-y-4 pt-2 border-t border-slate-100">
-          <h3 className="font-semibold text-slate-700">
-            Call Blocking Probabilities
-          </h3>
+          <h3 className="text-slate-700">Call Blocking Probabilities</h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {Object.entries(results).map(([key, value]) => {
@@ -309,12 +299,10 @@ export default function Calculator() {
                   key={key}
                   className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1"
                 >
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  <p className="text-xs text-slate-400 uppercase tracking-wider">
                     Class {idx}
                   </p>
-                  <p className="text-2xl font-bold text-sky-600">
-                    {percent}%
-                  </p>
+                  <p className="text-2xl font-bold text-sky-600">{percent}%</p>
                   <p className="text-xs text-slate-400 font-mono">
                     B<sub>{idx}</sub> = {value.toFixed(7)}
                   </p>
@@ -326,7 +314,7 @@ export default function Calculator() {
           {utilization !== null && (
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <p className="text-xs text-slate-400 uppercase tracking-wider">
                   Link Utilization
                 </p>
                 <p className="text-2xl font-bold text-violet-600">
@@ -338,7 +326,7 @@ export default function Calculator() {
                 </p>
               </div>
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <p className="text-xs text-slate-400 uppercase tracking-wider">
                   Trunk Efficiency
                 </p>
                 <p className="text-2xl font-bold text-violet-600">
@@ -365,14 +353,11 @@ export default function Calculator() {
                   {steps.map((group, gi) => (
                     <div key={gi} className="space-y-3">
                       <div className="space-y-0.5">
-                        <p className="text-sm font-semibold text-slate-700">
-                          {group.title}
-                        </p>
+                        <p className="text-sm text-slate-700">{group.title}</p>
                         {gi === 0 && (
                           <p className="text-xs text-slate-500 leading-relaxed">
-                            <InlineMath math="\sigma_k(j)" /> is the
-                            conditional transition probability: probability a
-                            class-
+                            <InlineMath math="\sigma_k(j)" /> is the conditional
+                            transition probability: probability a class-
                             <InlineMath math="k" /> call can be placed given{" "}
                             <InlineMath math="j" /> busy b.u.
                           </p>

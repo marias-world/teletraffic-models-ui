@@ -89,7 +89,7 @@ const SERVICE_CLASSES = [
 export default function WorkedExample() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         Worked Example: AWS EC2 Instance Types as Service Classes
       </h2>
 
@@ -111,7 +111,7 @@ export default function WorkedExample() {
       <div className="overflow-x-auto">
         <table className="w-full text-sm border-separate border-spacing-y-1">
           <thead>
-            <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+            <tr className="text-xs text-slate-400 tracking-wider">
               <th className="text-left px-2">Class</th>
               <th className="text-left px-2">Instance type</th>
               <th className="text-left px-2">
@@ -131,7 +131,7 @@ export default function WorkedExample() {
           <tbody>
             {SERVICE_CLASSES.map((row) => (
               <tr key={row.k} className="bg-slate-50">
-                <td className="px-2 py-2 rounded-l-lg font-semibold text-slate-500">
+                <td className="px-2 py-2 rounded-l-lg text-slate-500">
                   k{row.k}
                 </td>
                 <td className="px-2 py-2 font-mono text-slate-700">
@@ -169,8 +169,8 @@ export default function WorkedExample() {
       </p>
 
       <p className="text-slate-600 leading-relaxed text-sm">
-        Let's consider the case of <InlineMath math="K = 3" /> service classes
-        and <InlineMath math="T = 3" /> PMs.
+        Take the case of <InlineMath math="K = 3" /> service classes and{" "}
+        <InlineMath math="T = 3" /> PMs.
       </p>
       <p className="text-slate-600 leading-relaxed text-sm">
         Each subresource (CPU, RAM, DISK, Network) contains the following
@@ -191,9 +191,7 @@ export default function WorkedExample() {
                 height={96}
                 className="w-14 sm:w-24 h-auto"
               />
-              <p className="text-sm sm:text-base font-semibold text-slate-700">
-                PM{pm}
-              </p>
+              <p className="text-sm sm:text-base text-slate-700">PM{pm}</p>
               <div className="flex flex-col items-center gap-0.5">
                 {PM_CAPACITY.map(({ label, value }) => (
                   <p
@@ -215,7 +213,6 @@ export default function WorkedExample() {
       </p>
 
       <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">📊</span>
         <p className="text-sm text-violet-900 leading-relaxed">
           Offered traffic-load of each service class (in erl):{" "}
           <InlineMath math="\alpha_1 = 3.0" />,{" "}
@@ -233,7 +230,7 @@ export default function WorkedExample() {
 
       {/* Step 1: Kaufman-Roberts per subsystem */}
       <div className="border-t border-slate-200 pt-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-700">
+        <p className="text-sm text-slate-700">
           Step 1 (Applying the Kaufman-Roberts (EMLM) in each subsystem)
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
@@ -256,13 +253,13 @@ export default function WorkedExample() {
           <BlockMath math="q(j) = \frac{1}{j}\sum_{k=1}^{K} \alpha_k \cdot b_k \cdot q(j-b_k), \qquad B_{k,\text{EMLM}} = \sum_{j=C-b_k+1}^{C} Q(j)" />
         </div>
 
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Output
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-separate border-spacing-y-1">
             <thead>
-              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+              <tr className="text-xs text-slate-400 tracking-wider">
                 <th className="text-left px-2">Subsystem</th>
                 <th className="text-left px-2">Class 1</th>
                 <th className="text-left px-2">Class 2</th>
@@ -302,7 +299,7 @@ export default function WorkedExample() {
 
       {/* Step 2: LAR across the T subsystems */}
       <div className="border-t border-slate-200 pt-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-700">
+        <p className="text-sm text-slate-700">
           Step 2 (Applying the LAR model in the group of the{" "}
           <InlineMath math="T = 3" /> subsystems)
         </p>
@@ -322,9 +319,6 @@ export default function WorkedExample() {
         </p>
 
         <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-          <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
-            📊
-          </span>
           <p className="text-sm text-violet-900 leading-relaxed">
             Because a request can now be placed in any of the{" "}
             <InlineMath math="T = 3" /> PMs, the group as a whole carries three
@@ -343,13 +337,13 @@ export default function WorkedExample() {
           </p>
         </div>
 
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Output
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-separate border-spacing-y-1">
             <thead>
-              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+              <tr className="text-xs text-slate-400 tracking-wider">
                 <th className="text-left px-2">Subsystem</th>
                 <th className="text-left px-2">Class 1</th>
                 <th className="text-left px-2">Class 2</th>
@@ -389,7 +383,7 @@ export default function WorkedExample() {
 
       {/* Step 3: ratio between LAR and EMLM */}
       <div className="border-t border-slate-200 pt-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-700">
+        <p className="text-sm text-slate-700">
           Step 3 (Determining the ratio <InlineMath math="\rho" /> between the
           blocking probabilities obtained in Steps 1 &amp; 2)
         </p>
@@ -404,13 +398,13 @@ export default function WorkedExample() {
           <BlockMath math="\rho_{k,y} = \frac{B_{k,\text{LAR},y}}{B_{k,\text{EMLM},y}}" />
         </div>
 
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Output
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-separate border-spacing-y-1">
             <thead>
-              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+              <tr className="text-xs text-slate-400 tracking-wider">
                 <th className="text-left px-2">Subsystem</th>
                 <th className="text-left px-2">Class 1</th>
                 <th className="text-left px-2">Class 2</th>
@@ -451,7 +445,7 @@ export default function WorkedExample() {
 
       {/* Step 4: RLA within a single PM */}
       <div className="border-t border-slate-200 pt-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-700">
+        <p className="text-sm text-slate-700">
           Step 4 (Applying the RLA method in a single PM)
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
@@ -484,13 +478,13 @@ export default function WorkedExample() {
           </p>
         </div>
 
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Output
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-separate border-spacing-y-1">
             <thead>
-              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+              <tr className="text-xs text-slate-400 tracking-wider">
                 <th className="text-left px-2">Subsystem</th>
                 <th className="text-left px-2">Class 1</th>
                 <th className="text-left px-2">Class 2</th>
@@ -528,7 +522,7 @@ export default function WorkedExample() {
 
       {/* Step 5: total blocking probability in the CC system */}
       <div className="border-t border-slate-200 pt-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-700">Step 5</p>
+        <p className="text-sm text-slate-700">Step 5</p>
         <p className="text-slate-600 leading-relaxed text-sm">
           Determination of the total blocking probability of each service class
           in the Cloud Computing system. The total blocking probability of a VM
@@ -567,9 +561,6 @@ export default function WorkedExample() {
         </div>
 
         <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-          <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
-            💡
-          </span>
           <div className="text-sm text-violet-900 leading-relaxed space-y-2">
             <p>
               Reading the formula in simple terms: each{" "}
@@ -598,7 +589,7 @@ export default function WorkedExample() {
           </div>
         </div>
 
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Output
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -607,7 +598,7 @@ export default function WorkedExample() {
               key={k}
               className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1 text-center"
             >
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              <p className="text-xs text-slate-400 uppercase tracking-wider">
                 Class {k}
               </p>
               <p className="text-2xl font-bold text-sky-600">
