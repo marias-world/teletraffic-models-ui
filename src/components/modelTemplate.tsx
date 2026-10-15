@@ -61,76 +61,72 @@ export default function ModelTemplate({
 
   return (
     <div className="bg-white w-full max-w-2xl rounded-2xl shadow-xl p-8 space-y-6">
-        <h1 className="text-2xl font-bold text-slate-800">{title}</h1>
+      <h1 className="text-2xl font-bold text-slate-800">{title}</h1>
 
-        {description}
+      {description}
 
-        <div className="space-y-4">
-          {inputs.map((input) => (
-            <div key={input.name}>
-              <label className="block text-sm font-medium text-slate-600 mb-1">
-                {input.label}
-              </label>
-              <input
-                type="number"
-                min={0}
-                required
-                value={values[input.name] || ""}
-                onChange={(e) => handleChange(input.name, e.target.value)}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
-          ))}
-        </div>
-
-        {error && (
-          <div className="text-red-600 font-medium text-sm">{error}</div>
-        )}
-
-        <button
-          onClick={runModel}
-          disabled={loading}
-          className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 rounded-lg transition"
-        >
-          {loading ? "Calculating..." : "Run Model"}
-        </button>
-
-        {result !== null && (
-          <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-            <h3 className="font-semibold text-slate-700 mb-2">
-              Call Blocking Probability
-            </h3>
-            <pre className="text-sm text-slate-800 overflow-auto">
-              {JSON.stringify(result, null, 2)}
-            </pre>
-            <p className="text-slate-600">
-              {typeof result === "number" && result === 0
-                ? "No calls will be blocked."
-                : `Approximately ${typeof result === "number" ? (result * 100).toFixed(2) : 0}% of calls will be blocked due to limited system capacity.`}
-            </p>
+      <div className="space-y-4">
+        {inputs.map((input) => (
+          <div key={input.name}>
+            <label className="block text-sm font-medium text-slate-600 mb-1">
+              {input.label}
+            </label>
+            <input
+              type="number"
+              min={0}
+              required
+              value={values[input.name] || ""}
+              onChange={(e) => handleChange(input.name, e.target.value)}
+              className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-sky-500"
+            />
           </div>
-        )}
-
-        {result !== null && steps.length > 0 && (
-          <>
-            <button
-              onClick={() => setShowSteps((prev) => !prev)}
-              className="text-sky-600 font-medium"
-            >
-              {showSteps ? "Hide calculation" : "Show calculation"}
-            </button>
-
-            {showSteps && (
-              <div className="mt-4 space-y-2 overflow-x-auto">
-                {steps.map((step, i) => (
-                  <div key={i} className="min-w-full">
-                    <BlockMath math={step} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+        ))}
       </div>
+
+      {error && <div className="text-red-600 font-medium text-sm">{error}</div>}
+
+      <button
+        onClick={runModel}
+        disabled={loading}
+        className="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded-lg transition"
+      >
+        {loading ? "Calculating..." : "Run Model"}
+      </button>
+
+      {result !== null && (
+        <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <h3 className="text-slate-700 mb-2">Call Blocking Probability</h3>
+          <pre className="text-sm text-slate-800 overflow-auto">
+            {JSON.stringify(result, null, 2)}
+          </pre>
+          <p className="text-slate-600">
+            {typeof result === "number" && result === 0
+              ? "No calls will be blocked."
+              : `Approximately ${typeof result === "number" ? (result * 100).toFixed(2) : 0}% of calls will be blocked due to limited system capacity.`}
+          </p>
+        </div>
+      )}
+
+      {result !== null && steps.length > 0 && (
+        <>
+          <button
+            onClick={() => setShowSteps((prev) => !prev)}
+            className="text-sky-600 font-medium"
+          >
+            {showSteps ? "Hide calculation" : "Show calculation"}
+          </button>
+
+          {showSteps && (
+            <div className="mt-4 space-y-2 overflow-x-auto">
+              {steps.map((step, i) => (
+                <div key={i} className="min-w-full">
+                  <BlockMath math={step} />
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
   );
 }

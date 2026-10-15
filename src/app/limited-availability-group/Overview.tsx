@@ -3,7 +3,7 @@ import { InlineMath } from "react-katex";
 function SubgroupBox({ label }: { label: string }) {
   return (
     <div className="flex flex-col items-center gap-1">
-      <p className="text-sm font-semibold text-slate-600">{label}</p>
+      <p className="text-sm text-slate-600">{label}</p>
       <div className="border border-slate-300 rounded-lg w-16 divide-y divide-dashed divide-slate-300 bg-slate-50">
         {[1, 2, 3, 4].map((row) => (
           <div
@@ -22,18 +22,17 @@ function SubgroupBox({ label }: { label: string }) {
 export default function Overview() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">Overview</h2>
+      <h2 className="text-xl text-slate-700">Overview</h2>
       <p className="text-slate-600 leading-relaxed">
-        In the <strong>LAG model</strong> (also referred to as the{" "}
-        <strong>Limited Availability Resources, LAR, model</strong>), the
-        total capacity of the system is not a single shared pool. Instead, it
-        is split into <InlineMath math="\ell" /> separate resources, called{" "}
-        <strong>subgroups</strong>, each with its own capacity.
+        In the LAG model (also referred to as the Limited Availability
+        Resources, LAR, model), the total capacity of the system is not a single
+        shared pool. Instead, it is split into <InlineMath math="\ell" />{" "}
+        separate resources, called subgroups, each with its own capacity.
       </p>
 
       {/* subgroup diagram */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
+        <p className="text-xs text-slate-500 uppercase tracking-wider text-center">
           Subgroups
         </p>
         <div className="w-full overflow-x-auto">

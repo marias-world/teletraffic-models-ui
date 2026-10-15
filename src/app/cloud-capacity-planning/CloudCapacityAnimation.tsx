@@ -2,7 +2,10 @@
 
 import { useReducer, useEffect, useRef } from "react";
 import { calculateCloudCapacityBlockingProbabilities } from "@/lib/models/cloud-capacity-planning/proposed-model-data";
-import { Capacities, ServiceClassConfigs } from "@/lib/models/cloud-capacity-planning/types";
+import {
+  Capacities,
+  ServiceClassConfigs,
+} from "@/lib/models/cloud-capacity-planning/types";
 
 // ─── fixed scenario ───────────────────────────────────────────────────────────
 const T = 2; // PMs per Group Manager
@@ -162,7 +165,10 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
   for (const k of CLASSES) stats.perClass[k.id] = { ...stats.perClass[k.id] };
 
   // ── Step 1: expire finished VMs ───────────────────────────────────────────
-  let pms: PmState[] = state.pms.map((pm) => ({ ...pm, tenants: [...pm.tenants] }));
+  let pms: PmState[] = state.pms.map((pm) => ({
+    ...pm,
+    tenants: [...pm.tenants],
+  }));
   for (const pm of pms) {
     const expiring = pm.tenants.filter((t) => t.ticksLeft <= 1);
     for (const exp of expiring) {
@@ -202,7 +208,13 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
     const cid = _cid++;
     pms = pms.map((pm) =>
       pm.id === placedPmId
-        ? { ...pm, tenants: [...pm.tenants, { callId: cid, classId: cls.id, ticksLeft: HOLD }] }
+        ? {
+            ...pm,
+            tenants: [
+              ...pm.tenants,
+              { callId: cid, classId: cls.id, ticksLeft: HOLD },
+            ],
+          }
         : pm,
     );
     log.unshift({
@@ -214,7 +226,7 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
   } else {
     log.unshift({
       id: _lid++,
-      msg: `${cls.label} blocked — no PM has room on all four resources`,
+      msg: `${cls.label} blocked: no PM has room on all four resources`,
       type: "blocked",
     });
     lastEvent = "blocked";
@@ -236,7 +248,11 @@ function tickReducer(state: State, action: "TICK" | "RESET"): State {
 // ─── component ────────────────────────────────────────────────────────────────
 type AnimStatus = "stopped" | "running" | "paused";
 
-export default function CloudCapacityAnimation({ status }: { status: AnimStatus }) {
+export default function CloudCapacityAnimation({
+  status,
+}: {
+  status: AnimStatus;
+}) {
   const [state, dispatch] = useReducer(tickReducer, undefined, makeInit);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -256,7 +272,8 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
     };
   }, [status]);
 
-  const { pms, incoming, lastEvent, placedPmId, shortfallByPm, log, stats } = state;
+  const { pms, incoming, lastEvent, placedPmId, shortfallByPm, log, stats } =
+    state;
 
   return (
     <div className="space-y-5">
@@ -267,9 +284,13 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
             key={cls.id}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium ${cls.light} ${cls.border} ${cls.text}`}
           >
-            <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${cls.bg}`} />
+            <span
+              className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${cls.bg}`}
+            />
             {cls.label} ·{" "}
-            {RESOURCE_KEYS.map((y) => `${cls.bu[y]} ${RESOURCE_LABELS[y]}`).join(", ")}
+            {RESOURCE_KEYS.map(
+              (y) => `${cls.bu[y]} ${RESOURCE_LABELS[y]}`,
+            ).join(", ")}
           </div>
         ))}
       </div>
@@ -278,7 +299,7 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
       <div className="flex flex-col sm:flex-row items-stretch gap-3">
         {/* Incoming VM request */}
         <div className="w-full sm:w-36 flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center gap-2 text-center min-h-[110px]">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">
             Incoming
           </p>
           {incoming ? (
@@ -286,8 +307,12 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
               <div
                 className={`w-14 h-14 rounded-lg flex flex-col items-center justify-center border ${incoming.light} ${incoming.border}`}
               >
-                <span className={`text-sm font-bold ${incoming.text}`}>k{incoming.id}</span>
-                <span className={`text-[9px] ${incoming.text}`}>{incoming.label}</span>
+                <span className={`text-sm font-bold ${incoming.text}`}>
+                  k{incoming.id}
+                </span>
+                <span className={`text-[9px] ${incoming.text}`}>
+                  {incoming.label}
+                </span>
               </div>
               <p className="text-[10px] text-slate-400">
                 {RESOURCE_KEYS.map((y) => `${incoming.bu[y]}${y}`).join(" ")}
@@ -305,7 +330,7 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
 
         {/* Group Manager */}
         <div className="w-full sm:w-32 flex-shrink-0 rounded-xl border border-violet-200 bg-violet-50 p-3 flex flex-col items-center justify-center gap-1 text-center min-h-[110px]">
-          <p className="text-xs font-semibold text-violet-700">Group Manager</p>
+          <p className="text-xs text-violet-700">Group Manager</p>
           <p className="text-[10px] text-violet-400">
             scans PM1…PM{T} for room on all 4 resources
           </p>
@@ -336,15 +361,20 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
               >
                 <div className="flex items-center justify-between">
                   <p
-                    className={`text-xs font-semibold ${
-                      isPlaced ? "text-emerald-700" : isShort ? "text-red-600" : "text-slate-600"
+                    className={`text-xs ${
+                      isPlaced
+                        ? "text-emerald-700"
+                        : isShort
+                          ? "text-red-600"
+                          : "text-slate-600"
                     }`}
                   >
                     PM{pm.id}
                   </p>
                   {isShort && (
                     <span className="text-[9px] font-bold text-red-500 bg-red-100 px-1.5 py-0.5 rounded">
-                      short on {shortfall.map((y) => RESOURCE_LABELS[y]).join(", ")}
+                      short on{" "}
+                      {shortfall.map((y) => RESOURCE_LABELS[y]).join(", ")}
                     </span>
                   )}
                 </div>
@@ -374,7 +404,8 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
                 </div>
 
                 <p className="text-[10px] text-slate-400">
-                  {pm.tenants.length} VM{pm.tenants.length === 1 ? "" : "s"} running
+                  {pm.tenants.length} VM{pm.tenants.length === 1 ? "" : "s"}{" "}
+                  running
                 </p>
               </div>
             );
@@ -391,13 +422,17 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
           {lastEvent === "accepted" && (
             <div className="w-full h-full rounded-xl bg-emerald-50 border-emerald-300 border flex flex-col items-center justify-center gap-1 p-2">
               <span className="text-2xl">✓</span>
-              <p className="text-xs font-bold text-emerald-700 text-center">Placed</p>
+              <p className="text-xs font-bold text-emerald-700 text-center">
+                Placed
+              </p>
             </div>
           )}
           {lastEvent === "blocked" && (
             <div className="w-full h-full rounded-xl bg-red-50 border-red-300 border flex flex-col items-center justify-center gap-1 p-2">
               <span className="text-2xl">✗</span>
-              <p className="text-xs font-bold text-red-600 text-center">Blocked</p>
+              <p className="text-xs font-bold text-red-600 text-center">
+                Blocked
+              </p>
             </div>
           )}
           {lastEvent === null && (
@@ -411,12 +446,15 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
       {/* Why blocked callout */}
       {incoming && lastEvent === "blocked" && (
         <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-xs text-red-700 space-y-1">
-          <p className="font-semibold">All-or-nothing across four resources</p>
+          <p>All-or-nothing across four resources</p>
           <p>
             {incoming.label} needs{" "}
-            {RESOURCE_KEYS.map((y) => `${incoming.bu[y]} ${RESOURCE_LABELS[y]}`).join(", ")} at
-            once. Every PM in the group is short on at least one resource, so the request is
-            blocked even though some PMs may have spare room elsewhere.
+            {RESOURCE_KEYS.map(
+              (y) => `${incoming.bu[y]} ${RESOURCE_LABELS[y]}`,
+            ).join(", ")}{" "}
+            at once. Every PM in the group is short on at least one resource, so
+            the request is blocked even though some PMs may have spare room
+            elsewhere.
           </p>
         </div>
       )}
@@ -429,11 +467,17 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
           { label: "Blocked", value: stats.blocked, color: "text-red-500" },
           {
             label: "GoS",
-            value: stats.offered > 0 ? `${((stats.blocked / stats.offered) * 100).toFixed(1)}%` : "n/a",
+            value:
+              stats.offered > 0
+                ? `${((stats.blocked / stats.offered) * 100).toFixed(1)}%`
+                : "n/a",
             color: "text-sky-600",
           },
         ].map(({ label, value, color }) => (
-          <div key={label} className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center">
+          <div
+            key={label}
+            className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center"
+          >
             <p className="text-xs text-slate-400">{label}</p>
             <p className={`text-xl font-bold ${color}`}>{value}</p>
           </div>
@@ -447,8 +491,11 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
           const observedB = pc.offered > 0 ? pc.blocked / pc.offered : null;
           const theoretical = THEORETICAL_CBP[`B_class_${cls.id}`] ?? 0;
           return (
-            <div key={cls.id} className={`rounded-xl border p-4 space-y-2 ${cls.light} ${cls.border}`}>
-              <p className={`text-xs font-semibold ${cls.text}`}>{cls.label}</p>
+            <div
+              key={cls.id}
+              className={`rounded-xl border p-4 space-y-2 ${cls.light} ${cls.border}`}
+            >
+              <p className={`text-xs ${cls.text}`}>{cls.label}</p>
               <div className="flex justify-between text-xs text-slate-500">
                 <span>Offered: {pc.offered}</span>
                 <span>Blocked: {pc.blocked}</span>
@@ -457,7 +504,9 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
                 <div>
                   <p className="text-[10px] text-slate-400">Observed B</p>
                   <p className={`text-lg font-bold ${cls.text}`}>
-                    {observedB != null ? `${(observedB * 100).toFixed(1)}%` : "—"}
+                    {observedB != null
+                      ? `${(observedB * 100).toFixed(1)}%`
+                      : "—"}
                   </p>
                 </div>
                 <div className="text-right">
@@ -480,7 +529,9 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
 
       {/* Event log */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Event log</p>
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
+          Event log
+        </p>
         {log.length === 0 ? (
           <p className="text-xs text-slate-300">No events yet. Press Start.</p>
         ) : (
@@ -492,12 +543,20 @@ export default function CloudCapacityAnimation({ status }: { status: AnimStatus 
               >
                 <span
                   className={`mt-0.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                    entry.type === "ok" ? "bg-emerald-400" : entry.type === "blocked" ? "bg-red-400" : "bg-slate-300"
+                    entry.type === "ok"
+                      ? "bg-emerald-400"
+                      : entry.type === "blocked"
+                        ? "bg-red-400"
+                        : "bg-slate-300"
                   }`}
                 />
                 <span
                   className={
-                    entry.type === "ok" ? "text-emerald-700" : entry.type === "blocked" ? "text-red-600" : "text-slate-500"
+                    entry.type === "ok"
+                      ? "text-emerald-700"
+                      : entry.type === "blocked"
+                        ? "text-red-600"
+                        : "text-slate-500"
                   }
                 >
                   {entry.msg}

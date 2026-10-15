@@ -303,7 +303,7 @@ export default function Calculator() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         6. Try It: Run the Simulation Yourself
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -448,7 +448,7 @@ export default function Calculator() {
       <button
         onClick={runModel}
         disabled={isRunning}
-        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2 rounded-lg transition-colors duration-150"
+        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white py-2 rounded-lg transition-colors duration-150"
       >
         {isRunning ? "Simulating…" : "Run Simulation"}
       </button>
@@ -505,7 +505,7 @@ export default function Calculator() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <p className="text-xs text-slate-400 uppercase tracking-wider">
                   Simulated blocking
                 </p>
                 <p className="text-lg font-bold text-sky-600 font-mono">
@@ -521,7 +521,7 @@ export default function Calculator() {
                 </p>
               </div>
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <p className="text-xs text-slate-400 uppercase tracking-wider">
                   Analytical Erlang-B
                 </p>
                 <p className="text-lg font-bold text-slate-600 font-mono">
@@ -529,7 +529,7 @@ export default function Calculator() {
                 </p>
               </div>
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <p className="text-xs text-slate-400 uppercase tracking-wider">
                   Utilization
                 </p>
                 <p className="text-lg font-bold text-slate-600 font-mono">
@@ -537,7 +537,7 @@ export default function Calculator() {
                 </p>
               </div>
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center space-y-1">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <p className="text-xs text-slate-400 uppercase tracking-wider">
                   Wall-clock time (this run)
                 </p>
                 <p className="text-lg font-bold text-slate-600 font-mono">
@@ -567,15 +567,12 @@ export default function Calculator() {
 
               return (
                 <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
-                  <span className="text-amber-500 flex-shrink-0">💡</span>
                   <p className="text-amber-900 text-sm leading-relaxed">
-                    <strong>
-                      Notice q({modeJ}) ({analyticalQ[modeJ].toFixed(4)}) is
-                      higher than blocking, q({usedParams.capacity}) (
-                      {analyticalBlocking.toFixed(4)})?
-                    </strong>{" "}
-                    That&apos;s because <InlineMath math="\mu" /> is relatively
-                    high here (offered load{" "}
+                    Notice q({modeJ}) ({analyticalQ[modeJ].toFixed(4)}) is
+                    higher than blocking, q({usedParams.capacity}) (
+                    {analyticalBlocking.toFixed(4)})? That&apos;s because{" "}
+                    <InlineMath math="\mu" /> is relatively high here (offered
+                    load{" "}
                     <InlineMath
                       math={`α = \\lambda/\\mu = ${(usedParams.lambda / usedParams.mu).toFixed(2)}`}
                     />
@@ -608,7 +605,7 @@ export default function Calculator() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-separate border-spacing-y-1">
                 <thead>
-                  <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+                  <tr className="text-xs text-slate-400 tracking-wider">
                     <th className="text-left px-2">State j</th>
                     <th className="text-left px-2">Simulated q(j)</th>
                     <th className="text-left px-2">Analytical q(j)</th>
@@ -617,9 +614,7 @@ export default function Calculator() {
                 <tbody>
                   {result.qMean.map((qj, j) => (
                     <tr key={j} className="bg-white">
-                      <td className="px-2 py-1.5 font-semibold text-slate-500">
-                        {j}
-                      </td>
+                      <td className="px-2 py-1.5 text-slate-500">{j}</td>
                       <td className="px-2 py-1.5 font-mono text-slate-700">
                         {qj.toFixed(7)}{" "}
                         <span className="text-slate-400">

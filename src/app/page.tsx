@@ -24,7 +24,7 @@ export default function Home() {
           </figcaption>
         </figure>
 
-        <h2 className="text-2xl font-semibold">Simulation:</h2>
+        <h2 className="text-2xl">Simulation:</h2>
         <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
           <li>
             <Link
@@ -44,7 +44,7 @@ export default function Home() {
           </li>
         </ul>
 
-        <h2 className="text-2xl font-semibold">Analytical Models:</h2>
+        <h2 className="text-2xl">Analytical Models:</h2>
         <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
           <li>
             <Link
@@ -88,7 +88,7 @@ export default function Home() {
           </li>
         </ul>
 
-        <h2 className="text-2xl font-semibold">Theory & Formulas</h2>
+        <h2 className="text-2xl">Theory & Formulas</h2>
         <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
           <li>
             <Link

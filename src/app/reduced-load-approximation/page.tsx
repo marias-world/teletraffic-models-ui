@@ -45,7 +45,7 @@ export default function ReducedLoadApproximationPage() {
           <WorkedExample />
           {/* References */}
           <section className="border-t border-slate-200 pt-6 space-y-2">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <p className="text-xs text-slate-400 uppercase tracking-wider">
               References
             </p>
             <p className="text-xs text-slate-400 leading-relaxed">

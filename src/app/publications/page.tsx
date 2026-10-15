@@ -72,7 +72,7 @@ function highlightAuthor(authors: string) {
   const parts = authors.split(/([ΜM]\.\s*Kourtesi)/);
   return parts.map((part, i) =>
     /^[ΜM]\.\s*Kourtesi$/.test(part) ? (
-      <strong key={i} className="text-slate-800 font-semibold">
+      <strong key={i} className="text-slate-800">
         M. Kourtesi
       </strong>
     ) : (
@@ -104,9 +104,7 @@ export default function PublicationsPage() {
 
           {/* Publications */}
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold text-slate-700">
-              Publications
-            </h2>
+            <h2 className="text-xl text-slate-700">Publications</h2>
             <ul className="space-y-5">
               {PUBLICATIONS.map((pub) => (
                 <li key={pub.title} className="flex gap-3">
@@ -144,9 +142,7 @@ export default function PublicationsPage() {
 
           {/* Conference Presentations */}
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold text-slate-700">
-              Conference Presentations
-            </h2>
+            <h2 className="text-xl text-slate-700">Conference Presentations</h2>
             <ul className="space-y-4">
               {PRESENTATIONS.map((p) => (
                 <li key={p.title} className="flex gap-3">

@@ -3,12 +3,9 @@ import { BlockMath, InlineMath } from "react-katex";
 export default function ConvergenceNote() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
-        A Known Convergence Issue
-      </h2>
+      <h2 className="text-xl text-slate-700">A Known Convergence Issue</h2>
 
       <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
-        <span className="text-amber-500 text-lg flex-shrink-0 mt-0.5">⚠️</span>
         <p className="text-sm text-amber-900 leading-relaxed">
           Every link&apos;s blocking probability <InlineMath math="V_{lk}" />{" "}
           depends on every other link&apos;s, so there&apos;s no single-step
@@ -22,8 +19,8 @@ export default function ConvergenceNote() {
       </div>
 
       <p className="text-slate-600 leading-relaxed">
-        There&apos;s a simple fix: <strong>damping</strong>. Instead of jumping
-        straight to each newly computed value, only move partway towards it.
+        There&apos;s a simple fix: damping. Instead of jumping straight to each
+        newly computed value, only move partway towards it.
       </p>
 
       <div className="overflow-x-auto py-1">

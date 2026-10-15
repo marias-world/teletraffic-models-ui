@@ -51,7 +51,7 @@ export default function TrafficLoadPage() {
 
         {/* Plain-English intro */}
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-slate-700">What is it?</h2>
+          <h2 className="text-xl text-slate-700">What is it?</h2>
           <p className="text-slate-600 leading-relaxed">
             Imagine you run a small call centre with 4 phone lines. Over 30
             minutes, 10 calls come in, each lasting a different amount of time.
@@ -59,7 +59,7 @@ export default function TrafficLoadPage() {
             for long stretches.
           </p>
           <p className="text-slate-600 leading-relaxed">
-            <strong>Traffic load</strong> answers the question:{" "}
+            Traffic load answers the question:{" "}
             <em>on average, how many lines were busy at any given moment?</em>{" "}
             It is the ratio of the total time lines were occupied to the length
             of the observation window.
@@ -71,7 +71,7 @@ export default function TrafficLoadPage() {
 
         {/* Visual diagram */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-slate-700">
+          <h2 className="text-xl text-slate-700">
             Example: 4 lines, 10 calls, 30 minutes
           </h2>
           <p className="text-slate-600">
@@ -191,13 +191,11 @@ export default function TrafficLoadPage() {
 
         {/* Step-by-step calculation */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-slate-700">
-            Step-by-step calculation
-          </h2>
+          <h2 className="text-xl text-slate-700">Step-by-step calculation</h2>
 
           <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 space-y-4">
             <div className="space-y-1">
-              <p className="text-sm font-semibold text-slate-600">
+              <p className="text-sm text-slate-600">
                 Step 1: add up all call durations
               </p>
               <div className="overflow-x-auto">
@@ -205,7 +203,7 @@ export default function TrafficLoadPage() {
               </div>
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-semibold text-slate-600">
+              <p className="text-sm text-slate-600">
                 Step 2: divide by the observation period
               </p>
               <div className="overflow-x-auto">
@@ -214,9 +212,8 @@ export default function TrafficLoadPage() {
             </div>
             <div className="bg-sky-50 border border-sky-200 rounded-lg p-4">
               <p className="text-slate-700">
-                This means that on average, about{" "}
-                <strong>2 out of 4 lines</strong> were busy at any point during
-                those 30 minutes.
+                This means that on average, about 2 out of 4 lines were busy at
+                any point during those 30 minutes.
               </p>
             </div>
           </div>
@@ -224,9 +221,7 @@ export default function TrafficLoadPage() {
 
         {/* The formula */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-slate-700">
-            The general formula
-          </h2>
+          <h2 className="text-xl text-slate-700">The general formula</h2>
           <p className="text-slate-600">
             Instead of adding individual call durations, you can express traffic
             load using two summary numbers:
@@ -267,15 +262,13 @@ export default function TrafficLoadPage() {
 
         {/* Unit: erlang */}
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-slate-700">
-            The unit: erlang
-          </h2>
+          <h2 className="text-xl text-slate-700">The unit: erlang</h2>
           <p className="text-slate-600 leading-relaxed">
-            Traffic load is measured in <strong>erlangs (erl)</strong>, named
-            after the Danish engineer Agner Krarp Erlang (the founder of
-            teletraffic theory). Because it is a ratio of two times, it is
-            dimensionless. 1 erlang simply means one circuit continuously
-            occupied for the entire observation period.
+            Traffic load is measured in erlangs (erl), named after the Danish
+            engineer Agner Krarp Erlang (the founder of teletraffic theory).
+            Because it is a ratio of two times, it is dimensionless. 1 erlang
+            simply means one circuit continuously occupied for the entire
+            observation period.
           </p>
           <div className="grid grid-cols-3 gap-3 text-center text-sm">
             {[
@@ -296,9 +289,7 @@ export default function TrafficLoadPage() {
 
         {/* Connection to erlang-B */}
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-slate-700">
-            Connection to erlang-B
-          </h2>
+          <h2 className="text-xl text-slate-700">Connection to erlang-B</h2>
           <p className="text-slate-600 leading-relaxed">
             The traffic load <InlineMath math="\alpha" /> is exactly the{" "}
             <em>offered traffic</em> input to the erlang-B model. Given{" "}

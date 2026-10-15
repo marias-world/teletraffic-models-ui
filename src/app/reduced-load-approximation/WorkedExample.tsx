@@ -30,9 +30,7 @@ const REP2_R2_Q = [
 export default function WorkedExample() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
-        Step-by-Step Example
-      </h2>
+      <h2 className="text-xl text-slate-700">Step-by-Step Example</h2>
 
       <p className="text-slate-600 leading-relaxed">
         Consider a small network with two resources and two service classes:
@@ -51,7 +49,7 @@ export default function WorkedExample() {
         />
       </div>
 
-      <ul className="list-disc pl-5 space-y-1 text-slate-600 leading-relaxed text-sm">
+      <ul className="space-y-1 text-slate-600 leading-relaxed text-sm">
         <li>
           Resource 1 has capacity <InlineMath math="C_1 = 4" /> b.u. and
           resource 2 has capacity <InlineMath math="C_2 = 5" /> b.u.
@@ -72,7 +70,7 @@ export default function WorkedExample() {
       </ul>
 
       {/* Per-resource blocking */}
-      <h3 className="text-base font-semibold text-slate-700 pt-2">
+      <h3 className="text-base text-slate-700 pt-2">
         1. Blocking on each resource
       </h3>
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -90,9 +88,7 @@ export default function WorkedExample() {
       </div>
 
       {/* Reduced load */}
-      <h3 className="text-base font-semibold text-slate-700 pt-2">
-        2. Reduced traffic load
-      </h3>
+      <h3 className="text-base text-slate-700 pt-2">2. Reduced traffic load</h3>
       <p className="text-slate-600 leading-relaxed text-sm">
         On each resource, the offered load of a class is reduced by the blocking
         it meets on the other resources of its route. The general product form
@@ -131,7 +127,7 @@ export default function WorkedExample() {
       </div>
 
       {/* Fixed point */}
-      <h3 className="text-base font-semibold text-slate-700 pt-2">
+      <h3 className="text-base text-slate-700 pt-2">
         3. The fixed-point system
       </h3>
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -150,7 +146,7 @@ export default function WorkedExample() {
       </div>
 
       {/* Iteration */}
-      <h3 className="text-base font-semibold text-slate-700 pt-2">
+      <h3 className="text-base text-slate-700 pt-2">
         4. Iterating to a solution
       </h3>
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -160,7 +156,7 @@ export default function WorkedExample() {
       </p>
 
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-700">
+        <p className="text-sm text-slate-700">
           Repetition 1 (using <InlineMath math="V_{11} = V_{21} = V_{22} = 1" />
           )
         </p>
@@ -206,7 +202,7 @@ export default function WorkedExample() {
       </div>
 
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-700">
+        <p className="text-sm text-slate-700">
           Repetition 2 (values used in this step{" "}
           <InlineMath math="V_{11} = 0,\ V_{21} = 0,\ V_{22} = 0.2" />)
         </p>
@@ -283,7 +279,7 @@ export default function WorkedExample() {
       </div>
 
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-700">
+        <p className="text-sm text-slate-700">
           Repetition 3 (values used in this step)
         </p>
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 py-1">
@@ -294,7 +290,8 @@ export default function WorkedExample() {
 
         <p className="text-slate-600 leading-relaxed text-sm">
           The reduced load of class 1 on resource 1 is now{" "}
-          <InlineMath math="\alpha_1(1-V_{21}) = 1 \times (1 - 0.1057441) = 0.8942559" />:
+          <InlineMath math="\alpha_1(1-V_{21}) = 1 \times (1 - 0.1057441) = 0.8942559" />
+          :
         </p>
         <div className="overflow-x-auto py-1">
           <BlockMath math="V_{11} = B_{11}\bigl[C_1;\, \alpha_1(1 - 0.1057441)\bigr] = \sum_{j=C_1-b_{11}+1}^{C_1} G^{-1} q(j) = \frac{q(4)}{G} = \frac{0.026646}{2.439937}" />
@@ -305,7 +302,8 @@ export default function WorkedExample() {
 
         <p className="text-slate-600 leading-relaxed text-sm">
           The reduced load of class 1 on resource 2 is{" "}
-          <InlineMath math="\alpha_1(1-V_{11}) = 1 \times (1 - 0.0153846) = 0.9846154" />. Similarly:
+          <InlineMath math="\alpha_1(1-V_{11}) = 1 \times (1 - 0.0153846) = 0.9846154" />
+          . Similarly:
         </p>
         <div className="overflow-x-auto py-1">
           <BlockMath math="V_{21} = B_{21}\bigl[C_2;\, \alpha_1(1-0.0153846),\ \alpha_2\bigr] = \sum_{j=C_2-b_{21}+1}^{C_2} G^{-1} q(j) = \frac{q(5)}{G} = \frac{0.65911}{6.296063}" />
@@ -327,7 +325,7 @@ export default function WorkedExample() {
       </p>
 
       <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-2">
-        <p className="text-sm font-semibold text-emerald-800">Converged CBPs</p>
+        <p className="text-sm text-emerald-800">Converged CBPs</p>
         <div className="overflow-x-auto py-1">
           <BlockMath math="V_{11} = 0.109495" />
         </div>
@@ -340,7 +338,8 @@ export default function WorkedExample() {
       </div>
 
       <p className="text-slate-600 leading-relaxed text-sm">
-        To calculate the CBP for each service class over its entire route we use:
+        To calculate the CBP for each service class over its entire route we
+        use:
       </p>
       <div className="overflow-x-auto py-1">
         <BlockMath math="B_k \approx 1 - \prod_{l \in R_k}(1 - V_{lk}), \quad k = 1, \dots, K" />

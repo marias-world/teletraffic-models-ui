@@ -7,13 +7,12 @@ const fruits = ["🍎", "🍌", "🍊", "🍓"];
 export default function KCombinations() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         k-Combinations (the binomial coefficient)
       </h2>
 
       {/* (n,k) notation callout */}
       <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">📖</span>
         <p className="text-sm text-violet-900 leading-relaxed">
           <InlineMath math="\binom{n}{k}" /> (read &quot;n choose k&quot;)
           answers the question:
@@ -25,8 +24,7 @@ export default function KCombinations() {
         <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">ℹ️</span>
         <p className="text-sm text-sky-900 leading-relaxed">
           How many ways can I choose <InlineMath math="k" /> things out of{" "}
-          <InlineMath math="n" /> things, when the order does{" "}
-          <strong>not</strong> matter?
+          <InlineMath math="n" /> things, when the order does not matter?
         </p>
       </div>
 
@@ -42,9 +40,7 @@ export default function KCombinations() {
 
       {/* Example: choosing fruits */}
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-600">
-          🍓 Example: choosing fruits
-        </p>
+        <p className="text-sm text-slate-600">Example: choosing fruits</p>
         <p className="text-slate-600 leading-relaxed text-sm">
           Suppose we have <InlineMath math="n=4" /> distinct fruits: 🍎, 🍌, 🍊
           and 🍓. If we want to choose only <InlineMath math="k=1" /> out of
@@ -104,9 +100,9 @@ export default function KCombinations() {
 
         <p className="text-slate-600 leading-relaxed text-sm">
           Looking at the two grids, the fruit choices in each row are{" "}
-          <strong>complementary</strong>: the fruit left out in row{" "}
-          <InlineMath math="i" /> of the second grid is exactly the fruit chosen
-          in row <InlineMath math="i" /> of the first grid.
+          complementary: the fruit left out in row <InlineMath math="i" /> of
+          the second grid is exactly the fruit chosen in row{" "}
+          <InlineMath math="i" /> of the first grid.
         </p>
 
         <p className="text-slate-600 leading-relaxed text-sm">
@@ -140,8 +136,8 @@ export default function KCombinations() {
 
       {/* Example: pairing oranges and bananas */}
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-600">
-          🍊🍌 Example: pairing oranges and bananas
+        <p className="text-sm text-slate-600">
+          Example: pairing oranges and bananas
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
           We have 6 🍊 oranges and 7 🍌 bananas. If 4 oranges and 4 bananas are
@@ -149,7 +145,7 @@ export default function KCombinations() {
           banana per pair), how many pairings are possible?
         </p>
 
-        <p className="text-slate-600 leading-relaxed text-sm font-semibold">
+        <p className="text-slate-600 leading-relaxed text-sm">
           Step 1: choose 4 out of the 6 oranges
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
@@ -173,7 +169,7 @@ export default function KCombinations() {
           <BlockMath math="\binom{6}{4}" />
         </div>
 
-        <p className="text-slate-600 leading-relaxed text-sm font-semibold">
+        <p className="text-slate-600 leading-relaxed text-sm">
           Step 2: choose 4 out of the 7 bananas
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">
@@ -204,7 +200,7 @@ export default function KCombinations() {
             which 4 oranges and which 4 bananas to use.
           </p>
         </div>
-        <p className="text-slate-600 leading-relaxed text-sm font-semibold">
+        <p className="text-slate-600 leading-relaxed text-sm">
           Step 3: pair them up
         </p>
         <p className="text-slate-600 leading-relaxed text-sm">

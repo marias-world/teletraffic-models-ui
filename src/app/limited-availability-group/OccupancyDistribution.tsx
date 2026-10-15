@@ -4,9 +4,7 @@ import { BlockMath, InlineMath } from "react-katex";
 export default function OccupancyDistribution() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
-        Occupancy Distribution
-      </h2>
+      <h2 className="text-xl text-slate-700">Occupancy Distribution</h2>
       <p className="text-slate-600 leading-relaxed">
         As in the Kaufman-Roberts model, let <InlineMath math="q(j)" /> be the
         unnormalised probability that the system is in state{" "}
@@ -30,23 +28,20 @@ export default function OccupancyDistribution() {
       </div>
 
       <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
-          📖
-        </span>
         <div className="space-y-2">
           <p className="text-sm text-violet-900 leading-relaxed">
             The term <InlineMath math="\sigma_k(j-b_k)" /> is the factor that
             distinguishes the LAG model from Kaufman-Roberts: it accounts for
-            the existence of the <InlineMath math="\ell" /> identical
-            subgroups, capturing how a class-
-            <InlineMath math="k" /> request can be placed into one of them
-            when the system is in state <InlineMath math="j-b_k" />.
+            the existence of the <InlineMath math="\ell" /> identical subgroups,
+            capturing how a class-
+            <InlineMath math="k" /> request can be placed into one of them when
+            the system is in state <InlineMath math="j-b_k" />.
           </p>
           <p className="text-sm text-violet-900 leading-relaxed">
-            Computing <InlineMath math="\sigma_k(j)" /> requires counting
-            valid bandwidth arrangements across subgroups with capacity
-            constraints: a combinatorial problem solved with the{" "}
-            <strong>Stars and Bars</strong> method combined with the{" "}
+            Computing <InlineMath math="\sigma_k(j)" /> requires counting valid
+            bandwidth arrangements across subgroups with capacity constraints: a
+            combinatorial problem solved with the Stars and Bars method combined
+            with the{" "}
             <Link
               href="/theory/inclusion-exclusion#stars-and-bars-example"
               className="text-violet-700 font-medium hover:underline"
@@ -58,16 +53,13 @@ export default function OccupancyDistribution() {
               href="/theory/conditional-transition-probability"
               className="text-violet-700 font-medium hover:underline"
             >
-              <strong>See full explanation and step-by-step example.</strong>
+              See full explanation and step-by-step example.
             </Link>
           </p>
         </div>
       </div>
 
       <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-        <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
-          💡
-        </span>
         <p className="text-sm text-emerald-900 leading-relaxed">
           When <InlineMath math="\ell = 1" />, there is only one subgroup, so{" "}
           <InlineMath math="\sigma_k(j-b_k) = 1" /> for every reachable state,
@@ -76,7 +68,7 @@ export default function OccupancyDistribution() {
             href="/kaufman-roberts"
             className="text-violet-700 font-medium hover:underline"
           >
-            <strong> Kaufman-Roberts formula</strong>
+            Kaufman-Roberts formula
           </Link>
         </p>
       </div>

@@ -250,7 +250,7 @@ export default function KaufmanRobertsBRAnimation({
       <div className="flex flex-col sm:flex-row items-stretch gap-4">
         {/* Incoming request panel */}
         <div className="w-full sm:w-36 sm:flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center gap-2 text-center min-h-[110px] sm:min-h-[130px]">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">
             Incoming
           </p>
           {incoming ? (
@@ -291,7 +291,7 @@ export default function KaufmanRobertsBRAnimation({
         {/* Processor */}
         <div className="flex-1 rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-            <p className="text-xs font-semibold text-slate-500">
+            <p className="text-xs text-slate-500">
               Processor · C = {CAPACITY} b.u.
             </p>
             <p className="text-xs text-slate-400">
@@ -327,9 +327,7 @@ export default function KaufmanRobertsBRAnimation({
                       </span>
                     </>
                   ) : isReserved ? (
-                    <span className="text-amber-400 text-[10px] font-semibold">
-                      rsv
-                    </span>
+                    <span className="text-amber-400 text-[10px]">rsv</span>
                   ) : (
                     <span className="text-slate-200 text-xs">b.u.</span>
                   )}
@@ -341,10 +339,10 @@ export default function KaufmanRobertsBRAnimation({
           {/* Tile legend */}
           <p className="text-[10px] text-slate-400 leading-relaxed">
             Each tile is 1 b.u. <span className="font-mono">kX</span> = service
-            class, <span className="font-mono">Y</span> = time units left
-            until that call ends and frees the b.u.{" "}
-            <span className="text-amber-500 font-semibold">rsv</span> = b.u.
-            reserved for higher service classes.
+            class, <span className="font-mono">Y</span> = time units left until
+            that call ends and frees the b.u.{" "}
+            <span className="text-amber-500">rsv</span> = b.u. reserved for
+            higher service classes.
           </p>
 
           {/* Capacity bar with effective capacity marker */}
@@ -438,9 +436,7 @@ export default function KaufmanRobertsBRAnimation({
       {/* ── Blocking condition note (BR) ─────────────────────────────────── */}
       {incoming && lastEvent === "blocked" && (
         <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-xs text-red-700 space-y-1">
-          <p className="font-semibold">
-            BR blocking condition for Class {incoming.id}
-          </p>
+          <p>BR blocking condition for Class {incoming.id}</p>
           <p>
             A call of Class {incoming.id} is accepted only if occupied bandwidth
             j ≤ C − b − t = {CAPACITY} − {incoming.cpus} − {incoming.tk} ={" "}
@@ -455,8 +451,7 @@ export default function KaufmanRobertsBRAnimation({
       {gosEqualised && (
         <div className="bg-sky-50 border border-sky-200 rounded-xl px-4 py-3 space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-sky-600 text-base">⚖️</span>
-            <p className="text-xs font-semibold text-sky-800">
+            <p className="text-xs text-sky-800">
               GoS equalisation: bₖ + tₖ = {CLASSES[0].cpus + CLASSES[0].tk} for
               all classes
             </p>
@@ -479,7 +474,7 @@ export default function KaufmanRobertsBRAnimation({
       {/* ── Theoretical blocking probabilities ──────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <p className="text-xs text-slate-500 uppercase tracking-wider">
             Roberts formula · analytical B<sub>k</sub>
           </p>
           <p className="text-xs text-slate-400">
@@ -495,9 +490,7 @@ export default function KaufmanRobertsBRAnimation({
                 key={cls.id}
                 className={`rounded-lg border p-3 space-y-1 ${cls.light} ${cls.border}`}
               >
-                <p className={`text-xs font-semibold ${cls.textColor}`}>
-                  {cls.label}
-                </p>
+                <p className={`text-xs ${cls.textColor}`}>{cls.label}</p>
                 <p className={`text-[11px] font-mono ${cls.textColor}`}>
                   a{cls.id} = {cls.incomingLoad_a} erl · b={cls.cpus} · t=
                   {cls.tk}
@@ -522,15 +515,13 @@ export default function KaufmanRobertsBRAnimation({
 
       {/* ── Resource utilization ─────────────────────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <p className="text-xs text-slate-500 uppercase tracking-wider">
           Resource utilization
         </p>
         <div className="grid grid-cols-2 gap-3">
           {/* Analytical */}
           <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
-            <p className="text-xs font-semibold text-slate-500">
-              Analytical (model)
-            </p>
+            <p className="text-xs text-slate-500">Analytical (model)</p>
             <div className="flex items-end justify-between">
               <div>
                 <p className="text-[11px] text-slate-400">Link utilization U</p>
@@ -558,7 +549,7 @@ export default function KaufmanRobertsBRAnimation({
 
           {/* Observed */}
           <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
-            <p className="text-xs font-semibold text-slate-500">
+            <p className="text-xs text-slate-500">
               Observed (simulation · {stats.ticks} ticks)
             </p>
             <div className="flex items-end justify-between">
@@ -600,7 +591,7 @@ export default function KaufmanRobertsBRAnimation({
           if (eff < 50) {
             return (
               <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 text-xs text-amber-800 leading-relaxed">
-                <span className="font-semibold">Underutilised system.</span> U ={" "}
+                <span>Underutilised system.</span> U ={" "}
                 {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
                 operates at approximately {eff.toFixed(0)}% of its available
                 capacity C = {CAPACITY} b.u. Given that U is considerably lower
@@ -614,10 +605,8 @@ export default function KaufmanRobertsBRAnimation({
           if (eff < 80) {
             return (
               <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2.5 text-xs text-emerald-800 leading-relaxed">
-                <span className="font-semibold">
-                  Moderately utilised system.
-                </span>{" "}
-                U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+                <span>Moderately utilised system.</span> U ={" "}
+                {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
                 operates at approximately {eff.toFixed(0)}% of its available
                 capacity C = {CAPACITY} b.u. The BR reservation parameters
                 provide GoS fairness while keeping the system well-loaded with a
@@ -627,12 +616,11 @@ export default function KaufmanRobertsBRAnimation({
           }
           return (
             <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 text-xs text-red-800 leading-relaxed">
-              <span className="font-semibold">Heavily utilised system.</span> U
-              = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
-              operates at approximately {eff.toFixed(0)}% of its available
-              capacity C = {CAPACITY} b.u. Despite BR reservation, the system is
-              near saturation; consider increasing capacity or reducing offered
-              load.
+              <span>Heavily utilised system.</span> U ={" "}
+              {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system operates
+              at approximately {eff.toFixed(0)}% of its available capacity C ={" "}
+              {CAPACITY} b.u. Despite BR reservation, the system is near
+              saturation; consider increasing capacity or reducing offered load.
             </div>
           );
         })()}
@@ -640,7 +628,7 @@ export default function KaufmanRobertsBRAnimation({
 
       {/* ── Event log ────────────────────────────────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Event log
         </p>
         {log.length === 0 ? (

@@ -46,7 +46,7 @@ export function HoldingTimeDistributionsTable({
       <div className="overflow-x-auto">
         <table className="w-full text-sm border-separate border-spacing-y-1">
           <thead>
-            <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+            <tr className="text-xs text-slate-400 tracking-wider">
               <th className="text-left px-2">Distribution</th>
               <th className="text-left px-2">Rule</th>
               <th className="text-left px-2">
@@ -59,9 +59,7 @@ export function HoldingTimeDistributionsTable({
             {SERVICE_DISTRIBUTIONS.map(
               ({ value, label, rule, example, squaredCv }) => (
                 <tr key={value} className="bg-white align-top">
-                  <td className="px-2 py-1.5 font-semibold text-slate-700">
-                    {label}
-                  </td>
+                  <td className="px-2 py-1.5 text-slate-700">{label}</td>
                   <td className="px-2 py-1.5 text-slate-600 min-w-[16rem]">
                     {rule(shown)}
                   </td>
@@ -108,15 +106,11 @@ export function HoldingTimeDistributionsTable({
                   className="bg-white border border-slate-200 rounded-lg p-3 space-y-1"
                 >
                   <p>
-                    <strong className="text-slate-700">
-                      {label.split(" (")[0]}.
-                    </strong>{" "}
-                    {plainWords(shown)}
+                    {label.split(" (")[0]}. {plainWords(shown)}
                   </p>
                   <p>
-                    <span className="font-semibold">Maths:</span>{" "}
-                    <InlineMath math={meanFormula} />. With h ={" "}
-                    {WORKED_EXAMPLE_MEAN},{" "}
+                    <span>Maths:</span> <InlineMath math={meanFormula} />. With
+                    h = {WORKED_EXAMPLE_MEAN},{" "}
                     {example.includes("\n") ? (
                       <span className="block whitespace-pre-line mt-1 pl-3 border-l-2 border-slate-200">
                         {example}
@@ -126,12 +120,12 @@ export function HoldingTimeDistributionsTable({
                     )}
                   </p>
                   <p>
-                    <span className="font-semibold">Example of 8 calls:</span>{" "}
+                    <span>Example of 8 calls:</span>{" "}
                     <span className="font-mono">
                       {summary.calls.map((x) => x.toFixed(1)).join(", ")}
                     </span>
                     <br />
-                    <span className="font-semibold">
+                    <span>
                       Average of {summary.count.toLocaleString("en-US")} calls:
                     </span>{" "}
                     <span className="font-mono">{summary.mean.toFixed(2)}</span>{" "}
@@ -139,7 +133,7 @@ export function HoldingTimeDistributionsTable({
                       (typical error ±{typicalError.toFixed(3)})
                     </span>
                     {", "}
-                    <span className="font-semibold">median call:</span>{" "}
+                    <span>median call:</span>{" "}
                     <span className="font-mono">
                       {summary.median.toFixed(2)}
                     </span>
@@ -168,8 +162,8 @@ const LINK = "text-sky-600 hover:underline";
 function InsensitivityReference() {
   return (
     <p className="text-xs text-slate-500 leading-relaxed">
-      <strong>Reference:</strong> Adrian E. Conway, &ldquo;Product-form and
-      insensitivity in circuit-switched networks with failing links,&rdquo;{" "}
+      Reference: Adrian E. Conway, &ldquo;Product-form and insensitivity in
+      circuit-switched networks with failing links,&rdquo;{" "}
       <em>ScienceDirect: Performance Evaluation</em>, vol. 9, Issue 3, 1, pp.
       209&ndash;215, 1989,{" "}
       <a
@@ -195,9 +189,9 @@ export function SelectedDistributionNote({
   if (!info) return null;
   return (
     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-      <strong>{info.label}</strong>: {info.rule(params)} Variability{" "}
-      <InlineMath math="CV^2" /> = {info.squaredCv(params).toFixed(2)}{" "}
-      (exponential = 1). Example: {info.example}.
+      {info.label}: {info.rule(params)} Variability <InlineMath math="CV^2" /> ={" "}
+      {info.squaredCv(params).toFixed(2)} (exponential = 1). Example:{" "}
+      {info.example}.
     </p>
   );
 }

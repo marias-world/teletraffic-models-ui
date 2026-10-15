@@ -38,54 +38,45 @@ export default function BandwidthSharingPoliciesPage() {
         {/* Service class callout */}
         <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-sky-600 text-lg">💡</span>
-            <h2 className="text-base font-semibold text-sky-800">
-              What is a service class?
-            </h2>
+            <h2 className="text-base text-sky-800">What is a service class?</h2>
           </div>
           <p className="text-slate-700 leading-relaxed">
-            A <strong>service class</strong> is a group of calls that all share
-            the same characteristics, most importantly they each require the
-            same number of <strong>bandwidth units (b.u.s)</strong> from the
-            system.
+            A service class is a group of calls that all share the same
+            characteristics: they each require the same number of bandwidth
+            units (b.u.s) from the system.
           </p>
           <p className="text-slate-700 leading-relaxed">
-            For example, in a network with capacity <strong>C = 10 b.u.</strong>
-            :
+            For example, in a network with capacity C = 10 b.u. :
           </p>
           <ul className="text-slate-700 space-y-1 text-sm pl-2">
             <li>
               <span className="inline-block w-3 h-3 rounded-full bg-sky-400 mr-2 align-middle" />
-              <strong>Class 1:</strong> voice calls, each requiring{" "}
-              <strong>1 b.u.</strong>
+              Class 1: voice calls, each requiring 1 b.u.
             </li>
             <li>
               <span className="inline-block w-3 h-3 rounded-full bg-emerald-400 mr-2 align-middle" />
-              <strong>Class 2:</strong> video calls, each requiring{" "}
-              <strong>2 b.u.</strong>
+              Class 2: video calls, each requiring 2 b.u.
             </li>
             <li>
               <span className="inline-block w-3 h-3 rounded-full bg-violet-400 mr-2 align-middle" />
-              <strong>Class 3:</strong> data transfers, each requiring{" "}
-              <strong>4 b.u.</strong>
+              Class 3: data transfers, each requiring 4 b.u.
             </li>
           </ul>
           <p className="text-slate-600 text-sm">
-            A <strong>bandwidth sharing policy</strong> determines the rules by
-            which these classes compete for the available capacity: which calls
-            are accepted, which are blocked, and whether any bandwidth is
-            reserved or guaranteed per class.
+            A bandwidth sharing policy determines the rules by which these
+            classes compete for the available capacity: which calls are
+            accepted, which are blocked, and whether any bandwidth is reserved
+            or guaranteed per class.
           </p>
         </div>
 
         {/* Overview */}
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-slate-700">Overview</h2>
+          <h2 className="text-xl text-slate-700">Overview</h2>
           <p className="text-slate-600 leading-relaxed">
-            When multiple service classes share a link with finite capacity{" "}
-            <strong>C</strong>, the system must apply a policy that decides
-            whether an incoming call is accepted or blocked. The choice of
-            policy directly affects the{" "}
+            When multiple service classes share a link with finite capacity C,
+            the system must apply a policy that decides whether an incoming call
+            is accepted or blocked. The choice of policy directly affects the{" "}
             <Link
               href="/theory/grade-of-service"
               className="text-sky-600 hover:underline font-medium"
@@ -95,8 +86,8 @@ export default function BandwidthSharingPoliciesPage() {
             experienced by each class and the overall utilisation of the system.
           </p>
           <p className="text-slate-600 leading-relaxed">
-            Four fundamental policies are used in teletraffic engineering,
-            ranging from fully open sharing to strict per-class partitioning.
+            Four policies are used in teletraffic engineering, ranging from
+            fully open sharing to strict per-class partitioning.
           </p>
 
           {/* Policy summary grid */}
@@ -137,9 +128,7 @@ export default function BandwidthSharingPoliciesPage() {
         {/* ── (a) Complete Sharing ─────────────────────────────────────────────── */}
         <section className="space-y-4">
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-slate-700">
-              Complete Sharing (CS)
-            </h2>
+            <h2 className="text-xl text-slate-700">Complete Sharing (CS)</h2>
           </div>
 
           <p className="text-slate-600 leading-relaxed">
@@ -168,33 +157,27 @@ export default function BandwidthSharingPoliciesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[
               {
-                icon: "🚫",
                 title: "No reservation",
                 desc: "No portion of the capacity is set aside for any particular service class. Every class competes equally for the available bandwidth.",
               },
               {
-                icon: "🕐",
                 title: "First come, first served",
                 desc: "Calls are accepted in the order they arrive. If there is enough capacity when a call arrives, it is accepted, regardless of its class.",
               },
               {
-                icon: "📈",
                 title: "Efficient use of resources",
                 desc: "Because no bandwidth is reserved and sits idle, the system can serve more calls overall compared to partitioned approaches.",
               },
               {
-                icon: "⬇️",
                 title: "Minimises unused capacity",
                 desc: "Bandwidth is only blocked when the system is truly full. There are no artificial limits that prevent a class from using available capacity.",
               },
-            ].map(({ icon, title, desc }) => (
+            ].map(({ title, desc }) => (
               <div
                 key={title}
                 className="bg-sky-50 border border-sky-100 rounded-xl p-4 space-y-1"
               >
-                <p className="text-sm font-semibold text-sky-800">
-                  {icon} {title}
-                </p>
+                <p className="text-sm text-sky-800">{title}</p>
                 <p className="text-sm text-slate-600">{desc}</p>
               </div>
             ))}
@@ -202,7 +185,7 @@ export default function BandwidthSharingPoliciesPage() {
 
           {/* CS diagram */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <p className="text-xs text-slate-500 uppercase tracking-wider">
               Capacity diagram: C = 10 b.u., fully shared
             </p>
             <svg
@@ -265,16 +248,14 @@ export default function BandwidthSharingPoliciesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-1">
-              <p className="text-sm font-semibold text-emerald-700">
-                Advantage
-              </p>
+              <p className="text-sm text-emerald-700">Advantage</p>
               <p className="text-sm text-slate-600">
                 Maximises resource utilisation: no bandwidth sits idle while
                 calls of another class are waiting.
               </p>
             </div>
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-1">
-              <p className="text-sm font-semibold text-red-600">Limitation</p>
+              <p className="text-sm text-red-600">Limitation</p>
               <p className="text-sm text-slate-600">
                 Provides no GoS guarantee per service class. A high-traffic
                 class can crowd out lower-demand classes entirely.
@@ -286,7 +267,7 @@ export default function BandwidthSharingPoliciesPage() {
         {/* ── (b) Complete Partitioning ────────────────────────────────────────── */}
         <section className="space-y-4">
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-slate-700">
+            <h2 className="text-xl text-slate-700">
               Complete Partitioning (CP)
             </h2>
           </div>
@@ -304,7 +285,7 @@ export default function BandwidthSharingPoliciesPage() {
 
           {/* CP diagram */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <p className="text-xs text-slate-500 uppercase tracking-wider">
               Capacity diagram: C = 10 b.u., split across 3 classes
             </p>
             <svg
@@ -420,9 +401,7 @@ export default function BandwidthSharingPoliciesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-1">
-              <p className="text-sm font-semibold text-emerald-700">
-                Advantage
-              </p>
+              <p className="text-sm text-emerald-700">Advantage</p>
               <p className="text-sm text-slate-600">
                 Guarantees a defined GoS to each service class. A class cannot
                 be starved by other classes because its partition is exclusively
@@ -430,7 +409,7 @@ export default function BandwidthSharingPoliciesPage() {
               </p>
             </div>
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-1">
-              <p className="text-sm font-semibold text-red-600">Limitations</p>
+              <p className="text-sm text-red-600">Limitations</p>
               <p className="text-sm text-slate-600">
                 Fixed partitions cannot adapt to changing traffic patterns. Idle
                 capacity in one partition cannot be used by another class,
@@ -441,9 +420,7 @@ export default function BandwidthSharingPoliciesPage() {
           </div>
 
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-2">
-            <p className="text-sm font-semibold text-amber-800">
-              Important note
-            </p>
+            <p className="text-sm text-amber-800">Important note</p>
             <p className="text-sm text-slate-700">
               The dedication of capacity to individual classes causes resource
               management and bandwidth control problems in multi-service
@@ -457,9 +434,7 @@ export default function BandwidthSharingPoliciesPage() {
         {/* ── (c) Threshold Policy ─────────────────────────────────────────────── */}
         <section className="space-y-4">
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-slate-700">
-              Threshold Policy
-            </h2>
+            <h2 className="text-xl text-slate-700">Threshold Policy</h2>
           </div>
 
           <p className="text-slate-600 leading-relaxed">
@@ -477,7 +452,7 @@ export default function BandwidthSharingPoliciesPage() {
 
           {/* Threshold diagram */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <p className="text-xs text-slate-500 uppercase tracking-wider">
               Capacity diagram: C = 10 b.u., thresholds T₁ = 8, T₂ = 6
             </p>
             <svg
@@ -632,9 +607,7 @@ export default function BandwidthSharingPoliciesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-1">
-              <p className="text-sm font-semibold text-emerald-700">
-                Advantages
-              </p>
+              <p className="text-sm text-emerald-700">Advantages</p>
               <p className="text-sm text-slate-600">
                 Provides a bandwidth guarantee per class (via thresholds) while
                 allowing unrestricted sharing up to each threshold, combining
@@ -642,7 +615,7 @@ export default function BandwidthSharingPoliciesPage() {
               </p>
             </div>
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-1">
-              <p className="text-sm font-semibold text-red-600">Limitation</p>
+              <p className="text-sm text-red-600">Limitation</p>
               <p className="text-sm text-slate-600">
                 Threshold values must be carefully chosen per class and per
                 traffic condition. Poor threshold settings can degrade
@@ -655,7 +628,7 @@ export default function BandwidthSharingPoliciesPage() {
         {/* ── (d) Bandwidth Reservation ────────────────────────────────────────── */}
         <section className="space-y-4">
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-slate-700">
+            <h2 className="text-xl text-slate-700">
               Bandwidth Reservation (BR)
             </h2>
           </div>
@@ -681,7 +654,7 @@ export default function BandwidthSharingPoliciesPage() {
 
           {/* BR diagram */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <p className="text-xs text-slate-500 uppercase tracking-wider">
               Capacity diagram: C = 10 b.u., t_k = 2 reserved for class k
             </p>
             <svg
@@ -772,7 +745,7 @@ export default function BandwidthSharingPoliciesPage() {
 
           {/* Choosing t_k */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
-            <h4 className="font-semibold text-slate-700">
+            <h4 className="text-slate-700">
               Choosing the reservation parameters
             </h4>
             <p className="text-slate-600 text-sm leading-relaxed">
@@ -800,8 +773,7 @@ export default function BandwidthSharingPoliciesPage() {
           {/* GoS equalization callout */}
           <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 space-y-3">
             <div className="flex items-center gap-2">
-              <span className="text-sky-600 text-lg">⚖️</span>
-              <h4 className="font-semibold text-sky-800">
+              <h4 className="text-sky-800">
                 <Link
                   href="/theory/grade-of-service"
                   className="hover:underline"
@@ -831,9 +803,7 @@ export default function BandwidthSharingPoliciesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-1">
-              <p className="text-sm font-semibold text-emerald-700">
-                Advantage
-              </p>
+              <p className="text-sm text-emerald-700">Advantage</p>
               <p className="text-sm text-slate-600">
                 More flexible than Complete Partitioning: capacity is shared
                 globally while each class is protected by its reservation.
@@ -842,7 +812,7 @@ export default function BandwidthSharingPoliciesPage() {
               </p>
             </div>
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-1">
-              <p className="text-sm font-semibold text-red-600">Limitation</p>
+              <p className="text-sm text-red-600">Limitation</p>
               <p className="text-sm text-slate-600">
                 The reservation amounts{" "}
                 <em>
@@ -857,13 +827,11 @@ export default function BandwidthSharingPoliciesPage() {
 
         {/* Comparison summary */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-slate-700">
-            Policy Comparison
-          </h2>
+          <h2 className="text-xl text-slate-700">Policy Comparison</h2>
           <div className="overflow-x-auto rounded-xl border border-slate-200">
             <table className="w-full text-sm text-slate-600">
               <thead>
-                <tr className="bg-slate-50 text-slate-700 font-semibold text-left">
+                <tr className="bg-slate-50 text-slate-700 text-left">
                   <th className="px-4 py-3">Policy</th>
                   <th className="px-4 py-3">GoS guarantee per class</th>
                   <th className="px-4 py-3">Resource utilisation</th>

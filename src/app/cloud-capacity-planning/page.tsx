@@ -33,9 +33,7 @@ export default function CloudCapacityPlanningPage() {
           <RequestFlow />
 
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold text-slate-700">
-              Model Structure
-            </h2>
+            <h2 className="text-xl text-slate-700">Model Structure</h2>
             <figure className="space-y-3">
               <Image
                 src="/images/models.png"
@@ -61,7 +59,7 @@ export default function CloudCapacityPlanningPage() {
 
           {/* References */}
           <section className="border-t border-slate-200 pt-6 space-y-2">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <p className="text-xs text-slate-400 uppercase tracking-wider">
               References
             </p>
             <p className="text-xs text-slate-400 leading-relaxed">

@@ -15,7 +15,8 @@ function gcd(a: number, b: number): number {
 }
 function frac(num: number, den: number): string {
   const g = gcd(num, den);
-  const n = num / g, d = den / g;
+  const n = num / g,
+    d = den / g;
   return d === 1 ? `${n}` : `${n}/${d}`;
 }
 
@@ -143,11 +144,11 @@ export default function BirthDeathAnimation({
 
   return (
     <div className="space-y-5">
-
       {/* ── Chain diagram ──────────────────────────────────────────────────── */}
       <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
         <p className="text-xs text-slate-400 tracking-wide">
-          birth-death chain · C = {CAPACITY} b.u. · λ = {LAMBDA} (mean arrival rate) · μ = {MU} (service rate per call)
+          birth-death chain · C = {CAPACITY} b.u. · λ = {LAMBDA} (mean arrival
+          rate) · μ = {MU} (service rate per call)
         </p>
 
         <div className="overflow-x-auto">
@@ -208,7 +209,11 @@ export default function BirthDeathAnimation({
           }`}
         >
           <span className="text-base select-none">
-            {lastEvent === "arrival" ? "↗" : lastEvent === "departure" ? "↙" : "·"}
+            {lastEvent === "arrival"
+              ? "↗"
+              : lastEvent === "departure"
+                ? "↙"
+                : "·"}
           </span>
           <span>
             {lastEvent === "arrival"
@@ -229,11 +234,11 @@ export default function BirthDeathAnimation({
         const atCap = j === CAPACITY;
         const lo = atCap ? j - 1 : j;
         const hi = atCap ? j : j + 1;
-        const depRate = hi * MU;           // departure rate from upper state
+        const depRate = hi * MU; // departure rate from upper state
         const ratio = frac(LAMBDA, depRate); // P(hi) = (λ / depRate) · P(lo)
         return (
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <p className="text-xs text-slate-400 uppercase tracking-wider">
               Local balance · boundary {lo} | {hi}
             </p>
 
@@ -241,18 +246,28 @@ export default function BirthDeathAnimation({
             <div className="bg-white border border-slate-200 rounded-lg px-4 py-3 text-xs font-mono text-slate-700 space-y-1.5">
               {/* 1. Symbolic form */}
               <div className="flex items-center gap-2">
-                <span className="text-slate-400 w-32 flex-shrink-0">symbolic:</span>
-                <span>λ · P({lo}) = {hi}·μ · P({hi})</span>
+                <span className="text-slate-400 w-32 flex-shrink-0">
+                  symbolic:
+                </span>
+                <span>
+                  λ · P({lo}) = {hi}·μ · P({hi})
+                </span>
               </div>
               {/* 2. Substitute values */}
               <div className="flex items-center gap-2">
-                <span className="text-slate-400 w-32 flex-shrink-0">substitute:</span>
-                <span>{LAMBDA} · P({lo}) = {depRate} · P({hi})</span>
+                <span className="text-slate-400 w-32 flex-shrink-0">
+                  substitute:
+                </span>
+                <span>
+                  {LAMBDA} · P({lo}) = {depRate} · P({hi})
+                </span>
               </div>
               {/* 3. Rearranged to show P(hi) */}
               <div className="flex items-center gap-2 border-t border-slate-100 pt-1.5">
-                <span className="text-slate-400 w-32 flex-shrink-0">rearranged:</span>
-                <span className="text-sky-700 font-semibold">
+                <span className="text-slate-400 w-32 flex-shrink-0">
+                  rearranged:
+                </span>
+                <span className="text-sky-700">
                   P({hi}) = {ratio} · P({lo})
                 </span>
               </div>
@@ -270,7 +285,7 @@ export default function BirthDeathAnimation({
       {/* ── Probability distribution ───────────────────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
         <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">
             State probabilities · {ticks} ticks
           </p>
           <div className="flex gap-3 text-[10px] text-slate-500">
@@ -308,7 +323,9 @@ export default function BirthDeathAnimation({
                   />
                 </div>
                 {/* State label */}
-                <p className={`text-[10px] font-bold ${s === j ? "text-slate-700" : "text-slate-400"}`}>
+                <p
+                  className={`text-[10px] font-bold ${s === j ? "text-slate-700" : "text-slate-400"}`}
+                >
                   {s}
                 </p>
                 {/* Theoretical % */}
@@ -321,16 +338,17 @@ export default function BirthDeathAnimation({
         </div>
 
         <p className="text-xs text-slate-400 leading-relaxed">
-          P(j) = (α<sup>j</sup>/j!) / Σ<sub>i=0</sub><sup>C</sup>(α<sup>i</sup>/i!)
-          {" "}where α = λ/μ = {LAMBDA / MU} erl (offered traffic intensity).
-          The denominator normalises so all probabilities sum to 1.
-          The observed (green) bars converge to the theoretical (blue) values as the simulation runs longer.
+          P(j) = (α<sup>j</sup>/j!) / Σ<sub>i=0</sub>
+          <sup>C</sup>(α<sup>i</sup>/i!) where α = λ/μ = {LAMBDA / MU} erl
+          (offered traffic intensity). The denominator normalises so all
+          probabilities sum to 1. The observed (green) bars converge to the
+          theoretical (blue) values as the simulation runs longer.
         </p>
       </div>
 
       {/* ── Event log ─────────────────────────────────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Event log
         </p>
         {log.length === 0 ? (
@@ -351,7 +369,9 @@ export default function BirthDeathAnimation({
                 />
                 <span
                   className={
-                    entry.type === "arrival" ? "text-emerald-700" : "text-amber-700"
+                    entry.type === "arrival"
+                      ? "text-emerald-700"
+                      : "text-amber-700"
                   }
                 >
                   {entry.msg}
@@ -361,7 +381,6 @@ export default function BirthDeathAnimation({
           </ul>
         )}
       </div>
-
     </div>
   );
 }

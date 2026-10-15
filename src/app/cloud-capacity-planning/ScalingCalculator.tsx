@@ -314,7 +314,7 @@ export default function ScalingCalculator() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         Try it: How Much Do I Need to Scale?
       </h2>
       <p className="text-slate-600 leading-relaxed text-sm">
@@ -329,15 +329,14 @@ export default function ScalingCalculator() {
 
       {/* What does a blocking % mean? */}
       <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">💡</span>
         <div className="text-sm text-violet-900 leading-relaxed space-y-2">
           <p>
-            <strong>What does a blocking percentage actually mean?</strong> A
-            target of <InlineMath math="1\%" /> means about 1 in every 100 VM
-            requests gets rejected because no physical machine had room for it,
-            the rest are accepted right away. It is the same idea as an SLA
-            number: a &ldquo;99% availability&rdquo; commitment is another way
-            of saying &ldquo;at most 1% of requests can fail&rdquo;, and
+            What does a blocking percentage actually mean? A target of{" "}
+            <InlineMath math="1\%" /> means about 1 in every 100 VM requests
+            gets rejected because no physical machine had room for it, the rest
+            are accepted right away. It is the same idea as an SLA number: a
+            &ldquo;99% availability&rdquo; commitment is another way of saying
+            &ldquo;at most 1% of requests can fail&rdquo;, and
             &ldquo;99.9%&rdquo; (three nines) corresponds to a stricter{" "}
             <InlineMath math="0.1\%" /> target.
           </p>
@@ -361,7 +360,6 @@ export default function ScalingCalculator() {
       </div>
 
       <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-3">
-        <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">💡</span>
         <p className="text-sm text-sky-900 leading-relaxed">
           For the calculator prefer smaller numbers: think of them as tens
           rather than ones, e.g. enter 1 to represent 10 real machines or b.u.,
@@ -440,7 +438,7 @@ export default function ScalingCalculator() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-separate border-spacing-y-1">
             <thead>
-              <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+              <tr className="text-xs text-slate-400 tracking-wider">
                 <th className="text-left px-1 w-10" />
                 <th className="text-left px-1">aₖ per PM (erl)</th>
                 {RESOURCE_KEYS.map((y) => (
@@ -455,9 +453,7 @@ export default function ScalingCalculator() {
               {rows.map((row, i) => (
                 <tr key={row.id}>
                   <td className="px-1">
-                    <span className="text-xs font-semibold text-slate-500">
-                      k{i + 1}
-                    </span>
+                    <span className="text-xs text-slate-500">k{i + 1}</span>
                   </td>
                   <td className="px-1">
                     <input
@@ -537,7 +533,7 @@ export default function ScalingCalculator() {
                 setResult(null);
                 setError("");
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors duration-150 ${
+              className={`px-3 py-1.5 rounded-lg text-xs border transition-colors duration-150 ${
                 scalingMode === value
                   ? "bg-sky-500 text-white border-sky-500"
                   : "bg-white text-slate-500 border-slate-300 hover:border-sky-400 hover:text-sky-600"
@@ -559,7 +555,7 @@ export default function ScalingCalculator() {
       <button
         onClick={runScan}
         disabled={isCalculating}
-        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2 rounded-lg transition-colors duration-150 flex items-center justify-center gap-2"
+        className="w-full bg-sky-500 hover:bg-sky-600 disabled:opacity-60 disabled:cursor-not-allowed text-white py-2 rounded-lg transition-colors duration-150 flex items-center justify-center gap-2"
       >
         {isCalculating ? "Calculating…" : "Find What I Need"}
       </button>
@@ -570,7 +566,7 @@ export default function ScalingCalculator() {
           {result.found ? (
             result.mode === "capacity" && result.capacities ? (
               <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center space-y-2">
-                <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wider">
+                <p className="text-xs text-emerald-700 uppercase tracking-wider">
                   {result.step === 0
                     ? "You're already there"
                     : `Required capacity per PM (${T} PMs total)`}
@@ -601,7 +597,7 @@ export default function ScalingCalculator() {
               </div>
             ) : (
               <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center space-y-1">
-                <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wider">
+                <p className="text-xs text-emerald-700 uppercase tracking-wider">
                   {result.step === 0
                     ? "You're already there"
                     : "Machines needed"}
@@ -620,7 +616,7 @@ export default function ScalingCalculator() {
             )
           ) : (
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center space-y-1">
-              <p className="text-sm font-semibold text-red-700">
+              <p className="text-sm text-red-700">
                 {result.mode === "capacity"
                   ? `No capacity increase up to +${MAX_CAPACITY_STEP_SEARCH} b.u. reaches the target with T = ${T} PMs.`
                   : `Adding up to ${MAX_SERVER_STEP_SEARCH} more machines does not reach the target.`}
@@ -643,7 +639,7 @@ export default function ScalingCalculator() {
                     key={key}
                     className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1"
                   >
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    <p className="text-xs text-slate-400 uppercase tracking-wider">
                       Class {i + 1}
                     </p>
                     <p className="text-2xl font-bold text-sky-600">
@@ -653,7 +649,7 @@ export default function ScalingCalculator() {
                       B<sub>{i + 1}</sub> = {value.toFixed(7)}
                     </p>
                     <p className="text-xs text-violet-600">
-                      SLA: {sla.uptime} uptime — {sla.credit}
+                      SLA: {sla.uptime} uptime, {sla.credit}
                     </p>
                   </div>
                 );
@@ -663,7 +659,7 @@ export default function ScalingCalculator() {
 
           {/* Scan trend table */}
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <p className="text-xs text-slate-400 uppercase tracking-wider">
               {result.mode === "capacity"
                 ? `How blocking drops as capacity grows (T = ${T} fixed)`
                 : `How blocking drops as machines are added (capacity per PM fixed)`}
@@ -671,7 +667,7 @@ export default function ScalingCalculator() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-separate border-spacing-y-1">
                 <thead>
-                  <tr className="text-xs font-semibold text-slate-400 tracking-wider">
+                  <tr className="text-xs text-slate-400 tracking-wider">
                     <th className="text-left px-2">
                       {result.mode === "capacity"
                         ? "+b.u. per resource"
@@ -694,7 +690,7 @@ export default function ScalingCalculator() {
                       <td className="px-2 py-1.5 font-mono text-slate-600">
                         {(maxB * 100).toFixed(4)}%
                         {result.step === step && (
-                          <span className="ml-2 text-[10px] font-semibold text-emerald-600 uppercase">
+                          <span className="ml-2 text-[10px] text-emerald-600 uppercase">
                             target met
                           </span>
                         )}

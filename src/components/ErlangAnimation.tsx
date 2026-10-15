@@ -324,11 +324,11 @@ export default function ErlangAnimation() {
       {/* Server channels */}
       <div className="bg-white rounded-xl border border-slate-200 p-4 space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-slate-600">
+          <span className="text-sm text-slate-600">
             Server: {busySlots} / {capacity} channels busy
           </span>
           {busySlots === capacity && running && (
-            <span className="text-xs font-semibold text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full animate-pulse">
+            <span className="text-xs text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full animate-pulse">
               FULL: next call will be blocked
             </span>
           )}

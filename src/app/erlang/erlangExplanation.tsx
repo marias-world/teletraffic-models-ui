@@ -7,9 +7,7 @@ export default function ErlangExplanation() {
     <div className="pt-8 border-t border-slate-200 space-y-10">
       {/* ── What Does Blocking Mean ───────────────────────────────────────── */}
       <section className="space-y-3">
-        <h3 className="text-xl font-semibold text-slate-800">
-          What Does Blocking Mean?
-        </h3>
+        <h3 className="text-xl text-slate-800">What Does Blocking Mean?</h3>
         <div className="bg-blue-50 p-5 rounded-xl border border-blue-200 space-y-2">
           <p className="text-slate-700">
             Blocking occurs when all channels are busy and a new call arrives.
@@ -26,9 +24,7 @@ export default function ErlangExplanation() {
 
       {/* ── Closed Form ───────────────────────────────────────────────────── */}
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold text-slate-800">
-          The Closed Form
-        </h3>
+        <h3 className="text-xl text-slate-800">The Closed Form</h3>
         <p className="text-slate-600">
           The original Erlang-B formula calculates blocking probability directly
           from the offered traffic <InlineMath math="\alpha" /> and the number
@@ -40,7 +36,7 @@ export default function ErlangExplanation() {
         </div>
 
         <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
-          <h4 className="font-semibold text-slate-700">Where:</h4>
+          <h4 className="text-slate-700">Where:</h4>
           <ul className="space-y-2 text-slate-600">
             <li>
               <InlineMath math="B" />: blocking probability
@@ -63,13 +59,11 @@ export default function ErlangExplanation() {
 
         {/* Breakdown */}
         <div className="space-y-3">
-          <h4 className="font-semibold text-slate-700">
-            Breaking down each part
-          </h4>
+          <h4 className="text-slate-700">Breaking down each part</h4>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-              <p className="text-sm font-semibold text-slate-700">
+              <p className="text-sm text-slate-700">
                 Numerator: <InlineMath math="\alpha^C / C!" />
               </p>
               <p className="text-sm text-slate-600">
@@ -94,7 +88,7 @@ export default function ErlangExplanation() {
             </div>
 
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-              <p className="text-sm font-semibold text-slate-700">
+              <p className="text-sm text-slate-700">
                 Denominator: <InlineMath math="\sum_{i=0}^{C} \alpha^i / i!" />
               </p>
               <p className="text-sm text-slate-600">
@@ -116,9 +110,7 @@ export default function ErlangExplanation() {
 
       {/* ── Recursive Form ────────────────────────────────────────────────── */}
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold text-slate-800">
-          The Recursive Form
-        </h3>
+        <h3 className="text-xl text-slate-800">The Recursive Form</h3>
         <p className="text-slate-600">
           For large values of <InlineMath math="C" />, computing factorials
           directly becomes numerically unstable. The recursive form avoids this
@@ -136,13 +128,11 @@ export default function ErlangExplanation() {
         </div>
 
         <div className="space-y-3">
-          <h4 className="font-semibold text-slate-700">
-            Breaking down each part
-          </h4>
+          <h4 className="text-slate-700">Breaking down each part</h4>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-              <p className="text-sm font-semibold text-slate-700">
+              <p className="text-sm text-slate-700">
                 <InlineMath math="C - 1" /> (the previous step)
               </p>
               <p className="text-sm text-slate-600">
@@ -153,7 +143,7 @@ export default function ErlangExplanation() {
             </div>
 
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-              <p className="text-sm font-semibold text-slate-700">
+              <p className="text-sm text-slate-700">
                 <InlineMath math="E_{C-1}(\alpha)" /> (inherited result)
               </p>
               <p className="text-sm text-slate-600">
@@ -164,7 +154,7 @@ export default function ErlangExplanation() {
             </div>
 
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-              <p className="text-sm font-semibold text-slate-700">
+              <p className="text-sm text-slate-700">
                 Numerator: <InlineMath math="\alpha \cdot E_{C-1}(\alpha)" />
               </p>
               <p className="text-sm text-slate-600">
@@ -175,7 +165,7 @@ export default function ErlangExplanation() {
             </div>
 
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-              <p className="text-sm font-semibold text-slate-700">
+              <p className="text-sm text-slate-700">
                 Denominator:{" "}
                 <InlineMath math="C + \alpha \cdot E_{C-1}(\alpha)" />
               </p>
@@ -193,23 +183,21 @@ export default function ErlangExplanation() {
 
       {/* ── Worked Example ────────────────────────────────────────────────── */}
       <section className="space-y-6">
-        <h3 className="text-xl font-semibold text-slate-800">
+        <h3 className="text-xl text-slate-800">
           Worked Example: <InlineMath math="C = 3" />,{" "}
           <InlineMath math="\alpha = 2\,\text{erl}" />
         </h3>
 
         {/* Closed form worked example */}
         <div className="space-y-3">
-          <h4 className="font-semibold text-slate-700">
-            Method 1: Closed form
-          </h4>
+          <h4 className="text-slate-700">Method 1: Closed form</h4>
           <p className="text-slate-600 text-sm">
             Calculate each term of the denominator sum, then divide the top term
             by the total.
           </p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
-            <p className="text-sm font-semibold text-slate-600">
+            <p className="text-sm text-slate-600">
               Step 1: calculate each state
             </p>
             <div className="overflow-x-auto">
@@ -225,41 +213,37 @@ export default function ErlangExplanation() {
               <BlockMath math="i=3:\quad \frac{2^3}{3!} = \frac{8}{6} \approx 1.333" />
             </div>
 
-            <p className="text-sm font-semibold text-slate-600 pt-2">
+            <p className="text-sm text-slate-600 pt-2">
               Step 2: sum all states
             </p>
             <div className="overflow-x-auto">
               <BlockMath math="\sum_{i=0}^{3} \frac{2^i}{i!} = 1 + 2 + 2 + 1.333 \approx 6.333" />
             </div>
 
-            <p className="text-sm font-semibold text-slate-600 pt-2">
-              Step 3: divide
-            </p>
+            <p className="text-sm text-slate-600 pt-2">Step 3: divide</p>
             <div className="overflow-x-auto">
               <BlockMath math="B = E_3(2) = \frac{1.333}{6.333} \approx 0.2105" />
             </div>
 
             <div className="bg-sky-50 border border-sky-200 rounded-lg p-3 text-sm text-slate-700">
-              The call blocking probability is approximately{" "}
-              <strong>21%</strong>. Given a system capacity of 3 channels and an
-              offered traffic load of 2 erlangs, about 21% of incoming calls
-              will be blocked because the system is fully occupied.
+              The call blocking probability is approximately 21%. Given a system
+              capacity of 3 channels and an offered traffic load of 2 erlangs,
+              about 21% of incoming calls will be blocked because the system is
+              fully occupied.
             </div>
           </div>
         </div>
 
         {/* Recursive worked example */}
         <div className="space-y-3">
-          <h4 className="font-semibold text-slate-700">
-            Method 2: Recursive form
-          </h4>
+          <h4 className="text-slate-700">Method 2: Recursive form</h4>
           <p className="text-slate-600 text-sm">
             Start from the base case and build up one channel at a time.
           </p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-slate-600">
+              <p className="text-sm text-slate-600">
                 Base case: <InlineMath math="E_0(\alpha) = 1" />
               </p>
               <p className="text-sm text-slate-500">
@@ -270,7 +254,7 @@ export default function ErlangExplanation() {
             </div>
 
             <div className="space-y-2 border-t border-slate-200 pt-3">
-              <p className="text-sm font-semibold text-slate-600">
+              <p className="text-sm text-slate-600">
                 Step 1: <InlineMath math="C = 1" /> (one channel)
               </p>
               <div className="overflow-x-auto">
@@ -283,7 +267,7 @@ export default function ErlangExplanation() {
             </div>
 
             <div className="space-y-2 border-t border-slate-200 pt-3">
-              <p className="text-sm font-semibold text-slate-600">
+              <p className="text-sm text-slate-600">
                 Step 2: <InlineMath math="C = 2" /> (two channels)
               </p>
               <div className="overflow-x-auto">
@@ -298,7 +282,7 @@ export default function ErlangExplanation() {
             </div>
 
             <div className="space-y-2 border-t border-slate-200 pt-3">
-              <p className="text-sm font-semibold text-slate-600">
+              <p className="text-sm text-slate-600">
                 Step 3: <InlineMath math="C = 3" /> (three channels)
               </p>
               <div className="overflow-x-auto">
@@ -307,21 +291,19 @@ export default function ErlangExplanation() {
             </div>
 
             <div className="bg-sky-50 border border-sky-200 rounded-lg p-3 text-sm text-slate-700">
-              Both methods give the same result: <strong>B ≈ 21%</strong>.
+              Both methods give the same result: B ≈ 21%.
             </div>
           </div>
         </div>
 
         {/* Why recursive */}
         <div className="bg-green-50 border border-green-200 rounded-xl p-5 space-y-2">
-          <h4 className="font-semibold text-green-800">
-            Why use the recursive method?
-          </h4>
+          <h4 className="text-green-800">Why use the recursive method?</h4>
           <p className="text-sm text-slate-700">
             The recursive method is particularly useful for systems with a large
             number of channels. Rather than computing large factorials from
             scratch each time, it builds upon the previously computed values,
-            making it significantly more efficient and numerically stable.
+            which is faster and numerically stable.
           </p>
         </div>
       </section>

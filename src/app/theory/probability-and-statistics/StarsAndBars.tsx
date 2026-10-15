@@ -26,54 +26,45 @@ function SymbolRow({ sequence }: { sequence: Symbol[] }) {
 export default function StarsAndBars() {
   return (
     <section id="stars-and-bars" className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
+      <h2 className="text-xl text-slate-700">
         Stars and Bars (the divider method)
       </h2>
 
       <p className="text-slate-600 leading-relaxed">
-        Stars and bars is a trick for counting how many ways to split a pile
-        of <strong>identical</strong> items among several{" "}
-        <strong>different</strong> people, and it turns out to be just
-        another binomial coefficient in disguise.
+        Stars and bars is a trick for counting how many ways to split a pile of
+        identical items among several different people, and the answer is a
+        binomial coefficient.
       </p>
 
       {/* Example: sharing stars */}
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-600">
-          ⭐ Example: sharing stars
-        </p>
+        <p className="text-sm text-slate-600">Example: sharing stars</p>
         <p className="text-slate-600 leading-relaxed text-sm">
-          Suppose we have 5 identical ⭐ stars to give out to 3 friends:
-          Alice, Bob and Carol. Each friend can end up with 0, 1, 2, ... or
-          even all 5, as long as the total is 5. Here is one possible way to
-          split them up:
+          Suppose we have 5 identical ⭐ stars to give out to 3 friends: Alice,
+          Bob and Carol. Each friend can end up with 0, 1, 2, ... or even all 5,
+          as long as the total is 5. Here is one possible way to split them up:
         </p>
 
         <div className="flex flex-wrap items-end gap-6">
           <div className="flex flex-col items-center gap-1">
-            <span className="text-xs font-semibold text-slate-500">
-              Alice
-            </span>
+            <span className="text-xs text-slate-500">Alice</span>
             <div className="flex gap-0.5 text-lg">⭐⭐</div>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <span className="text-xs font-semibold text-slate-500">Bob</span>
+            <span className="text-xs text-slate-500">Bob</span>
             <div className="flex gap-0.5 text-lg">⭐</div>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <span className="text-xs font-semibold text-slate-500">
-              Carol
-            </span>
+            <span className="text-xs text-slate-500">Carol</span>
             <div className="flex gap-0.5 text-lg">⭐⭐</div>
           </div>
         </div>
 
         <p className="text-slate-600 leading-relaxed text-sm">
-          We can write this same distribution as a row of 5{" "}
-          <strong>stars</strong> (⭐) split by 2 <strong>bars</strong> (|, one
-          fewer than the number of friends). Everything before the first bar
-          goes to Alice, everything between the bars goes to Bob, and
-          everything after the last bar goes to Carol:
+          We can write this same distribution as a row of 5 stars (⭐) split by
+          2 bars (|, one fewer than the number of friends). Everything before
+          the first bar goes to Alice, everything between the bars goes to Bob,
+          and everything after the last bar goes to Carol:
         </p>
 
         <SymbolRow
@@ -91,9 +82,6 @@ export default function StarsAndBars() {
         />
 
         <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-          <span className="text-emerald-500 text-lg flex-shrink-0 mt-0.5">
-            💡
-          </span>
           <p className="text-sm text-emerald-900 leading-relaxed">
             Every way of sharing the 5 stars corresponds to exactly one
             arrangement of 5 ⭐ stars and 2 | bars in a row, and every such
@@ -103,10 +91,9 @@ export default function StarsAndBars() {
 
         <p className="text-slate-600 leading-relaxed text-sm">
           So the question &quot;how many ways can we split 5 stars among 3
-          friends?&quot; becomes &quot;how many ways can we arrange 5 stars
-          and 2 bars in a row (7 symbols total)?&quot; That is just choosing
-          which 2 of the 7 positions are bars (or equivalently, which 5 are
-          stars):
+          friends?&quot; becomes &quot;how many ways can we arrange 5 stars and
+          2 bars in a row (7 symbols total)?&quot; That is just choosing which 2
+          of the 7 positions are bars (or equivalently, which 5 are stars):
         </p>
 
         <div className="overflow-x-auto py-1">
@@ -116,13 +103,10 @@ export default function StarsAndBars() {
 
       {/* Definition callout */}
       <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-4">
-        <span className="text-violet-500 text-lg flex-shrink-0 mt-0.5">
-          📖
-        </span>
         <p className="text-sm text-violet-900 leading-relaxed">
-          In general, the number of ways to give out{" "}
-          <InlineMath math="n" /> identical items to <InlineMath math="k" />{" "}
-          different people (some may get 0) is:
+          In general, the number of ways to give out <InlineMath math="n" />{" "}
+          identical items to <InlineMath math="k" /> different people (some may
+          get 0) is:
         </p>
       </div>
       <div className="overflow-x-auto py-1">
@@ -131,15 +115,13 @@ export default function StarsAndBars() {
       <p className="text-slate-600 leading-relaxed text-sm">
         We need <InlineMath math="n" /> stars for the <InlineMath math="n" />{" "}
         items and <InlineMath math="k-1" /> bars to split them into{" "}
-        <InlineMath math="k" /> groups, for{" "}
-        <InlineMath math="n + (k-1)" /> symbols total.
+        <InlineMath math="k" /> groups, for <InlineMath math="n + (k-1)" />{" "}
+        symbols total.
       </p>
 
       {/* Final example */}
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-        <p className="text-sm font-semibold text-slate-600">
-          ⚽ Example: balls into baskets
-        </p>
+        <p className="text-sm text-slate-600">Example: balls into baskets</p>
         <p className="text-slate-600 leading-relaxed text-sm">
           How many ways can we put 4 identical ⚽ balls into 3 distinguishable
           🧺 baskets?
@@ -147,21 +129,15 @@ export default function StarsAndBars() {
 
         <div className="flex flex-wrap items-end gap-6">
           <div className="flex flex-col items-center gap-1">
-            <span className="text-xs font-semibold text-slate-500">
-              🧺 Basket 1
-            </span>
+            <span className="text-xs text-slate-500">🧺 Basket 1</span>
             <div className="flex gap-0.5 text-lg">⚽⚽</div>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <span className="text-xs font-semibold text-slate-500">
-              🧺 Basket 2
-            </span>
+            <span className="text-xs text-slate-500">🧺 Basket 2</span>
             <div className="flex gap-0.5 text-lg">⚽</div>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <span className="text-xs font-semibold text-slate-500">
-              🧺 Basket 3
-            </span>
+            <span className="text-xs text-slate-500">🧺 Basket 3</span>
             <div className="flex gap-0.5 text-lg">⚽</div>
           </div>
         </div>
@@ -169,8 +145,8 @@ export default function StarsAndBars() {
         <p className="text-slate-600 leading-relaxed text-sm">
           Here <InlineMath math="n=4" /> balls (stars) and{" "}
           <InlineMath math="k=3" /> baskets, so we need{" "}
-          <InlineMath math="k-1=2" /> bars, for{" "}
-          <InlineMath math="4+2=6" /> symbols total:
+          <InlineMath math="k-1=2" /> bars, for <InlineMath math="4+2=6" />{" "}
+          symbols total:
         </p>
         <div className="overflow-x-auto py-1">
           <BlockMath math="\binom{4+(3-1)}{3-1} = \binom{6}{2} = \frac{6!}{2!\,4!} = 15" />

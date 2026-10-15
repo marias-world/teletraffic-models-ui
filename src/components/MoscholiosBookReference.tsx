@@ -4,7 +4,7 @@
 export default function MoscholiosBookReference() {
   return (
     <section className="space-y-3">
-      <h2 className="text-xl font-semibold text-slate-700">Reference</h2>
+      <h2 className="text-xl text-slate-700">Reference</h2>
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-600 space-y-1">
         <p className="font-medium text-slate-700">
           Ioannis D. Moscholios, Michael Logothetis

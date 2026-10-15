@@ -228,7 +228,7 @@ export default function KaufmanRobertsAnimation({
       <div className="flex flex-col sm:flex-row items-stretch gap-4">
         {/* Incoming request panel */}
         <div className="w-full sm:w-36 sm:flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center gap-2 text-center min-h-[100px] sm:min-h-[120px]">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          <p className="text-xs text-slate-400 uppercase tracking-wider">
             Incoming
           </p>
           {incoming ? (
@@ -262,7 +262,7 @@ export default function KaufmanRobertsAnimation({
         {/* Processor */}
         <div className="flex-1 rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold text-slate-500">
+            <p className="text-xs text-slate-500">
               Processor · C = {CAPACITY} b.u.
             </p>
             <p className="text-xs text-slate-400">
@@ -305,8 +305,8 @@ export default function KaufmanRobertsAnimation({
           {/* Tile legend */}
           <p className="text-[10px] text-slate-400 leading-relaxed">
             Each tile is 1 b.u. <span className="font-mono">kX</span> = service
-            class, <span className="font-mono">Y</span> = time units left
-            until that call ends and frees the b.u.
+            class, <span className="font-mono">Y</span> = time units left until
+            that call ends and frees the b.u.
           </p>
 
           {/* Capacity bar */}
@@ -394,7 +394,7 @@ export default function KaufmanRobertsAnimation({
       {/* ── Blocking condition note ───────────────────────────────────────── */}
       {incoming && lastEvent === "blocked" && (
         <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-xs text-red-700 space-y-1">
-          <p className="font-semibold">
+          <p>
             Blocking condition for Class {incoming.id} (b = {incoming.cpus}{" "}
             b.u.)
           </p>
@@ -410,7 +410,7 @@ export default function KaufmanRobertsAnimation({
       {/* ── Theoretical blocking probabilities ──────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <p className="text-xs text-slate-500 uppercase tracking-wider">
             Kaufman-Roberts model · analytical B<sub>k</sub>
           </p>
           <p className="text-xs text-slate-400">
@@ -426,9 +426,7 @@ export default function KaufmanRobertsAnimation({
                 key={cls.id}
                 className={`rounded-lg border p-3 space-y-1 ${cls.light} ${cls.border}`}
               >
-                <p className={`text-xs font-semibold ${cls.textColor}`}>
-                  {cls.label}
-                </p>
+                <p className={`text-xs ${cls.textColor}`}>{cls.label}</p>
                 <p className={`text-sm font-mono ${cls.textColor}`}>
                   a<sub>{cls.id}</sub> = {cls.incomingLoad_a} erl
                 </p>
@@ -451,15 +449,13 @@ export default function KaufmanRobertsAnimation({
 
       {/* ── Resource utilization ─────────────────────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <p className="text-xs text-slate-500 uppercase tracking-wider">
           Resource utilization
         </p>
         <div className="grid grid-cols-2 gap-3">
           {/* Analytical */}
           <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
-            <p className="text-xs font-semibold text-slate-500">
-              Analytical (model)
-            </p>
+            <p className="text-xs text-slate-500">Analytical (model)</p>
             <div className="flex items-end justify-between">
               <div>
                 <p className="text-[11px] text-slate-400">Link utilization U</p>
@@ -487,7 +483,7 @@ export default function KaufmanRobertsAnimation({
 
           {/* Observed */}
           <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2">
-            <p className="text-xs font-semibold text-slate-500">
+            <p className="text-xs text-slate-500">
               Observed (simulation · {stats.ticks} ticks)
             </p>
             <div className="flex items-end justify-between">
@@ -528,7 +524,7 @@ export default function KaufmanRobertsAnimation({
           if (eff < 50) {
             return (
               <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 text-xs text-amber-800 leading-relaxed">
-                <span className="font-semibold">Underutilised system.</span> U ={" "}
+                <span>Underutilised system.</span> U ={" "}
                 {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
                 operates at approximately {eff.toFixed(0)}% of its available
                 capacity C = {CAPACITY} b.u. Given that U is considerably lower
@@ -542,10 +538,8 @@ export default function KaufmanRobertsAnimation({
           if (eff < 80) {
             return (
               <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2.5 text-xs text-emerald-800 leading-relaxed">
-                <span className="font-semibold">
-                  Moderately utilised system.
-                </span>{" "}
-                U = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
+                <span>Moderately utilised system.</span> U ={" "}
+                {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
                 operates at approximately {eff.toFixed(0)}% of its available
                 capacity C = {CAPACITY} b.u. The system is well-loaded with a
                 reasonable margin remaining for additional traffic bursts.
@@ -554,11 +548,11 @@ export default function KaufmanRobertsAnimation({
           }
           return (
             <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 text-xs text-red-800 leading-relaxed">
-              <span className="font-semibold">Heavily utilised system.</span> U
-              = {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system
-              operates at approximately {eff.toFixed(0)}% of its available
-              capacity C = {CAPACITY} b.u. The system is near saturation;
-              additional traffic is likely to experience significant blocking.
+              <span>Heavily utilised system.</span> U ={" "}
+              {THEORETICAL_UTIL.U.toFixed(3)} b.u. indicates the system operates
+              at approximately {eff.toFixed(0)}% of its available capacity C ={" "}
+              {CAPACITY} b.u. The system is near saturation; additional traffic
+              is likely to experience significant blocking.
             </div>
           );
         })()}
@@ -566,7 +560,7 @@ export default function KaufmanRobertsAnimation({
 
       {/* ── Event log ────────────────────────────────────────────────────── */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <p className="text-xs text-slate-400 uppercase tracking-wider">
           Event log
         </p>
         {log.length === 0 ? (

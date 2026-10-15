@@ -4,9 +4,7 @@ import { InlineMath } from "react-katex";
 export default function Overview() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
-        1. From Erlang-B to EMLM
-      </h2>
+      <h2 className="text-xl text-slate-700">1. From Erlang-B to EMLM</h2>
 
       <p className="text-slate-600 leading-relaxed">
         The{" "}
@@ -40,17 +38,13 @@ export default function Overview() {
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
         <ul className="space-y-2 text-sm text-slate-600 leading-relaxed">
           <li>
-            <span className="font-mono font-semibold text-slate-700">
-              Arrivals
-            </span>
+            <span className="font-mono text-slate-700">Arrivals</span>
             : class-
             <InlineMath math="k" /> calls arrive as a Poisson process with rate{" "}
             <InlineMath math="\lambda_k" />.
           </li>
           <li>
-            <span className="font-mono font-semibold text-slate-700">
-              Holding time
-            </span>
+            <span className="font-mono text-slate-700">Holding time</span>
             : each class-
             <InlineMath math="k" /> call keeps its <InlineMath math="b_k" />{" "}
             b.u. for an exponentially distributed time with rate{" "}
@@ -58,9 +52,7 @@ export default function Overview() {
             <InlineMath math="a_k = \lambda_k / \mu_k" /> erlangs.
           </li>
           <li>
-            <span className="font-mono font-semibold text-slate-700">
-              Admission
-            </span>
+            <span className="font-mono text-slate-700">Admission</span>
             : complete sharing. A class-
             <InlineMath math="k" /> arrival is accepted if{" "}
             <InlineMath math="n + b_k \le C" />, where <InlineMath math="n" />{" "}

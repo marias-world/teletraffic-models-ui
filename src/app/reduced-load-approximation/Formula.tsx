@@ -17,7 +17,7 @@ const SYMBOLS: [string, string][] = [
 export default function Formula() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">The Formula</h2>
+      <h2 className="text-xl text-slate-700">The Formula</h2>
       <p className="text-slate-600 leading-relaxed">
         Take a network of <InlineMath math="L" /> links carrying{" "}
         <InlineMath math="I" /> service classes. A class-
@@ -31,7 +31,6 @@ export default function Formula() {
       </div>
 
       <div className="flex gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4">
-        <span className="text-sky-500 text-lg flex-shrink-0 mt-0.5">🔗</span>
         <p className="text-sm text-sky-900 leading-relaxed">
           The occupancy distribution <InlineMath math="q(j)" /> for each link is
           computed with the{" "}
@@ -45,7 +44,7 @@ export default function Formula() {
           traverse it.
         </p>
       </div>
-      <ul className="list-disc pl-5 space-y-1 text-slate-600 leading-relaxed text-sm">
+      <ul className="space-y-1 text-slate-600 leading-relaxed text-sm">
         <li>
           <InlineMath math="\alpha_x" /> is the offered traffic load of a call{" "}
           <InlineMath math="x" /> in resource <InlineMath math="l" />.
@@ -57,7 +56,8 @@ export default function Formula() {
         </li>
         <li>
           <InlineMath math="R_x" /> is the set of resources (links) that this
-          service class call <InlineMath math="x" /> can traverse in the network.
+          service class call <InlineMath math="x" /> can traverse in the
+          network.
         </li>
       </ul>
 
@@ -85,7 +85,7 @@ export default function Formula() {
 
       {/* Parameter table */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+        <p className="text-xs text-slate-400 uppercase tracking-wider mb-2">
           Symbols
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-xs text-slate-600">

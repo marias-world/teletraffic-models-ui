@@ -4,9 +4,7 @@ import NetworkDiagram from "./NetworkDiagram";
 export default function NetworkExample() {
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-slate-700">
-        Example Network topology
-      </h2>
+      <h2 className="text-xl text-slate-700">Example Network topology</h2>
       <p className="text-slate-600 leading-relaxed">
         Here is an example with three links (L1, L2, L3) in a row, each one a
         router/resource, and three service classes. Classes{" "}
@@ -18,7 +16,7 @@ export default function NetworkExample() {
         L3.
       </p>
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider text-center">
+        <p className="text-xs text-slate-400 uppercase tracking-wider text-center">
           Network diagram
         </p>
         <NetworkDiagram
