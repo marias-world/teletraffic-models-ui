@@ -323,7 +323,7 @@ describe("Hyperexponential worked example wording", () => {
 
   it("walks through 100 calls for the defaults", () => {
     const text = hyper.workedExample(DEFAULT_SERVICE_DIST_PARAMS);
-    expect(text).toContain("h₁ = 1 and the slow calls have mean h₂ = 3");
+    expect(text).toContain("1/λ₁ = h₁ = 1 and the slow calls have mean 1/λ₂ = h₂ = 3");
     expect(text).toContain("50 are quick and 50 are slow");
     expect(text).toContain("50 × 1 = 50");
     expect(text).toContain("50 × 3 = 150");
@@ -335,7 +335,7 @@ describe("Hyperexponential worked example wording", () => {
 
   it("puts each step on its own line", () => {
     const lines = hyper.workedExample(DEFAULT_SERVICE_DIST_PARAMS).split("\n");
-    expect(lines).toHaveLength(6);
+    expect(lines).toHaveLength(7);
   });
 
   it("stays consistent for custom parameters (the average is always h)", () => {
