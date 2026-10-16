@@ -218,12 +218,12 @@ export const SERVICE_DISTRIBUTIONS: ServiceDistributionInfo[] = [
       const total = quickTotal + slowTotal;
       return [
         `A k-phase hyperexponential has mean Σ pᵢ/λᵢ: phase i has probability pᵢ and rate λᵢ, so its mean is 1/λᵢ. We use k = 2 phases, a quick one and a slow one, with p₁ = p and p₂ = 1 − p.`,
-        `In our example: quick calls have mean 1/λ₁ = h₁ = ${fmt(quickMean)} and the slow calls have mean 1/λ₂ = h₂ = ${fmt(slowMean)}.`,
+        `In our example: quick calls have mean 1/λ₁ = ${fmt(quickMean)} and slow calls have mean 1/λ₂ = ${fmt(slowMean)}.`,
         `Take 100 calls: ${fmt(quickCalls)} are quick and ${fmt(slowCalls)} are slow.`,
         `Quick calls add up to ${fmt(quickCalls)} × ${fmt(quickMean)} = ${fmt(quickTotal)}. Slow calls add up to ${fmt(slowCalls)} × ${fmt(slowMean)} = ${fmt(slowTotal)}.`,
         `Total: ${fmt(quickTotal)} + ${fmt(slowTotal)} = ${fmt(total)}, so the average is ${fmt(total)} / 100 = ${fmt(total / 100)}.`,
-        `That is the formula: p × h₁ + (1 − p) × h₂ = ${fmt(p)} × ${fmt(quickMean)} + ${fmt(1 - p)} × ${fmt(slowMean)} = ${fmt(total / 100)}.`,
-        `Why h₂ = ${fmt(slowMean)}?  the average must land on h = ${h}, so h₂ = (h − p × h₁) / (1 − p) = (${h} − ${fmt(p)} × ${fmt(quickMean)}) / ${fmt(1 - p)} = ${fmt(slowMean)}.`,
+        `That is the formula: p × 1/λ₁ + (1 − p) × 1/λ₂ = ${fmt(p)} × ${fmt(quickMean)} + ${fmt(1 - p)} × ${fmt(slowMean)} = ${fmt(total / 100)}.`,
+        `Why is 1/λ₂ = ${fmt(slowMean)}? The average must land on h = ${h}, so 1/λ₂ = (h − p × 1/λ₁) / (1 − p) = (${h} − ${fmt(p)} × ${fmt(quickMean)}) / ${fmt(1 - p)} = ${fmt(slowMean)}.`,
       ].join("\n");
     },
     squaredCv: ({ hyperFastProbability: p, hyperFastMeanFactor: f }) => {
