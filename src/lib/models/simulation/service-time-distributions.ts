@@ -242,7 +242,7 @@ export const SERVICE_DISTRIBUTIONS: ServiceDistributionInfo[] = [
       const h = WORKED_EXAMPLE_MEAN;
       // Nine short calls and one long one, built so the average is exactly h.
       const longCall = 10 * h - 9;
-      return `Skewed: most calls are short and a few are very long, which pulls the average up. Example: take 10 calls, nine lasting 1 and one lasting ${longCall}. The average is (9 × 1 + ${longCall}) / 10 = ${h}, yet the typical (median) call is only 1. The lognormal does this smoothly: for h = ${h} its typical call is about ${fmt(Math.exp(Math.log(h) - sigma ** 2 / 2))}.`;
+      return `Skewed: most calls are short and a few are very long, which pulls the average up. Example: take 10 calls, nine lasting 1 and one lasting ${longCall}. The average is (9 × 1 + ${longCall}) / 10 = ${h}, yet the typical (median) call is only 1. For h = ${h} its typical call is about ${fmt(Math.exp(Math.log(h) - sigma ** 2 / 2))}.`;
     },
     workedExample: ({ lognormalSigma: sigma }) => {
       const h = WORKED_EXAMPLE_MEAN;
