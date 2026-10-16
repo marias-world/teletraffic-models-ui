@@ -200,11 +200,11 @@ export const SERVICE_DISTRIBUTIONS: ServiceDistributionInfo[] = [
   },
   {
     value: "hyperexponential",
-    label: "Hyperexponential (higher variance)",
+    label: "Hyperexponential (higher variance), two phases",
     rule: ({ hyperFastProbability: p, hyperFastMeanFactor: f }) =>
-      `With probability ${fmt(p * 100)}% a quick call (exponential, mean ${fmt(f)}h), otherwise a slow one (exponential, mean ${fmt(hyperSlowMeanFactor(p, f))}h).`,
+      `With probability ${fmt(p * 100)}% a quick call (exponential, mean ${fmt(f)} × h), otherwise a slow one (exponential, mean ${fmt(hyperSlowMeanFactor(p, f))} × h), where h is the mean holding time.`,
     example: "quick balance checks mixed with long support calls",
-    meanFormula: String.raw`\text{mean} = p\,h_1 + (1-p)\,h_2 = h`,
+    meanFormula: String.raw`\text{mean} = \sum_{i=1}^{k} \frac{p_i}{\lambda_i} \;\to\; \frac{p}{\lambda_1} + \frac{1-p}{\lambda_2} = h`,
     plainWords: () =>
       "Two kinds of calls, quick and slow, where p is the fraction that are quick. The average is a weighted average of the two groups, with the slow group's average set so it lands on h. Same mean as the exponential, but far more unequal calls.",
     workedExample: ({ hyperFastProbability: p, hyperFastMeanFactor: f }) => {
@@ -217,12 +217,13 @@ export const SERVICE_DISTRIBUTIONS: ServiceDistributionInfo[] = [
       const slowTotal = slowCalls * slowMean;
       const total = quickTotal + slowTotal;
       return [
-        `In our example: quick calls have mean h₁ = ${fmt(quickMean)} and the slow calls have mean h₂ = ${fmt(slowMean)}.`,
+        `A k-phase hyperexponential has mean Σ pᵢ/λᵢ: phase i has probability pᵢ and rate λᵢ, so its mean is 1/λᵢ. We use k = 2 phases, a quick one and a slow one, with p₁ = p and p₂ = 1 − p.`,
+        `In our example: quick calls have mean 1/λ₁ = ${fmt(quickMean)} and slow calls have mean 1/λ₂ = ${fmt(slowMean)}.`,
         `Take 100 calls: ${fmt(quickCalls)} are quick and ${fmt(slowCalls)} are slow.`,
         `Quick calls add up to ${fmt(quickCalls)} × ${fmt(quickMean)} = ${fmt(quickTotal)}. Slow calls add up to ${fmt(slowCalls)} × ${fmt(slowMean)} = ${fmt(slowTotal)}.`,
         `Total: ${fmt(quickTotal)} + ${fmt(slowTotal)} = ${fmt(total)}, so the average is ${fmt(total)} / 100 = ${fmt(total / 100)}.`,
-        `That is exactly the formula: p × h₁ + (1 − p) × h₂ = ${fmt(p)} × ${fmt(quickMean)} + ${fmt(1 - p)} × ${fmt(slowMean)} = ${fmt(total / 100)}.`,
-        `Why h₂ = ${fmt(slowMean)}?  the average must land on h = ${h}, so h₂ = (h − p × h₁) / (1 − p) = (${h} − ${fmt(p)} × ${fmt(quickMean)}) / ${fmt(1 - p)} = ${fmt(slowMean)}.`,
+        `That is the formula: p × 1/λ₁ + (1 − p) × 1/λ₂ = ${fmt(p)} × ${fmt(quickMean)} + ${fmt(1 - p)} × ${fmt(slowMean)} = ${fmt(total / 100)}.`,
+        `Why is 1/λ₂ = ${fmt(slowMean)}? The average must land on h = ${h}, so 1/λ₂ = (h − p × 1/λ₁) / (1 − p) = (${h} − ${fmt(p)} × ${fmt(quickMean)}) / ${fmt(1 - p)} = ${fmt(slowMean)}.`,
       ].join("\n");
     },
     squaredCv: ({ hyperFastProbability: p, hyperFastMeanFactor: f }) => {
