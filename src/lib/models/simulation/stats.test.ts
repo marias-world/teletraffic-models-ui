@@ -55,6 +55,10 @@ describe("confidenceHalfWidth95", () => {
 });
 
 describe("confidence intervals in the replication summaries", () => {
+  // Follows the number of default seeds, so changing it needs no test edits.
+  const n = DEFAULT_SEEDS.length;
+  const t = tCritical95(n - 1);
+
   it("Erlang-B: blockingCi95 follows t * stdev / sqrt(n) and covers the analytical value", () => {
     const params = {
       arrivalRate: 5,
@@ -64,7 +68,7 @@ describe("confidence intervals in the replication summaries", () => {
     };
     const summary = replicateErlangBSimulation(DEFAULT_SEEDS, params);
     expect(summary.blockingCi95).toBeCloseTo(
-      (2.262 * summary.blockingStdev) / Math.sqrt(10),
+      (t * summary.blockingStdev) / Math.sqrt(n),
       12,
     );
     const analytical = recursiveErlangB(5, 5).result;
@@ -94,7 +98,7 @@ describe("confidence intervals in the replication summaries", () => {
     classes.forEach((_, k) => {
       expect(Number.isFinite(summary.classBlockingCi95[k])).toBe(true);
       expect(summary.classBlockingCi95[k]).toBeCloseTo(
-        (2.262 * summary.classBlockingStdev[k]) / Math.sqrt(10),
+        (t * summary.classBlockingStdev[k]) / Math.sqrt(n),
         12,
       );
       expect(
