@@ -81,7 +81,7 @@ export default function Calculator() {
     { id: 1, bu: "1", load: "4", rate: "1" },
     { id: 2, bu: "3", load: "2", rate: "1" },
   ]);
-  const [callsPerSeed, setCallsPerSeed] = useState("100000");
+  const [callsPerSeed, setCallsPerSeed] = useState("1000000");
   const [numSeeds, setNumSeeds] = useState(String(MAX_SEEDS));
   const [serviceDist, setServiceDist] =
     useState<ServiceDistribution>("exponential");
