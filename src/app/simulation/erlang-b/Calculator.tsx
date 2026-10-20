@@ -130,7 +130,7 @@ export default function Calculator() {
   const [arrivalRate, setArrivalRate] = useState("5");
   const [serviceRate, setServiceRate] = useState("1");
   const [capacity, setCapacity] = useState("5");
-  const [callsPerSeed, setCallsPerSeed] = useState("100000");
+  const [callsPerSeed, setCallsPerSeed] = useState("1000000");
   const [numSeeds, setNumSeeds] = useState(String(MAX_SEEDS));
   const [serviceDist, setServiceDist] =
     useState<ServiceDistribution>("exponential");
