@@ -21,6 +21,7 @@ import { DEFAULT_SEEDS } from "@/lib/models/simulation/seeds";
 import { kaufmanRoberts } from "@/lib/models/kaufman-roberts/kaufman-roberts-formula";
 import { callBlockingProbability } from "@/lib/models/kaufman-roberts/call-blocking-probability";
 import {
+  HoldingTimeSteps,
   SelectedDistributionNote,
   ServiceDistributionParamControls,
 } from "@/components/HoldingTimeDistributions";
@@ -346,6 +347,11 @@ export default function Calculator() {
         <SelectedDistributionNote
           value={serviceDist}
           params={shownDistParams}
+        />
+        <HoldingTimeSteps
+          value={serviceDist}
+          params={shownDistParams}
+          multirate
         />
         <p className="text-xs text-slate-400 mt-1">
           Every option keeps the mean holding time at{" "}

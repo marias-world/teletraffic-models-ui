@@ -4,6 +4,7 @@ import {
   DEFAULT_SERVICE_DIST_PARAM_INPUTS,
   DEFAULT_SERVICE_DIST_PARAMS,
   describeServiceDistParams,
+  holdingTimeSteps,
   hyperSlowMeanFactor,
   makeServiceSampler,
   parseServiceDistParams,
@@ -162,7 +163,7 @@ describe("parameter validation", () => {
   });
 
   it("rejects bad Erlang stages", () => {
-    for (const k of [0, -1, 2.5, 51, NaN]) {
+    for (const k of [0, -1, 2.5, 6, NaN]) {
       expect(
         validateServiceDistParams("erlang", { ...ok, erlangStages: k }),
       ).not.toBeNull();
@@ -412,5 +413,54 @@ describe("plain-words explanations", () => {
   it("give the typical lognormal call for the chosen sigma", () => {
     const text = info("lognormal").plainWords(DEFAULT_SERVICE_DIST_PARAMS);
     expect(text).toContain("1.51");
+  });
+});
+
+describe("holdingTimeSteps", () => {
+  const dists = [
+    "exponential",
+    "deterministic",
+    "erlang",
+    "hyperexponential",
+    "lognormal",
+  ] as const;
+
+  it("gives the same six steps for every distribution, with only the draw changing", () => {
+    const drawTexts = new Set<string>();
+    for (const d of dists) {
+      const steps = holdingTimeSteps(d, DEFAULT_SERVICE_DIST_PARAMS, false);
+      expect(steps).toHaveLength(6);
+      expect(steps[0].title).toBe("You choose the distribution");
+      drawTexts.add(steps[3].text);
+    }
+    expect(drawTexts.size).toBe(dists.length);
+  });
+
+  it("uses the chosen parameter values", () => {
+    const params = { ...DEFAULT_SERVICE_DIST_PARAMS, erlangStages: 7 };
+    const erlang = holdingTimeSteps("erlang", params, false);
+    expect(erlang[1].text).toContain("7 equal parts");
+    expect(erlang[3].text).toContain("7 random numbers");
+    const hyper = holdingTimeSteps(
+      "hyperexponential",
+      {
+        ...DEFAULT_SERVICE_DIST_PARAMS,
+        hyperFastProbability: 0.9,
+        hyperFastMeanFactor: 0.3,
+      },
+      false,
+    );
+    // slow factor = (1 - 0.9 * 0.3) / (1 - 0.9) = 7.3
+    expect(hyper[1].text).toContain("= 7.3");
+  });
+
+  it("talks about classes and bandwidth units for the multirate model", () => {
+    const steps = holdingTimeSteps(
+      "exponential",
+      DEFAULT_SERVICE_DIST_PARAMS,
+      true,
+    );
+    expect(steps[2].text).toContain("bandwidth units");
+    expect(steps[3].text).toContain("hₖ");
   });
 });
