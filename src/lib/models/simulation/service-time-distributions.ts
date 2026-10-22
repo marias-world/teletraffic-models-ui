@@ -449,7 +449,7 @@ export function holdingTimeSteps(
     case "lognormal": {
       const sigma = params.lognormalSigma;
       setup = `Choose m so the mean lands on ${h}: m = ln ${h} − σ²/2, with σ = ${fmt(sigma)} (σ²/2 = ${fmt(sigma ** 2 / 2)}).`;
-      draw = `Take two random numbers y₁ and y₂ (each between 0 and 1) and turn them into one bell-curve number Z, centred on 0 (the Box-Muller method). The call length is e^(m + ${fmt(sigma)} × Z). Z is usually close to 0, which gives calls shorter than ${h}, and occasionally large, which gives a very long call.`;
+      draw = `Take two random numbers y₁ and y₂ (each between 0 and 1) and turn them into one bell-curve number Z, centred on 0. The call length is e^(m + ${fmt(sigma)} × Z). Z is usually close to 0, which gives calls shorter than ${h}, and occasionally large, which gives a very long call.`;
       break;
     }
   }
