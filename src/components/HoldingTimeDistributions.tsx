@@ -1,6 +1,7 @@
 import { InlineMath } from "react-katex";
 import {
   DEFAULT_SERVICE_DIST_PARAMS,
+  holdingTimeSteps,
   hyperSlowMeanFactor,
   MAX_ERLANG_STAGES,
   MAX_LOGNORMAL_SIGMA,
@@ -197,7 +198,7 @@ export function SelectedDistributionNote({
 }
 
 const INPUT = "w-full border border-slate-300 rounded-lg px-2 py-1.5 text-sm";
-const LABEL = "block text-xs font-medium text-slate-600 mb-1";
+const LABEL = "block min-h-[18px] text-xs font-medium text-slate-600 mb-1";
 
 export function ServiceDistributionParamControls({
   dist,
@@ -273,9 +274,9 @@ export function ServiceDistributionParamControls({
               />
             </div>
             <div>
-              <label className={LABEL}>Slow-call mean (× h), derived</label>
+              <label className={LABEL}>Slow-call mean (× h)</label>
               <div className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-sm font-mono text-slate-500">
-                {error ? "…" : slowFactor.toFixed(3)}
+                {error ? "…" : Number(slowFactor.toFixed(3))}
               </div>
             </div>
           </>
@@ -298,6 +299,34 @@ export function ServiceDistributionParamControls({
         )}
       </div>
       {error && <p className="text-xs text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+export function HoldingTimeSteps({
+  value,
+  params,
+  multirate = false,
+}: {
+  value: ServiceDistribution;
+  params: ServiceDistributionParams;
+  multirate?: boolean;
+}) {
+  const info = SERVICE_DISTRIBUTIONS.find((d) => d.value === value);
+  if (!info) return null;
+  const steps = holdingTimeSteps(value, params, multirate);
+  return (
+    <div className="mt-3 space-y-2">
+      <p className="text-xs font-medium text-slate-600">
+        What happens when you pick {info.label.split(" (")[0]}
+      </p>
+      <ol className="list-decimal pl-5 space-y-1.5 text-xs text-slate-500 leading-relaxed">
+        {steps.map((step) => (
+          <li key={step.title}>
+            {step.title}. {step.text}
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

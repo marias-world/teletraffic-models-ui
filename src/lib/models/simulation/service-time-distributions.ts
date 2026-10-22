@@ -22,7 +22,7 @@ export const DEFAULT_SERVICE_DIST_PARAMS: ServiceDistributionParams = {
   lognormalSigma: 0.75,
 };
 
-export const MAX_ERLANG_STAGES = 50;
+export const MAX_ERLANG_STAGES = 5;
 export const MAX_LOGNORMAL_SIGMA = 2;
 
 export function hyperSlowMeanFactor(
@@ -402,4 +402,90 @@ export function sampleSummary(
   if (sampleCache.size >= 50) sampleCache.clear();
   sampleCache.set(key, summary);
   return summary;
+}
+
+export interface HoldingTimeStep {
+  title: string;
+  text: string;
+}
+
+export function holdingTimeSteps(
+  dist: ServiceDistribution,
+  params: ServiceDistributionParams,
+  multirate: boolean,
+): HoldingTimeStep[] {
+  const h = multirate ? "hₖ" : "h";
+  const mu = multirate ? "μₖ" : "μ";
+  const exp = (mean: string, u = "y") => `−${mean} × ln(1 − ${u})`;
+
+  let setup: string;
+  let draw: string;
+  switch (dist) {
+    case "exponential":
+      setup = `The only number needed is the mean ${h} = 1/${mu}.`;
+      draw = `Take one random number y between 0 and 1 from the seeded generator. The call length is ${exp(h)}. A small y gives a short call and a y close to 1 gives a long one, and over many calls the average comes out at ${h}.`;
+      break;
+    case "deterministic":
+      setup = `The only number needed is ${h} = 1/${mu}.`;
+      draw = `No random number is used. The call length is ${h} every time.`;
+      break;
+    case "erlang": {
+      const k = params.erlangStages;
+      setup = `Split the mean into ${k} equal parts: each stage has mean ${h}/${k}.`;
+      draw =
+        k === 1
+          ? `One stage only, so it is the exponential: take one random number y between 0 and 1 and the call length is ${exp(h)}.`
+          : `Take ${k} random numbers ${k === 2 ? "y₁ and y₂" : `y₁ to y${subscript(k)}`} (each between 0 and 1). Turn each into a stage length ${exp(`(${h}/${k})`, "yᵢ")} and add the ${k} stage lengths together. That sum is the call length.`;
+      break;
+    }
+    case "hyperexponential": {
+      const p = params.hyperFastProbability;
+      const f = params.hyperFastMeanFactor;
+      const s = hyperSlowMeanFactor(p, f);
+      setup = `Quick calls have mean ${fmt(f)} × ${h} and happen with probability ${fmt(p)}. The slow calls' mean is worked out so the overall mean stays ${h}: (1 − ${fmt(p)} × ${fmt(f)}) / (1 − ${fmt(p)}) = ${fmt(s)}, so ${fmt(s)} × ${h}.`;
+      draw = `Take a first random number y₁ between 0 and 1. If y₁ is below ${fmt(p)}, the call is quick, otherwise it is slow. Then take a second random number y₂ and turn it into a length with that phase's mean: ${exp("mean", "y₂")}, where mean is ${fmt(f)} × ${h} for a quick call or ${fmt(s)} × ${h} for a slow one.`;
+      break;
+    }
+    case "lognormal": {
+      const sigma = params.lognormalSigma;
+      setup = `Choose m so the mean lands on ${h}: m = ln ${h} − σ²/2, with σ = ${fmt(sigma)} (σ²/2 = ${fmt(sigma ** 2 / 2)}).`;
+      draw = `Take two random numbers y₁ and y₂ (each between 0 and 1) and turn them into one bell-curve number Z, centred on 0 (the Box-Muller method). The call length is e^(m + ${fmt(sigma)} × Z). Z is usually close to 0, which gives calls shorter than ${h}, and occasionally large, which gives a very long call.`;
+      break;
+    }
+  }
+
+  return [
+    {
+      title: "You choose the distribution",
+      text: `Below, ${h} = 1/${mu} is the average call length${multirate ? " of class k (each class has its own)" : ""}. For example, ${multirate ? "if calls of class k are served at 2 per minute" : "if a server can complete 2 calls per minute"}, then ${mu} = 2 and each call takes on average 1/2 of a minute, so ${h} = 1/2. The only thing that changes is: how a call length is produced. The call arrivals (still random, with the same rate), the ${multirate ? "link capacity" : "number of servers"} and the blocking rule stay exactly as they were.`,
+    },
+    {
+      title: "The simulator prepares the rule once",
+      text: `Before the run starts, it builds the rule ${multirate ? "for each class (every class uses the chosen distribution with its own mean)" : "for the chosen distribution"} from your numbers. ${setup}`,
+    },
+    {
+      title: "A call arrives",
+      text: `If ${multirate ? "there are enough free bandwidth units" : "a server is free"}, the call is accepted. If not, it is blocked and lost, and no call length is drawn for it.`,
+    },
+    {
+      title: "An accepted call gets its length",
+      text: draw,
+    },
+    {
+      title: "Its departure is scheduled",
+      text: `The call will leave at (arrival time) + (call length). That departure goes on the event list, and when the clock reaches it, the ${multirate ? "bandwidth is" : "server is"} freed.`,
+    },
+    {
+      title: "The mean stays the same",
+      text: `Every rule above is built to average ${h} = 1/${mu}, so the offered load does not change. Only the spread of the call lengths changes, which is the variability CV² shown above.`,
+    },
+  ];
+}
+
+function subscript(n: number): string {
+  const digits = "₀₁₂₃₄₅₆₇₈₉";
+  return String(n)
+    .split("")
+    .map((d) => digits[Number(d)])
+    .join("");
 }

@@ -25,6 +25,7 @@ import {
 import { downloadBlob, downloadSvgAsPng } from "@/lib/download";
 import QComparisonChart from "@/components/QComparisonChart";
 import {
+  HoldingTimeSteps,
   SelectedDistributionNote,
   ServiceDistributionParamControls,
 } from "@/components/HoldingTimeDistributions";
@@ -405,6 +406,7 @@ export default function Calculator() {
           value={serviceDist}
           params={shownDistParams}
         />
+        <HoldingTimeSteps value={serviceDist} params={shownDistParams} />
         <p className="text-xs text-slate-400 mt-1">
           Every option keeps the mean holding time at{" "}
           <InlineMath math="1/\mu" />, so the offered load is unchanged; only
