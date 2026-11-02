@@ -1,6 +1,9 @@
 import { ServiceClass, ServiceClassWithBR } from "../../models/types";
 import { NUMBER_OF_DIGITS_AFTER_DECIMAL } from "../../models/constants";
 import { linkUtilizationFromProbabilities } from "./link-utilization";
+import { callBlockingProbability } from "./call-blocking-probability";
+import { kaufmanRoberts } from "./kaufman-roberts-formula";
+import { robertsFormulaBRPolicy } from "./roberts-formula-br-policy";
 
 export type StepGroup = {
   title: string;
@@ -14,6 +17,30 @@ export type KaufmanRobertsStepsResult = {
 };
 
 const fmt = (n: number, digits = 4) => n.toFixed(digits);
+
+const NUMBER_RANGE_LIMIT = 1e200;
+
+function exceedsNumberRange(
+  capacity: number,
+  serviceClasses: (ServiceClass | ServiceClassWithBR)[],
+  isBR: boolean,
+): boolean {
+  const q = new Array<number>(capacity + 1).fill(0);
+  q[0] = 1;
+  for (let j = 1; j <= capacity; j++) {
+    let sum = 0;
+    for (const sc of serviceClasses) {
+      const tk = (sc as ServiceClassWithBR).tk ?? 0;
+      const bu = isBR && j > capacity - tk ? 0 : sc.bu;
+      if (bu <= 0 || sc.incomingLoad_a === 0) continue;
+      const prev = j - bu;
+      if (prev >= 0) sum += sc.incomingLoad_a * bu * q[prev];
+    }
+    q[j] = sum / j;
+    if (!(q[j] < NUMBER_RANGE_LIMIT)) return true;
+  }
+  return false;
+}
 
 /**
  * Computes the Kaufman-Roberts (EMLM) state probabilities and per-class
@@ -32,6 +59,29 @@ export function kaufmanRobertsWithSteps(
   }
 
   const isBR = (serviceClasses[0] as ServiceClassWithBR).tk !== undefined;
+
+  // Very large systems: the un-normalised q(j) values overflow a computer
+  // number, so listing them step by step is impossible (and thousands of
+  // lines long). Use the rescaled calculation and say so.
+  if (exceedsNumberRange(capacity, serviceClasses, isBR)) {
+    const probabilities = isBR
+      ? robertsFormulaBRPolicy(capacity, serviceClasses as ServiceClassWithBR[])
+      : kaufmanRoberts(capacity, serviceClasses);
+    return {
+      results: callBlockingProbability(capacity, serviceClasses),
+      utilization: linkUtilizationFromProbabilities(capacity, probabilities),
+      steps: [
+        {
+          title: "Large system: scaled calculation",
+          formulas: [
+            String.raw`\text{With } C = ${capacity} \text{ the un-normalised values } q(j) \text{ become far larger than a computer can store.}`,
+            String.raw`\text{They are divided by a common factor as they are built, which does not change the result because every } q(j) \text{ is divided by } G \text{ at the end.}`,
+            String.raw`\text{The steps are therefore not listed; the blocking probabilities and utilisation below are exact to the 7 decimals shown.}`,
+          ],
+        },
+      ],
+    };
+  }
 
   // ── Step 1: recursively build the unnormalised state probabilities ──────
   const recursionFormulas: string[] = [];
@@ -53,9 +103,7 @@ export function kaufmanRobertsWithSteps(
       const qPrev = prevIndex >= 0 ? unnorm[prevIndex] : 0;
       sum += sc.incomingLoad_a * effectiveBu * qPrev;
 
-      symbolicTerms.push(
-        `\\alpha_{${idx + 1}} b_{${idx + 1}} q(${prevIndex})`,
-      );
+      symbolicTerms.push(`\\alpha_{${idx + 1}} b_{${idx + 1}} q(${prevIndex})`);
       numericTerms.push(
         `${sc.incomingLoad_a} \\times ${effectiveBu} \\times ${fmt(qPrev)}`,
       );
