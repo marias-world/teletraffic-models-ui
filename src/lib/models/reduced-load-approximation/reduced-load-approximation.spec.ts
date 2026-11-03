@@ -117,7 +117,7 @@ describe("Reduced Load Approximation", () => {
           ],
         },
       ],
-      expected: { B1: 0.4621553, B2: 0.764627, B3: 0.0656744 },
+      expected: { B1: 0.4621548, B2: 0.7646266, B3: 0.0656742 },
     },
     {
       description:
@@ -187,7 +187,7 @@ describe("Reduced Load Approximation", () => {
           ],
         },
       ],
-      expected: { B1: 0.3166559, B2: 0.4151443, B3: 0.5325276 },
+      expected: { B1: 0.3166558, B2: 0.4151443, B3: 0.5325275 },
     },
     {
       description:
@@ -233,7 +233,7 @@ describe("Reduced Load Approximation", () => {
           ],
         },
       ],
-      expected: { B1: 0.5965109 }, // RLA gives different blocking probability compared to LAR and Kaufman-Roberts model
+      expected: { B1: 0.5965091 }, // RLA gives different blocking probability compared to LAR and Kaufman-Roberts model
     },
   ])(`When $description`, ({ links, serviceClasses, expected }) => {
     it("should calculate the CBP for each service class that traverses the link network topology", () => {

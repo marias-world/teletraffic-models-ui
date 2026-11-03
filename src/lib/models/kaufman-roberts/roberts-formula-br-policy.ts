@@ -1,6 +1,6 @@
 import { ServiceClassWithBR } from "../../models/types";
 import { normaliseProbabilityValues } from "../../models/normalise-probabilities";
-import { NUMBER_OF_DIGITS_AFTER_DECIMAL } from "../../models/constants";
+import { rescaleIfLarge } from "../../models/rescale";
 
 export const robertsFormulaBRPolicy = (
   capacity: number,
@@ -22,15 +22,12 @@ export const robertsFormulaBRPolicy = (
       const prevValue = prevIndex >= 0 ? q[prevIndex] : 0;
       sum += incomingLoad_a * bu * prevValue;
     }
-    q[j] = parseFloat((sum / j).toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL));
+    q[j] = sum / j;
+    rescaleIfLarge(q, j);
   }
 
-  const results = q.map((value) =>
-    parseFloat(value.toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL)),
-  );
-
   const probabilities: { [key: string]: number } = {};
-  normaliseProbabilityValues(results).forEach((prob: number, index: number) => {
+  normaliseProbabilityValues(q).forEach((prob: number, index: number) => {
     return (probabilities[`q(${index})`] = prob);
   });
 

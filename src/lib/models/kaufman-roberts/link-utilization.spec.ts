@@ -20,7 +20,7 @@ describe("link-utilization", () => {
 
   it("should calculate the link utilization U for the system", () => {
     const result = linkUtilization_U(capacity, serviceClasses);
-    expect(result).toEqual("2.8918318 b.u");
+    expect(result).toEqual("2.8918322 b.u");
   });
 });
 

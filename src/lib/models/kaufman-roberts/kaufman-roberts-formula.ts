@@ -1,6 +1,6 @@
 import { ServiceClass } from "../../models/types";
 import { normaliseProbabilityValues } from "../../models/normalise-probabilities";
-import { NUMBER_OF_DIGITS_AFTER_DECIMAL } from "../../models/constants";
+import { rescaleIfLarge } from "../../models/rescale";
 
 export const unnormalisedKaufmanRobertsFormula = (
   capacity: number,
@@ -21,11 +21,10 @@ export const unnormalisedKaufmanRobertsFormula = (
       sum += incomingLoad_a * bu * prevValue;
     }
     q[j] = sum / j;
+    rescaleIfLarge(q, j);
   }
 
-  return q.map((value) =>
-    parseFloat(value.toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL)),
-  );
+  return q;
 };
 
 export const kaufmanRoberts = (
