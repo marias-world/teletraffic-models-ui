@@ -1,5 +1,3 @@
-import { NUMBER_OF_DIGITS_AFTER_DECIMAL } from "../models/constants";
-
 export const calculateNormalizationConstant_G = (
   unormalizedProbabilities: number[],
 ): number => {
@@ -11,7 +9,5 @@ export const normaliseProbabilityValues = (
   probabilities: number[],
 ): number[] => {
   const sum = calculateNormalizationConstant_G(probabilities);
-  return probabilities.map((probability) =>
-    parseFloat((probability / sum).toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL)),
-  );
+  return probabilities.map((probability) => probability / sum);
 };

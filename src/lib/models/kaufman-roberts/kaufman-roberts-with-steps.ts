@@ -110,7 +110,7 @@ export function kaufmanRobertsWithSteps(
     });
 
     const qj = sum / j;
-    unnorm[j] = parseFloat(qj.toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL));
+    unnorm[j] = qj;
 
     if (symbolicTerms.length === 0) {
       recursionFormulas.push(`q(${j}) = 0`);
@@ -129,9 +129,7 @@ export function kaufmanRobertsWithSteps(
     `G = \\sum_{j=0}^{${capacity}} q(j) = ${unnorm.map((v) => fmt(v, 4)).join(" + ")} = ${fmt(G, 6)}`,
   );
 
-  const normalised = unnorm.map((v) =>
-    parseFloat((v / G).toFixed(NUMBER_OF_DIGITS_AFTER_DECIMAL)),
-  );
+  const normalised = unnorm.map((v) => v / G);
 
   normalisationFormulas.push(
     `q(j) = \\frac{q(j)}{G} \\;\\Rightarrow\\; ` +

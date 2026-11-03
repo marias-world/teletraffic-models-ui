@@ -39,7 +39,7 @@ describe("Call Blocking probability with 2 service classes - complete sharing po
     const result = callBlockingProbability(capacity, serviceClasses);
     expect(result).toEqual({
       B_class_1: 0.1721854,
-      B_class_2: 0.3818984,
+      B_class_2: 0.3818985,
     });
   });
 });
@@ -56,7 +56,7 @@ describe.each([
       },
     ],
     expected: {
-      B_class_1: 0.0366973,
+      B_class_1: 0.0366972,
     },
   },
   {

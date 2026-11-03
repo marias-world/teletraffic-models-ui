@@ -35,8 +35,8 @@ describe("Proposed model for IEEE", () => {
       expect(kaufmanRoberts).toEqual({
         RAM: {
           B_class_1: 0.1266412,
-          B_class_2: 0.2646684,
-          B_class_3: 0.4079468,
+          B_class_2: 0.2646683,
+          B_class_3: 0.4079467,
         },
         Processor: {
           B_class_1: 0.0779775,
@@ -89,8 +89,8 @@ describe("Proposed model for IEEE", () => {
       expect(relationR).toEqual({
         RAM: {
           B_class_1: 0.2907514,
-          B_class_2: 0.5420315,
-          B_class_3: 0.6784978,
+          B_class_2: 0.5420317,
+          B_class_3: 0.678498,
         },
         Processor: {
           B_class_1: 0.1713943,
@@ -115,24 +115,24 @@ describe("Proposed model for IEEE", () => {
     it("should return the blocking probabilities in the reduced load approximation", () => {
       expect(reducedLoadApproximation).toEqual({
         RAM: {
-          B_class_1: 0.0537081,
-          B_class_2: 0.1254717,
-          B_class_3: 0.2169251,
+          B_class_1: 0.05370805700264812,
+          B_class_2: 0.12547165008207672,
+          B_class_3: 0.216925032738696,
         },
         Processor: {
-          B_class_1: 0.0184552,
-          B_class_2: 0.0464381,
-          B_class_3: 0.0872845,
+          B_class_1: 0.018455164663592823,
+          B_class_2: 0.04643810230394761,
+          B_class_3: 0.08728444668800578,
         },
         Disk: {
-          B_class_1: 0.0315472,
-          B_class_2: 0.0767906,
-          B_class_3: 0.1390231,
+          B_class_1: 0.03154721665356952,
+          B_class_2: 0.07679060750015707,
+          B_class_3: 0.13902312106968032,
         },
         Bps: {
-          B_class_1: 0.2403287,
-          B_class_2: 0.2403287,
-          B_class_3: 0.2403287,
+          B_class_1: 0.24032865065109082,
+          B_class_2: 0.24032865065109082,
+          B_class_3: 0.24032865065109082,
         },
       });
     });
@@ -141,9 +141,9 @@ describe("Proposed model for IEEE", () => {
   describe("Step 5: Calculate the blocking probability for the proposed model", () => {
     it("should return the blocking probability for the proposed model", () => {
       expect(blockingProbability).toEqual({
-        B_class_1: 0.2036256,
+        B_class_1: 0.2036255,
         B_class_2: 0.275895,
-        B_class_3: 0.384006,
+        B_class_3: 0.3840059,
       });
     });
   });
