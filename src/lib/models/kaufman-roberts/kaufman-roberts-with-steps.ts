@@ -60,9 +60,6 @@ export function kaufmanRobertsWithSteps(
 
   const isBR = (serviceClasses[0] as ServiceClassWithBR).tk !== undefined;
 
-  // Very large systems: the un-normalised q(j) values overflow a computer
-  // number, so listing them step by step is impossible (and thousands of
-  // lines long). Use the rescaled calculation and say so.
   if (exceedsNumberRange(capacity, serviceClasses, isBR)) {
     const probabilities = isBR
       ? robertsFormulaBRPolicy(capacity, serviceClasses as ServiceClassWithBR[])
