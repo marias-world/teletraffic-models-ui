@@ -72,11 +72,10 @@ export function kaufmanRobertsWithSteps(
       utilization: linkUtilizationFromProbabilities(capacity, probabilities),
       steps: [
         {
-          title: "Large system: scaled calculation",
+          title: "Large system: steps not listed",
           formulas: [
             String.raw`\text{With } C = ${capacity} \text{ the un-normalised values } q(j) \text{ become far larger than a computer can store.}`,
-            String.raw`\text{They are divided by a common factor as they are built, which does not change the result because every } q(j) \text{ is divided by } G \text{ at the end.}`,
-            String.raw`\text{The steps are therefore not listed; the blocking probabilities and utilisation below are exact to the 7 decimals shown.}`,
+            String.raw`\text{The steps are therefore not listed.}`,
           ],
         },
       ],
