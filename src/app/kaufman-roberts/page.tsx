@@ -296,6 +296,47 @@ export default function KaufmanRobertsPage() {
               </p>
             </div>
 
+            {/* Overflow note */}
+            <div className="bg-white border border-sky-100 rounded-lg px-4 py-4 space-y-3">
+              <p className="text-xs text-slate-400 uppercase tracking-wider">
+                Large systems: overflow and rescaling
+              </p>
+              <p className="text-xs text-slate-500">
+                A computer stores a decimal number in 64 bits, so it cannot
+                represent anything above about <InlineMath math="10^{308}" />.
+                For large <InlineMath math="C" /> (for example 2000 b.u.) the
+                unnormalised values <InlineMath math="q(j)" /> grow past that
+                limit and become infinity, which breaks the result. To avoid
+                this, whenever a new <InlineMath math="q(j)" /> gets too large
+                (above <InlineMath math="10^{200}" />
+                ), every value computed so far is divided by it. Thanks to this
+                rescaling, the calculator works for very large systems.
+              </p>
+              <p className="text-xs text-slate-500">
+                Example with <InlineMath math="C = 6" />,{" "}
+                <InlineMath math="b_1 = 1" />,{" "}
+                <InlineMath math="\alpha_1 = 10" />,{" "}
+                <InlineMath math="b_2 = 2" />,{" "}
+                <InlineMath math="\alpha_2 = 5" />, and a pretend limit of 100.
+                We get <InlineMath math="q(0) = 1" />,{" "}
+                <InlineMath math="q(1) = 10" />, <InlineMath math="q(2) = 55" />{" "}
+                and <InlineMath math="q(3) = 216.7" />, which is over the limit.
+                We divide <InlineMath math="q(0), \ldots, q(3)" /> by 216.7 and
+                continue. The next value is <InlineMath math="q(4) = 3.135" />,
+                which is exactly the true <InlineMath math="679.2" /> divided by
+                the same 216.7.
+              </p>
+              <p className="text-xs text-slate-400">
+                Every value is the true one divided by the same constant, so the
+                constant cancels when we divide by{" "}
+                <InlineMath math="\sum q(j)" />. The probabilities and blocking
+                values are identical to the unscaled calculation (here{" "}
+                <InlineMath math="B_1 = 0.59929" />,{" "}
+                <InlineMath math="B_2 = 0.86003" />
+                ).
+              </p>
+            </div>
+
             <p className="text-xs text-slate-400">
               The formula computes the exact steady-state distribution under a
               Poisson arrival process and exponentially distributed holding
