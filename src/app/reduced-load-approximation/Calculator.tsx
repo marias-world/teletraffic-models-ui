@@ -4,6 +4,8 @@ import { useState } from "react";
 import { callBlockingProbabilityinRLA } from "@/lib/models/reduced-load-approximation/reduced-load-approximation";
 import { linkUtilization_U } from "@/lib/models/reduced-load-approximation/link-utilization";
 import { networkTopology, ServiceClassWithRoute } from "@/lib/models/types";
+import ComputationTime from "@/components/ComputationTime";
+import { timed } from "@/lib/timing";
 
 type LinkRow = { id: number; capacity: string };
 type ServiceRow = { id: number; load: string; demands: Record<number, string> };
@@ -29,6 +31,7 @@ export default function Calculator() {
   const [utilization, setUtilization] = useState<Record<string, string> | null>(
     null,
   );
+  const [computationMs, setComputationMs] = useState<number | null>(null);
   const [error, setError] = useState("");
 
   const addLink = () => {
@@ -132,10 +135,16 @@ export default function Calculator() {
     }
 
     try {
-      setResults(
-        callBlockingProbabilityinRLA(topology, serviceClasses, threshold),
-      );
-      setUtilization(linkUtilization_U(topology, serviceClasses));
+      const {
+        value: { cbp, utilization: util },
+        ms,
+      } = timed(() => ({
+        cbp: callBlockingProbabilityinRLA(topology, serviceClasses, threshold),
+        utilization: linkUtilization_U(topology, serviceClasses),
+      }));
+      setResults(cbp);
+      setUtilization(util);
+      setComputationMs(ms);
     } catch (e) {
       setError(`Calculation failed: ${e instanceof Error ? e.message : e}`);
     }
@@ -314,7 +323,12 @@ export default function Calculator() {
       {/* Results */}
       {results && (
         <div className="space-y-4">
-          <p className="text-sm text-slate-700">Call Blocking Probabilities</p>
+          <div>
+            <p className="text-sm text-slate-700">
+              Call Blocking Probabilities
+            </p>
+            <ComputationTime ms={computationMs} />
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {Object.entries(results).map(([key, val]) => {
               const classNum = key.replace("B", "");

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import { calculateCloudCapacityBlockingProbabilities } from "@/lib/models/cloud-capacity-planning/proposed-model-data";
+import ComputationTime from "@/components/ComputationTime";
+import { timed } from "@/lib/timing";
 import {
   BlockingRatios,
   Capacities,
@@ -90,6 +92,7 @@ export default function Calculator() {
   const [showSteps, setShowSteps] = useState(false);
   const [error, setError] = useState("");
   const [isCalculating, setIsCalculating] = useState(false);
+  const [computationMs, setComputationMs] = useState<number | null>(null);
 
   const addRow = () => {
     if (rows.length >= MAX_CLASSES) return;
@@ -237,13 +240,16 @@ export default function Calculator() {
 
     setTimeout(() => {
       try {
-        const result = calculateCloudCapacityBlockingProbabilities(
-          groupSize,
-          capacitiesForModel,
-          serviceClassConfigs,
-          rlaThreshold,
+        const { value: result, ms } = timed(() =>
+          calculateCloudCapacityBlockingProbabilities(
+            groupSize,
+            capacitiesForModel,
+            serviceClassConfigs,
+            rlaThreshold,
+          ),
         );
         setResults(result);
+        setComputationMs(ms);
       } catch (e) {
         setError(`Calculation failed: ${e instanceof Error ? e.message : e}`);
       } finally {
@@ -497,7 +503,10 @@ export default function Calculator() {
       {/* Results */}
       {results !== null && (
         <div className="space-y-4 pt-2 border-t border-slate-100">
-          <h3 className="text-slate-700">Total Blocking Probabilities</h3>
+          <div>
+            <h3 className="text-slate-700">Total Blocking Probabilities</h3>
+            <ComputationTime ms={computationMs} />
+          </div>
 
           <div className="flex gap-3 bg-violet-50 border border-violet-200 rounded-xl p-3">
             <p className="text-sm text-violet-900 leading-relaxed">

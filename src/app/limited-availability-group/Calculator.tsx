@@ -8,6 +8,8 @@ import {
   StepGroup,
 } from "@/lib/models/limited-availability-groups/lar-with-steps";
 import { ServiceClass } from "@/lib/models/types";
+import ComputationTime from "@/components/ComputationTime";
+import { timed } from "@/lib/timing";
 
 const STEPS_MAX_ELL = 5;
 const STEPS_MAX_C = 5;
@@ -36,6 +38,7 @@ export default function Calculator() {
   const [showSteps, setShowSteps] = useState(false);
   const [error, setError] = useState("");
   const [isCalculating, setIsCalculating] = useState(false);
+  const [computationMs, setComputationMs] = useState<number | null>(null);
 
   const addRow = () => {
     setRows((prev) => [
@@ -101,19 +104,19 @@ export default function Calculator() {
       try {
         if (subgroups <= STEPS_MAX_ELL && C <= STEPS_MAX_C) {
           const {
-            results: cbp,
-            utilization: util,
-            steps: calcSteps,
-          } = lagWithSteps(subgroups, C, serviceClasses);
+            value: { results: cbp, utilization: util, steps: calcSteps },
+            ms,
+          } = timed(() => lagWithSteps(subgroups, C, serviceClasses));
+          setComputationMs(ms);
           setResults(cbp);
           setUtilization(util);
           setSteps(calcSteps);
         } else {
-          const { results: cbp, utilization: util } = lagModelResult(
-            subgroups,
-            C,
-            serviceClasses,
-          );
+          const {
+            value: { results: cbp, utilization: util },
+            ms,
+          } = timed(() => lagModelResult(subgroups, C, serviceClasses));
+          setComputationMs(ms);
           setResults(cbp);
           setUtilization(util);
           setSteps([]);
@@ -288,7 +291,10 @@ export default function Calculator() {
       {/* Results */}
       {results !== null && (
         <div className="space-y-4 pt-2 border-t border-slate-100">
-          <h3 className="text-slate-700">Call Blocking Probabilities</h3>
+          <div>
+            <h3 className="text-slate-700">Call Blocking Probabilities</h3>
+            <ComputationTime ms={computationMs} />
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {Object.entries(results).map(([key, value]) => {

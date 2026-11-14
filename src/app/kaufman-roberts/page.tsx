@@ -11,6 +11,8 @@ import {
   StepGroup,
 } from "@/lib/models/kaufman-roberts/kaufman-roberts-with-steps";
 import { ServiceClass, ServiceClassWithBR } from "@/lib/models/types";
+import ComputationTime from "@/components/ComputationTime";
+import { timed } from "@/lib/timing";
 
 type Policy = "CS" | "BR";
 
@@ -45,6 +47,7 @@ export default function KaufmanRobertsPage() {
   } | null>(null);
   const [steps, setSteps] = useState<StepGroup[]>([]);
   const [showSteps, setShowSteps] = useState(false);
+  const [computationMs, setComputationMs] = useState<number | null>(null);
   const [error, setError] = useState("");
 
   const addRow = () => {
@@ -121,11 +124,11 @@ export default function KaufmanRobertsPage() {
     );
 
     const {
-      results: cbp,
-      utilization: util,
-      steps: calcSteps,
-    } = kaufmanRobertsWithSteps(C, serviceClasses);
+      value: { results: cbp, utilization: util, steps: calcSteps },
+      ms,
+    } = timed(() => kaufmanRobertsWithSteps(C, serviceClasses));
 
+    setComputationMs(ms);
     setResults(cbp);
     setUtilization(util);
     setSteps(calcSteps);
@@ -496,7 +499,10 @@ export default function KaufmanRobertsPage() {
           {/* Results */}
           {results !== null && (
             <div className="space-y-4 pt-2 border-t border-slate-100">
-              <h3 className="text-slate-700">Call Blocking Probabilities</h3>
+              <div>
+                <h3 className="text-slate-700">Call Blocking Probabilities</h3>
+                <ComputationTime ms={computationMs} />
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {Object.entries(results).map(([key, value]) => {
