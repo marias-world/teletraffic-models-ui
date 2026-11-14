@@ -2,6 +2,8 @@
 
 import { BlockMath } from "react-katex";
 import { useState } from "react";
+import ComputationTime from "./ComputationTime";
+import { timed } from "@/lib/timing";
 
 type ModelTemplateProps = {
   title: string;
@@ -26,6 +28,7 @@ export default function ModelTemplate({
   const [result, setResult] = useState<number | null>(null);
   const [steps, setSteps] = useState<string[]>([]);
   const [showSteps, setShowSteps] = useState(false);
+  const [computationMs, setComputationMs] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState("");
@@ -52,9 +55,13 @@ export default function ModelTemplate({
       numericInputs[key] = Number(values[key]);
     });
 
-    const { result, steps } = onRun(numericInputs);
+    const {
+      value: { result, steps },
+      ms,
+    } = timed(() => onRun(numericInputs));
 
     setResult(result);
+    setComputationMs(ms);
     setSteps(steps || []);
     setLoading(false);
   };
@@ -104,6 +111,7 @@ export default function ModelTemplate({
               ? "No calls will be blocked."
               : `Approximately ${typeof result === "number" ? (result * 100).toFixed(2) : 0}% of calls will be blocked due to limited system capacity.`}
           </p>
+          <ComputationTime ms={computationMs} />
         </div>
       )}
 

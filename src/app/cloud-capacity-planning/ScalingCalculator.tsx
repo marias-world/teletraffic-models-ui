@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { InlineMath } from "react-katex";
 import { calculateCloudCapacityBlockingProbabilities } from "@/lib/models/cloud-capacity-planning/proposed-model-data";
+import ComputationTime from "@/components/ComputationTime";
 import {
   Capacities,
   ServiceClassConfigs,
@@ -86,6 +87,7 @@ export default function ScalingCalculator() {
   const [result, setResult] = useState<ScalingResult | null>(null);
   const [error, setError] = useState("");
   const [isCalculating, setIsCalculating] = useState(false);
+  const [computationMs, setComputationMs] = useState<number | null>(null);
 
   const addRow = () => {
     if (rows.length >= MAX_CLASSES) return;
@@ -227,6 +229,7 @@ export default function ScalingCalculator() {
 
     setTimeout(() => {
       try {
+        const startTime = performance.now();
         const scan: ScanRow[] = [];
         let found = false;
         let foundStep: number | null = null;
@@ -295,6 +298,7 @@ export default function ScalingCalculator() {
           }
         }
 
+        setComputationMs(performance.now() - startTime);
         setResult({
           mode: scalingMode,
           found,
@@ -563,6 +567,7 @@ export default function ScalingCalculator() {
       {/* Results */}
       {result !== null && (
         <div className="space-y-4 pt-2 border-t border-slate-100">
+          <ComputationTime ms={computationMs} />
           {result.found ? (
             result.mode === "capacity" && result.capacities ? (
               <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center space-y-2">
